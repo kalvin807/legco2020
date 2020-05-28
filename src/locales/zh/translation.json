@@ -1,0 +1,14 @@
+{
+    "alias.DEMO": "民主",
+    "alias.BEIJING": "親中",
+    "alias.MODERATE": "其他",
+    "stackedBar.FC_EXPECTED_WIN_DEMO": "功能組別",
+    "stackedBar.GC_EXPECTED_WIN_DEMO": "地區直選",
+    "stackedBar.GC_EXPECTED_WIN_MODERATE": "其他",
+    "stackedBar.FC_EXPECTED_WIN_MODERATE": "其他",
+    "stackedBar.UNRESOLVED": "未知",
+    "stackedBar.GC_EXPECTED_WIN_BEIJING": "地區直選",
+    "stackedBar.FC_EXPECTED_WIN_BEIJING": "功能組別",
+    "method_direct": "地區直選",
+    "method_trad_fc": "傳統功能組別"
+}

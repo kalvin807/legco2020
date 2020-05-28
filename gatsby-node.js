@@ -2,6 +2,8 @@ const fetch = require("node-fetch")
 const csv2json = require("csvtojson")
 const isDebug = process.env.DEBUG_MODE === "true"
 
+const PUBLISHED_SPREADSHEET_I18N_URL = 
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
 const PUBLISHED_SPREADSHEET_SEATS_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSlXzn8tUEIgTAtQK4cey1JzunOctvquNQr-_76l98vdhD9Y4It5ZoNk06wEuBGoPIccFcjan0RXm7/pub?gid=1850485765"
 const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
@@ -48,6 +50,12 @@ const createPublishedGoogleSpreadsheetNode = async (
 
 exports.sourceNodes = async props => {
     await Promise.all([
+        createPublishedGoogleSpreadsheetNode(
+            props,
+            PUBLISHED_SPREADSHEET_I18N_URL,
+            "i18n",
+            { skipFirstLine: false, alwaysEnabled: true }
+        ),
         createPublishedGoogleSpreadsheetNode(
             props,
             PUBLISHED_SPREADSHEET_SEATS_URL,
