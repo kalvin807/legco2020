@@ -28,25 +28,24 @@ function SeatRowChart({ data, summary }) {
         const svg = select(svgRef.current);
 
         if (!dimensions) return;
-
         const config = {
             margin: { top: 0, right: 0, bottom: 0, left: 0 },
-            length: Math.min(16, dimensions.width / 13),
-            itemMargin: 12
+            itemMargin: 2
             // ...config
         }
 
-        const { length } = config
+        const length = (dimensions.width - 2 * config.itemMargin) / 3
+
         // stack rect for each data value
         svg
             .selectAll('rect')
             .data(data)
             .join('rect')
             .attr('class', 'rect-stacked')
-            .attr('x', (d, i) => i * ( length + dimensions.width / 13 / 2))
-            .attr('y', 0)
+            .attr('x', (d, i) => parseInt(i % 3) * (length + config.itemMargin))
+            .attr('y', (d, i) => parseInt(i / 3) * (length + config.itemMargin))
             .attr('height', length)
-            .attr('width', d => length)
+            .attr('width', length)
             .style('fill', (d, i) => d.color)
         
 
@@ -57,8 +56,8 @@ function SeatRowChart({ data, summary }) {
             <svg ref={svgRef} style={{
                 overflow: 'visible',
                 display: 'block',
-                width: '100%',
-                height: `16px`,
+                width: '40px',
+                height: `40px`,
             }}>
             </svg>
         </div>

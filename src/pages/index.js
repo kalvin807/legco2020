@@ -10,7 +10,7 @@ import SimpleTabs from "@/components/SimpleTabs"
 import styled from "styled-components"
 import { useTranslation } from "react-i18next" 
 
-const GridWrapper = styled.div`
+const DirectWrapper = styled.div`
   margin: 0 ${theme.spacing(2)}px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -18,9 +18,86 @@ const GridWrapper = styled.div`
 
   .seat {
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
-    border: 1px ${theme.palette.divider} solid;
+    border-radius: 2px;
+    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    
+    .title {
+      display: flex;
+      justify-content: space-between;
+      line-height: 0;
+    }
+
+    .sub-title {
+      font-size: 0.65rem;
+    }
+
+    .roundup {
+      display: flex;
+      justify-content: space-between;
+      line-height: 1.5rem;
+    }
+
+    .large-number {
+      font-size: 2rem;
+      font-weight: 900;
+    }
+    
+    .demo {
+      text-align: left;
+      color: ${theme.palette.warning.main};
+    }
+
+    .beijing {
+      text-align: right;
+      color: ${theme.palette.info.main};
+    }
   }
 `
+
+const TradFCWrapper = styled.div`
+  margin: 0 ${theme.spacing(2)}px;
+
+  .seat-group {
+    display: grid;
+    grid-gap: ${theme.spacing(1)}px;
+  }
+
+  .group-title {
+    font-weight: 500;
+    margin: ${theme.spacing(1.5)}px 0;
+  }
+
+  .fierce, .compatible {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .foreseeable, .uncontested {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .seat {
+    padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
+    border-radius: 2px;
+    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    
+    .title {
+      display: flex;
+      justify-content: space-between;
+      line-height: 0;
+    }
+
+  }
+
+
+  .seat.demo {
+    border-top: 3px ${theme.palette.warning.main} solid;
+  }
+
+  .seat.beijing {
+    border-top: 3px ${theme.palette.info.main} solid;
+  }
+`
+
 const seatColorMapping = {
   FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
   GC_EXPECTED_WIN_DEMO: theme.palette.warning.light,
@@ -85,6 +162,113 @@ const IndexPage = props => {
     }
   })
 
+  const renderDirect = edges => {
+    return (
+      <DirectWrapper>
+        {edges.sort((a, b) => {
+          if (a.node.order > b.node.order) return 1
+          if (a.node.order < b.node.order) return -1
+        }).map((e, i) => {
+          const { node } = e
+          const expectedWinDemo = Number(node.expected_win_demo) || 0
+          const unresolvedSeats = Number(node.unresolved_seats) || 0
+          const expectedWinBeijing = Number(node.expected_win_beijing) || 0
+
+          const candiBeijing = Number(node.candidates_beijing) || 0
+          // const candiModerate = Number(node.candidates_moderate) || 0
+          const candiDemo = Number(node.candidates_demo) || 0
+
+          const expectedResultRows = [
+            ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
+              color: seatColorMapping['GC_EXPECTED_WIN_DEMO']
+            })),
+            ...[...Array(unresolvedSeats).keys()].map((d, i) => ({
+              color: seatColorMapping['UNRESOLVED']
+            })),
+            ...[...Array(expectedWinBeijing).keys()].map((d, i) => ({
+              color: seatColorMapping['GC_EXPECTED_WIN_BEIJING']
+            })),
+          ]
+          return (
+            <div key={i} className="seat">
+              <div className="title">
+                <div>
+                  <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: node.seats })}</Typography>
+                  <Typography variant="h6">{node.alias_zh}</Typography>
+                </div>
+                <SeatRowChart data={expectedResultRows} />
+              </div>
+              <div className="sub-title">{t("expected_list")}</div>
+              <div className="roundup">
+                  <Typography variant="caption">{t("alias.DEMO")}</Typography>
+                  <Typography variant="caption">{t("alias.BEIJING")}</Typography>
+              </div>
+              <div className="roundup">
+              <div className="large-number demo">{candiDemo || "-"}</div>
+                <div>
+                  <Typography variant="body1" color="textSecondary">vs</Typography>
+                </div>
+                <div className="large-number beijing">{candiBeijing || "-"}</div>
+              </div>
+            </div>
+          )
+        })}
+      </DirectWrapper>
+    )
+  }
+
+  const renderTradFC = edges => {
+
+    const grouppedFc = edges.reduce((a, c) => {
+      const { node } = c
+      const idx = a.findIndex(a => a.title === t(node.situation))
+      if (idx < 0) {
+        return [...a, {
+          title: t(node.situation),
+          situation: node.situation,
+          order: node.situation_order,
+          content: [node]
+        }]
+      }
+  
+      a[idx].content.push(node)
+      return a
+    }, [])
+
+    return (
+      <TradFCWrapper>
+        {grouppedFc.sort((a, b) => {
+          if (a.order > b.order) return 1
+          if (a.order < b.order) return -1
+        }).map(group => {
+
+          return (
+            <div key={group.title}>
+              <div className="group-title">{t("no_of_seats_fc", { title: group.title, seats: group.content.length } )}</div>
+              <div className={`seat-group ${group.situation}`}>
+                {
+                  group.content.map((c, i) => {
+
+                    const expectedWinDemo = Number(c.expected_win_demo) || 0
+                    const unresolvedSeats = Number(c.unresolved_seats) || 0
+                    const expectedWinBeijing = Number(c.expected_win_beijing) || 0
+
+                    return (
+                      <div key={i} className={`seat ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}>
+                        <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: c.seats })}</Typography>
+                        <Typography variant="h6">{c.name_zh}</Typography>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          )
+        })}
+      </TradFCWrapper>
+    )
+  }
+
   return (
     <Layout>
       <SEO title="Home" />
@@ -98,39 +282,7 @@ const IndexPage = props => {
           return {
             name: `${field}_${fieldValue}`,
             title: t(`${field}_${fieldValue}`),
-            content: <GridWrapper>
-              {edges.map((e, i) => {
-                const { node } = e
-
-                const expectedWinDemo = Number(node.expected_win_demo) || 0
-                const unresolvedSeats = Number(node.unresolved_seats) || 0
-                const expectedWinBeijing = Number(node.expected_win_beijing) || 0
-
-                const candiBeijing = Number(node.candidates_beijing) || 0
-                // const candiModerate = Number(node.candidates_moderate) || 0
-                const candiDemo = Number(node.candidates_demo) || 0
-                
-                const expectedResultRows = [
-                  ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
-                    color: seatColorMapping['GC_EXPECTED_WIN_DEMO']
-                  })),
-                  ...[...Array(unresolvedSeats).keys()].map((d, i) => ({
-                    color: seatColorMapping['UNRESOLVED']
-                  })),
-                  ...[...Array(expectedWinBeijing).keys()].map((d, i) => ({
-                    color: seatColorMapping['GC_EXPECTED_WIN_BEIJING']
-                  })),
-                ]
-                return (
-                  <div key={i} className="seat">
-                      <Typography variant="h6">{node.alias_zh} ({node.seats}席)</Typography>
-                      <SeatRowChart data={expectedResultRows} />
-                <Typography variant="body1">泛民：{candiDemo}名單</Typography>
-                <Typography variant="body1">親中：{candiBeijing}名單</Typography>
-                  </div>
-                )
-              })}
-          </GridWrapper>
+            content: fieldValue === "direct" ? renderDirect(edges) : renderTradFC(edges)
           }
         })}
         onTabChange={name => {
@@ -169,7 +321,7 @@ export const IndexPageQuery = graphql`
         }
       }
     }
-    allSeatsByMethod: allSeats(sort: {order: DESC, fields: unresolved_seats}) {
+    allSeatsByMethod: allSeats {
       group(field: method) {
         field
         fieldValue
@@ -177,7 +329,10 @@ export const IndexPageQuery = graphql`
         edges {
           node {
             type
+            order
             seats
+            situation
+            situation_order
             candidates_beijing
             candidates_demo
             candidates_moderate
