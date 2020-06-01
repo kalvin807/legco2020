@@ -1,4 +1,5 @@
 import React from "react"
+import { navigate } from "gatsby"
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -34,10 +35,16 @@ export default function Header(props) {
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar className={classes.toolBar}>
-        <Typography variant="h1" className={classes.title} dangerouslySetInnerHTML={renderTitle()} />
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        <Typography 
+          variant="h1" 
+          className={classes.title}
+          dangerouslySetInnerHTML={renderTitle()} 
+          onClick={() => {
+            navigate(`/`)
+          }} />
+        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
       </Toolbar>
     </AppBar>
   )

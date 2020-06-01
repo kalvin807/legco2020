@@ -82,6 +82,7 @@ function SingleStackedBar({ data, summary }) {
             .attr('height', barHeight)
             .attr('width', d => xScale(d.value))
             .style('fill', (d, i) => d.color)
+            .style('stroke', theme.palette.background.paper)
 
         Object.keys(summary).forEach((camp, i) => {
             // Text Background
@@ -151,7 +152,7 @@ function SingleStackedBar({ data, summary }) {
             .attr('x', xScale(total / 2))
             .attr('y', h / 2 - halfBarHeight - 16)
             .style('font-size', 12)
-            .text(d => '35')
+            .text(d => total / 2)
 
         // add the labels
         svg.selectAll('.text-label')

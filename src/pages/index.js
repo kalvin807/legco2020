@@ -1,14 +1,17 @@
-import React from "react"
+import React, { useState } from "react"
 import Layout from "@/components/layout"
 import SEO from "@/components/seo"
-import { graphql } from "gatsby"
+import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
 import theme from "@/themes"
-import { Typography } from "@material-ui/core"
+import { Typography, Collapse } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
 import styled from "styled-components"
 import { useTranslation } from "react-i18next" 
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { PastElectionResult } from "@/data/ElectionResults"
 
 const DirectWrapper = styled.div`
   margin: 0 ${theme.spacing(2)}px;
@@ -98,6 +101,10 @@ const TradFCWrapper = styled.div`
   }
 `
 
+const ExpandButton = styled.div`
+  text-align: center;
+`
+
 const seatColorMapping = {
   FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
   GC_EXPECTED_WIN_DEMO: theme.palette.warning.light,
@@ -109,7 +116,9 @@ const seatColorMapping = {
 }
 
 const IndexPage = props => {
-  const { data: { allSeats :{ edges: seats }, allSeatsByMethod: { group: seatsByMethod } } } = props
+  const { data: { allConstituencies :{ edges: seats }, allConstituenciesByMethod: { group: constituenciesByMethod } } } = props
+  const [ showSeatHistory, setShowSeatHistory ] = useState(false)
+
   const { t } = useTranslation()
   // group data for chart
   let seatCount = {
@@ -190,7 +199,11 @@ const IndexPage = props => {
             })),
           ]
           return (
-            <div key={i} className="seat">
+            <div key={i} className="seat" onClick={() => {
+              navigate(
+                `/constituency/${node.key}`
+              )
+            }}>
               <div className="title">
                 <div>
                   <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: node.seats })}</Typography>
@@ -224,6 +237,7 @@ const IndexPage = props => {
       const idx = a.findIndex(a => a.title === t(node.situation))
       if (idx < 0) {
         return [...a, {
+          key: node.key,
           title: t(node.situation),
           situation: node.situation,
           order: node.situation_order,
@@ -243,7 +257,11 @@ const IndexPage = props => {
         }).map(group => {
 
           return (
-            <div key={group.title}>
+            <div key={group.title} onClick={() => {
+              navigate(
+                `/constituency/${group.key}`
+              )
+            }}>
               <div className="group-title">{t("no_of_seats_fc", { title: group.title, seats: group.content.length } )}</div>
               <div className={`seat-group ${group.situation}`}>
                 {
@@ -272,17 +290,28 @@ const IndexPage = props => {
   return (
     <Layout>
       <SEO title="Home" />
-      <SingleStackedBarChart 
-        data={chartData} 
-        summary={summary}
-      />
+      <SingleStackedBarChart data={chartData} summary={summary} />
+      <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
+        {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </ExpandButton>
+      <Collapse in={showSeatHistory} timeout={100}>
+        {
+          PastElectionResult.map(r => <>
+          <Typography variant="body1" style={{ textAlign: "center"}}>{r.year}</Typography>
+          <SingleStackedBarChart data={r.result} summary={r.summary} />
+          </>)
+        }
+      </Collapse>
       <SimpleTabs
-        tabs={seatsByMethod.map(method => {
+        tabs={constituenciesByMethod.map(method => {
           const { field, fieldValue, edges } = method
           return {
             name: `${field}_${fieldValue}`,
             title: t(`${field}_${fieldValue}`),
-            content: fieldValue === "direct" ? renderDirect(edges) : renderTradFC(edges)
+            content:
+              fieldValue === "direct"
+                ? renderDirect(edges)
+                : renderTradFC(edges),
           }
         })}
         onTabChange={name => {
@@ -302,7 +331,7 @@ export default IndexPage
 
 export const IndexPageQuery = graphql`
   query {
-    allSeats {
+    allConstituencies {
       edges {
         node {
           type
@@ -321,13 +350,14 @@ export const IndexPageQuery = graphql`
         }
       }
     }
-    allSeatsByMethod: allSeats {
+    allConstituenciesByMethod: allConstituencies {
       group(field: method) {
         field
         fieldValue
         totalCount
         edges {
           node {
+            key
             type
             order
             seats

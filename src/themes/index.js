@@ -15,6 +15,10 @@ const theme = createMuiTheme({
             fontFamily: 'Rubik Mono One',
             lineHeight: 0.9
         },
+        h2: {
+            fontSize: '1.3rem',
+            fontWeight: 500
+        },
         h6: {
             fontSize: '1rem',
             fontWeight: 500
@@ -25,7 +29,7 @@ const theme = createMuiTheme({
     },
     palette: {
         primary: {
-            main: '#7B68EE',
+            main: '#000000',
         },
         warning: {
             main: amber[400]

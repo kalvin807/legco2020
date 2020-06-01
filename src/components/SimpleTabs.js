@@ -6,10 +6,6 @@ import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import styled from "styled-components"
 
-const UnstyledTabPanel = styled(TabPanel)`
-  padding: 16px 0 16px;
-`
-
 const UnstyledAppBar = styled(AppBar)`
   background: transparent;
   box-shadow: none;
@@ -73,9 +69,9 @@ export default function SimpleTabs(props) {
         </Tabs>
       </UnstyledAppBar>
       {tabs.map((tab, i) => (
-        <UnstyledTabPanel key={i} value={value} index={i}>
+        <TabPanel key={i} value={value} index={i}>
           {tab.content}
-        </UnstyledTabPanel>
+        </TabPanel>
       ))}
     </>
   )
