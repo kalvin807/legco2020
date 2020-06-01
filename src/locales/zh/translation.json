@@ -12,10 +12,11 @@
     "method_direct": "直選",
     "method_trad_fc": "傳統功能組別",
     "no_of_seats": "{{seats}}席",
-    "expected_list": "有意參選名單",
+    "intented_list": "有意參選",
     "fierce": "競爭激烈",
     "compatible": "有競爭空間",
     "foreseeable": "可預測",
     "uncontested": "自動當選",
-    "no_of_seats_fc": "{{title}}（{{seats}}）"
+    "no_of_seats_fc": "{{title}}（{{seats}}）",
+    "estimated_result": "預測議席分布"
 }

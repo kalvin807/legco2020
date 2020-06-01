@@ -27,17 +27,30 @@ const DirectWrapper = styled.div`
     .title {
       display: flex;
       justify-content: space-between;
-      line-height: 0;
     }
 
     .sub-title {
       font-size: 0.65rem;
     }
 
+    .roundup-title {
+      margin-top: ${theme.spacing(0.5)}px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .roundup-title div {
+      line-height: 0.5;
+    }
+
+    .roundup-title div:last-child {
+      text-align: right;
+    }
+
     .roundup {
       display: flex;
       justify-content: space-between;
-      line-height: 1.5rem;
+      line-height: 1.2;
     }
 
     .large-number {
@@ -205,16 +218,28 @@ const IndexPage = props => {
               )
             }}>
               <div className="title">
-                <div>
                   <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: node.seats })}</Typography>
-                  <Typography variant="h6">{node.alias_zh}</Typography>
-                </div>
-                <SeatRowChart data={expectedResultRows} />
+                  <div className="sub-title">{t("estimated_result")}</div>
               </div>
-              <div className="sub-title">{t("expected_list")}</div>
-              <div className="roundup">
+              <div className="title">
+                <div>
+                  <Typography variant="h5">{node.alias_zh}</Typography>
+                </div>
+                <div>
+                  <div style={{ width: "40px", height: "40px" }} >
+                    <SeatRowChart width={40} height={40} data={expectedResultRows} />
+                  </div>
+                </div>
+              </div>
+              <div className="roundup-title">
+                <div>
                   <Typography variant="caption">{t("alias.DEMO")}</Typography>
+                  <div className="sub-title">{t("intented_list")}</div>
+                </div>
+                <div>
                   <Typography variant="caption">{t("alias.BEIJING")}</Typography>
+                  <div className="sub-title">{t("intented_list")}</div>
+                </div>
               </div>
               <div className="roundup">
               <div className="large-number demo">{candiDemo || "-"}</div>
@@ -274,7 +299,7 @@ const IndexPage = props => {
                     return (
                       <div key={i} className={`seat ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}>
                         <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: c.seats })}</Typography>
-                        <Typography variant="h6">{c.name_zh}</Typography>
+                        <Typography variant="h5">{c.name_zh}</Typography>
                       </div>
                     )
                   })

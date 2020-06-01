@@ -106,6 +106,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 expected_win_moderate
                 candidates_demo
                 candidates_beijing
+                stage_1_title_demo_zh
+                stage_1_title_beijing_zh
+                stage_1_description_demo_zh
+                stage_1_description_beijing_zh
+                stage_2_title_demo_zh
+                stage_2_title_beijing_zh
+                stage_2_description_demo_zh
+                stage_2_description_beijing_zh
               }
             }
         }

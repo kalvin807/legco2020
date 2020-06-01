@@ -19,7 +19,7 @@ const useResizeObserver = ref => {
     return dimensions;
 };
 
-function SeatRowChart({ data, summary }) {
+function SeatRowChart({ data, width, height }) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
@@ -56,8 +56,8 @@ function SeatRowChart({ data, summary }) {
             <svg ref={svgRef} style={{
                 overflow: 'visible',
                 display: 'block',
-                width: '40px',
-                height: `40px`,
+                width: `${width}px`,
+                height: `${width}px`,
             }}>
             </svg>
         </div>

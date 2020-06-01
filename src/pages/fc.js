@@ -73,14 +73,14 @@ const FcPage = props => {
     <Layout>
       <Container maxWidth="lg">
       <SEO title="FC" />
-      <Typography variant="h6" gutterBottom>當民主陣營談35+，究竟機會有多大？</Typography>
-      <Typography variant="h6" gutterBottom>{`功能組別：${grouppedFc.filter(g => g.order <= 2).reduce((a, c) => a + c.content.length, 0)}席 - ${grouppedFc.filter(g => g.order <= 3).reduce((a, c) => a + c.content.length, 0)}席`}</Typography>
+      <Typography variant="h5" gutterBottom>當民主陣營談35+，究竟機會有多大？</Typography>
+      <Typography variant="h5" gutterBottom>{`功能組別：${grouppedFc.filter(g => g.order <= 2).reduce((a, c) => a + c.content.length, 0)}席 - ${grouppedFc.filter(g => g.order <= 3).reduce((a, c) => a + c.content.length, 0)}席`}</Typography>
       {grouppedFc.sort((a, b) => a.order - b.order).map(group => {
         return (
           <Grid key={group.title} container spacing={3}>
             <Grid item xs={12}>
               <Container disableGutters>
-                <Typography variant="h6" gutterBottom>{`${group.title} (${group.content.length})`}</Typography>
+                <Typography variant="h5" gutterBottom>{`${group.title} (${group.content.length})`}</Typography>
                 <AvatarChart content={group.content} />
               </Container>
             </Grid>
