@@ -40,8 +40,9 @@ const ConstituencyTemplate = ({ data: { allCandidates }, pageContext: { constitu
   return (
     <Layout>
       <Container maxWidth="lg">
+        <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
         <Typography variant="h2">{constituency.name_zh}</Typography>
-        <Typography variant="body1" color="textSecondary">{t("no_of_seats", { seats: constituency.seats })}</Typography>
+        <Typography variant="body1" color="textSecondary">{t("expected_list")}</Typography>
         <Grid container spacing={3}>
           {
             ["DEMO", "BEIJING"].map(camp => <Grid item xs={6}>
