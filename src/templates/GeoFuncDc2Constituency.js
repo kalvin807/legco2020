@@ -32,7 +32,7 @@ const CandidatesWrapper = styled.div`
   }
 `
 
-const ConstituencyTemplate = ({ data: { allCandidates }, pageContext: { constituency } }) => {
+const GeoFuncDc2ConstituencyTemplate = ({ data: { allCandidates }, pageContext: { constituency } }) => {
   const candidates = allCandidates.edges.filter(c => c.node.constituency === constituency.key)
   const { t } = useTranslation()
 
@@ -118,9 +118,9 @@ const ConstituencyTemplate = ({ data: { allCandidates }, pageContext: { constitu
   )
 }
 
-export default ConstituencyTemplate
+export default GeoFuncDc2ConstituencyTemplate
 
-export const ConstituencyTemplateQuery = graphql`
+export const GeoFuncDc2ConstituencyTemplateQuery = graphql`
   query {
     allCandidates {
       edges {

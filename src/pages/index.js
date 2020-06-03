@@ -129,24 +129,25 @@ const seatColorMapping = {
 }
 
 const IndexPage = props => {
-  const { data: { allConstituencies :{ edges: seats }, allConstituenciesByMethod: { group: constituenciesByMethod } } } = props
+  const { data: { allGeoFuncDc2, allTradFunc } } = props
   const [ showSeatHistory, setShowSeatHistory ] = useState(false)
-
+  const seat = [...Array.from(allGeoFuncDc2.nodes), ...Array.from(allTradFunc.nodes)]
+  
   const { t } = useTranslation()
   // group data for chart
   let seatCount = {
     UNRESOLVED: 70
   }
-  seats.forEach(seat => {
-    const { node } = seat
-    Object.keys(node).filter(k => k.includes('expected')).map(key => {
-      const seatType = `${node.type}_${key}`.toUpperCase()
+
+  seat.forEach(seat => {
+    Object.keys(seat).filter(k => k.includes('expected')).map(key => {
+      const seatType = `${seat.type}_${key}`.toUpperCase()
       if (typeof seatCount[seatType] === 'undefined') {
-        seatCount[seatType] = Number(node[key])
+        seatCount[seatType] = Number(seat[key])
       } else {
-        seatCount[seatType] += Number(node[key])
+        seatCount[seatType] += Number(seat[key])
       }
-      seatCount['UNRESOLVED'] -= Number(node[key])
+      seatCount['UNRESOLVED'] -= Number(seat[key])
     })
   });
 
@@ -188,17 +189,16 @@ const IndexPage = props => {
     return (
       <DirectWrapper>
         {edges.sort((a, b) => {
-          if (a.node.order > b.node.order) return 1
-          if (a.node.order < b.node.order) return -1
+          if (a.order > b.order) return 1
+          if (a.order < b.order) return -1
         }).map((e, i) => {
-          const { node } = e
-          const expectedWinDemo = Number(node.expected_win_demo) || 0
-          const unresolvedSeats = Number(node.unresolved_seats) || 0
-          const expectedWinBeijing = Number(node.expected_win_beijing) || 0
+          const expectedWinDemo = Number(e.expected_win_demo) || 0
+          const unresolvedSeats = Number(e.unresolved_seats) || 0
+          const expectedWinBeijing = Number(e.expected_win_beijing) || 0
 
-          const candiBeijing = Number(node.candidates_beijing) || 0
-          // const candiModerate = Number(node.candidates_moderate) || 0
-          const candiDemo = Number(node.candidates_demo) || 0
+          const candiBeijing = Number(e.candidates_beijing) || 0
+          // const candiModerate = Number(e.candidates_moderate) || 0
+          const candiDemo = Number(e.candidates_demo) || 0
 
           const expectedResultRows = [
             ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
@@ -214,16 +214,16 @@ const IndexPage = props => {
           return (
             <div key={i} className="seat" onClick={() => {
               navigate(
-                `/constituency/${node.key}`
+                `/constituency/${e.key}`
               )
             }}>
               <div className="title">
-                  <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: node.seats })}</Typography>
+                  <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: e.seats })}</Typography>
                   <div className="sub-title">{t("estimated_result")}</div>
               </div>
               <div className="title">
                 <div>
-                  <Typography variant="h5">{node.alias_zh}</Typography>
+                  <Typography variant="h5">{e.alias_zh}</Typography>
                 </div>
                 <div>
                   <div style={{ width: "40px", height: "40px" }} >
@@ -258,19 +258,18 @@ const IndexPage = props => {
   const renderTradFC = edges => {
 
     const grouppedFc = edges.reduce((a, c) => {
-      const { node } = c
-      const idx = a.findIndex(a => a.title === t(node.situation))
+      const idx = a.findIndex(a => a.title === t(c.situation))
       if (idx < 0) {
         return [...a, {
-          key: node.key,
-          title: t(node.situation),
-          situation: node.situation,
-          order: node.situation_order,
-          content: [node]
+          key: c.key,
+          title: t(c.situation),
+          situation: c.situation,
+          order: c.situation_order,
+          content: [c]
         }]
       }
   
-      a[idx].content.push(node)
+      a[idx].content.push(c)
       return a
     }, [])
 
@@ -328,17 +327,18 @@ const IndexPage = props => {
         }
       </Collapse>
       <SimpleTabs
-        tabs={constituenciesByMethod.map(method => {
-          const { field, fieldValue, edges } = method
-          return {
-            name: `${field}_${fieldValue}`,
-            title: t(`${field}_${fieldValue}`),
-            content:
-              fieldValue === "direct"
-                ? renderDirect(edges)
-                : renderTradFC(edges),
+        tabs={[
+          {
+            name: `geo_func_dc2`,
+            title: t(`geo_func_dc2`),
+            content: renderDirect(allGeoFuncDc2.nodes),
+          },
+          {
+            name: `trad_func`,
+            title: t(`trad_func`),
+            content: renderTradFC(allTradFunc.nodes),
           }
-        })}
+        ]}
         onTabChange={name => {
           // trackCustomEvent({
           //   category: "news",
@@ -356,51 +356,46 @@ export default IndexPage
 
 export const IndexPageQuery = graphql`
   query {
-    allConstituencies {
-      edges {
-        node {
-          type
-          method
-          name_zh
-          name_en
-          alias_zh
-          alias_en
-          seats
-          unresolved_seats
-          expected_win_demo
-          expected_win_beijing
-          expected_win_moderate
-          candidates_demo
-          candidates_beijing
-        }
+    allGeoFuncDc2 {
+      nodes {
+        key
+        type
+        order
+        seats
+        situation
+        situation_order
+        name_zh
+        name_en
+        alias_zh
+        alias_en
+        seats
+        unresolved_seats
+        expected_win_demo
+        expected_win_beijing
+        expected_win_moderate
+        candidates_demo
+        candidates_beijing
       }
     }
-    allConstituenciesByMethod: allConstituencies {
-      group(field: method) {
-        field
-        fieldValue
-        totalCount
-        edges {
-          node {
-            key
-            type
-            order
-            seats
-            situation
-            situation_order
-            candidates_beijing
-            candidates_demo
-            candidates_moderate
-            unresolved_seats
-            expected_win_beijing
-            expected_win_demo
-            expected_win_moderate
-            name_zh
-            name_en
-            alias_zh
-            alias_en
-          }
-        }
+    allTradFunc {
+      nodes {
+        key
+        type
+        order
+        seats
+        situation
+        situation_order
+        candidates_beijing
+        candidates_demo
+        candidates_moderate
+        unresolved_seats
+        expected_win_beijing
+        expected_win_demo
+        expected_win_moderate
+        name_zh
+        name_en
+        alias_zh
+        alias_en
       }
     }
   }
