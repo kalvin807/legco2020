@@ -1,10 +1,10 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import Layout from "@/components/layout"
 import { Container, Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
-import { navigate } from "gatsby"
+import SocialPost from "@/components/SocialPost"
 
 const Header = styled.div`
   .avatar-main {
@@ -30,6 +30,7 @@ const Header = styled.div`
   }
 `
 
+
 const CandidateTemplate = ({ pageContext: { candidate } }) => {
   const { t } = useTranslation()
 
@@ -50,7 +51,7 @@ const CandidateTemplate = ({ pageContext: { candidate } }) => {
             }
           </div>
         </Header>
-        
+        <SocialPost candidate={candidate} />
       </Container>
     </Layout>
   )
