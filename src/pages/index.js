@@ -67,6 +67,10 @@ const DirectWrapper = styled.div`
       text-align: right;
       color: ${theme.palette.info.main};
     }
+
+    .moderate {
+      color: ${theme.palette.success.main};
+    }
   }
 `
 
@@ -197,9 +201,9 @@ const IndexPage = props => {
           const expectedWinBeijing = Number(e.expected_win_beijing) || 0
 
           const candiBeijing = Number(e.candidates_beijing) || 0
-          // const candiModerate = Number(e.candidates_moderate) || 0
+          const candiModerate = Number(e.candidates_moderate) || 0
           const candiDemo = Number(e.candidates_demo) || 0
-
+          
           const expectedResultRows = [
             ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
               color: seatColorMapping['GC_EXPECTED_WIN_DEMO']
@@ -246,6 +250,13 @@ const IndexPage = props => {
                 <div>
                   <Typography variant="body1" color="textSecondary">vs</Typography>
                 </div>
+                {candiModerate ? <>
+                <div className="large-number moderate">{candiModerate || "-"}</div>
+                <div>
+                  <Typography variant="body1" color="textSecondary">vs</Typography>
+                </div>
+                </> : 
+                ''}
                 <div className="large-number beijing">{candiBeijing || "-"}</div>
               </div>
             </div>
@@ -281,11 +292,7 @@ const IndexPage = props => {
         }).map(group => {
 
           return (
-            <div key={group.title} onClick={() => {
-              navigate(
-                `/constituency/${group.key}`
-              )
-            }}>
+            <>
               <div className="group-title">{t("no_of_seats_fc", { title: group.title, seats: group.content.length } )}</div>
               <div className={`seat-group ${group.situation}`}>
                 {
@@ -296,7 +303,14 @@ const IndexPage = props => {
                     const expectedWinBeijing = Number(c.expected_win_beijing) || 0
 
                     return (
-                      <div key={i} className={`seat ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}>
+                      <div 
+                        key={i} 
+                        className={`seat ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}
+                        onClick={() => {
+                          navigate(
+                            `/constituency/${c.key}`
+                          )
+                        }}>
                         <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: c.seats })}</Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
                       </div>
@@ -304,7 +318,7 @@ const IndexPage = props => {
                   })
                 }
               </div>
-            </div>
+            </>
           )
         })}
       </TradFCWrapper>
@@ -375,6 +389,7 @@ export const IndexPageQuery = graphql`
         expected_win_moderate
         candidates_demo
         candidates_beijing
+        candidates_moderate
       }
     }
     allTradFunc {

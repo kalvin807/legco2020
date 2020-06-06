@@ -11,7 +11,7 @@ const PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvOc7XgjVmjYxXfCS06AvA3l8_kpjljIh1phw7yhC9uUpj1IdKW_dtMyFC8W5gvPz7a1xGFrve8gZj/pub?gid=1850485765"
 const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091"
-const PUBLISHED_SPREADSHEET_CANDIDATES_URL = 
+const PUBLISHED_SPREADSHEET_PEOPLE_URL = 
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0"
 
     
@@ -81,8 +81,8 @@ exports.sourceNodes = async props => {
         ),
         createPublishedGoogleSpreadsheetNode(
             props,
-            PUBLISHED_SPREADSHEET_CANDIDATES_URL,
-            "Candidates",
+            PUBLISHED_SPREADSHEET_PEOPLE_URL,
+            "People",
             { skipFirstLine: false, alwaysEnabled: true }
         ),
     ])
@@ -103,7 +103,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               node {
                 key
                 type
-                method
                 name_zh
                 name_en
                 alias_zh
@@ -131,11 +130,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             node {
               key
               type
-              method
               name_zh
               name_en
               alias_zh
               alias_en
+              electors_composition
+              description_zh
+              description_en
               seats
               unresolved_seats
               expected_win_demo
@@ -146,7 +147,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             }
           }
       }
-        allCandidates {
+        allPeople {
             edges {
               node {
                 constituency
@@ -154,6 +155,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 status
                 name_zh
                 title_zh
+                is_current
+                is_2020_candidate
               }
             }
         }
@@ -180,12 +183,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       path: `/constituency/${constituency.node.key}`,
       component: TradFuncTemplate,
       context: {
-        constituency: constituency.node
+        constituency: constituency.node,
+        councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current === 'TRUE'),
+        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE') 
       },
     })
   })
 
-  const Candidates = result.data.allCandidates.edges
+  const Candidates = result.data.allPeople.edges
   Candidates.forEach(candidate => {
     createPage({
       path: `/candidate/${candidate.node.name_zh}`,

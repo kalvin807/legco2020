@@ -24,6 +24,10 @@ const CandidatesWrapper = styled.div`
     .avatar.beijing {
       border: 3px ${theme.palette.info.main} solid;
     }
+
+    .avatar.moderate {
+      border: 3px ${theme.palette.success.main} solid;
+    }
     
     .title {
       font-size: 12px;
@@ -32,8 +36,8 @@ const CandidatesWrapper = styled.div`
   }
 `
 
-const GeoFuncDc2ConstituencyTemplate = ({ data: { allCandidates }, pageContext: { constituency } }) => {
-  const candidates = allCandidates.edges.filter(c => c.node.constituency === constituency.key)
+const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency } }) => {
+  const candidates = allPeople.edges.filter(c => c.node.constituency === constituency.key)
   const { t } = useTranslation()
 
   return (
@@ -42,13 +46,12 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allCandidates }, pageContext: 
         <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
         <Typography variant="h2">{constituency.name_zh}</Typography>
         <Grid container spacing={3}>
-          {
-            ["DEMO", "BEIJING"].map(camp => <Grid item xs={6}>
+          <Grid item xs={6}>
               <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === camp).length}張名單</Typography>
+                <Typography>有意出選：{candidates.filter(c => c.node.camp === "DEMO").length}張名單</Typography>
                 <CandidatesWrapper>
                   {
-                    candidates.filter(c => c.node.camp === camp).map(c => {
+                    candidates.filter(c => c.node.camp === "DEMO").map(c => {
                       return (
                         <div 
                           className="avatar-group"
@@ -56,7 +59,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allCandidates }, pageContext: 
                             navigate(`/candidate/${c.node.name_zh}`)
                           }}
                           >
-                          <Avatar className={`avatar ${camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
+                          <Avatar className={`avatar ${"DEMO".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
                           <span className="title">{c.node.name_zh}</span>
                         </div>
                       )
@@ -64,8 +67,49 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allCandidates }, pageContext: 
                   }
                 </CandidatesWrapper>
               </div>
-            </Grid>)
-          }
+          </Grid>
+          <Grid item xs={6}>
+             {candidates.filter(c => c.node.camp === "MODERATE").length && <div>
+                <Typography>有意出選：{candidates.filter(c => c.node.camp === "MODERATE").length}張名單</Typography>
+                <CandidatesWrapper>
+                  {
+                    candidates.filter(c => c.node.camp === "MODERATE").map(c => {
+                      return (
+                        <div 
+                          className="avatar-group"
+                          onClick={() => {
+                            navigate(`/candidate/${c.node.name_zh}`)
+                          }}
+                          >
+                          <Avatar className={`avatar ${"MODERATE".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
+                          <span className="title">{c.node.name_zh}</span>
+                        </div>
+                      )
+                    })
+                  }
+                </CandidatesWrapper>
+                </div> || ''}
+                <div>
+                <Typography>有意出選：{candidates.filter(c => c.node.camp === "BEIJING").length}張名單</Typography>
+                <CandidatesWrapper>
+                  {
+                    candidates.filter(c => c.node.camp === "BEIJING").map(c => {
+                      return (
+                        <div 
+                          className="avatar-group"
+                          onClick={() => {
+                            navigate(`/candidate/${c.node.name_zh}`)
+                          }}
+                          >
+                          <Avatar className={`avatar ${"BEIJING".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
+                          <span className="title">{c.node.name_zh}</span>
+                        </div>
+                      )
+                    })
+                  }
+                </CandidatesWrapper>
+              </div>
+          </Grid>
        </Grid>
        <Grid container spacing={3}>
           {
@@ -122,7 +166,7 @@ export default GeoFuncDc2ConstituencyTemplate
 
 export const GeoFuncDc2ConstituencyTemplateQuery = graphql`
   query {
-    allCandidates {
+    allPeople {
       edges {
         node {
           constituency
