@@ -1,6 +1,7 @@
 const fetch = require("node-fetch")
 const path = require("path")
 const csv2json = require("csvtojson")
+const { request } = require("graphql-request")
 const isDebug = process.env.DEBUG_MODE === "true"
 
 const PUBLISHED_SPREADSHEET_I18N_URL = 
@@ -13,7 +14,6 @@ const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091"
 const PUBLISHED_SPREADSHEET_PEOPLE_URL = 
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0"
-
     
 const createPublishedGoogleSpreadsheetNode = async (
     { actions: { createNode }, createNodeId, createContentDigest },
@@ -135,6 +135,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               alias_zh
               alias_en
               electors_composition
+              electors_composition
+              electors_total_2016
+              electors_total_2020
+              last_election_vote_beijing_minus_demo
+              last_election_voted_count
               description_zh
               description_en
               seats
@@ -172,7 +177,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       path: `/constituency/${constituency.node.key}`,
       component: GeoFuncDc2ConstituencyTemplate,
       context: {
-        constituency: constituency.node
+        constituency: constituency.node,
+        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE')
       },
     })
   })
@@ -191,7 +197,28 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   })
 
   const Candidates = result.data.allPeople.edges
+  // Should use promise.all, change later
   Candidates.forEach(candidate => {
+
+    const query = `
+          query getSocialPosts($regex: String!) {
+            socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
+              nodes {
+                createdAt
+                title
+                platformUrl
+                performance
+              }
+            }
+          }
+        `
+
+    const variables =  {
+      regex: candidate.node.name_zh
+    }
+
+    const data = await request(`https://graphql.maatproject.org`, query, variables)
+
     createPage({
       path: `/candidate/${candidate.node.name_zh}`,
       component: CandidateTemplate,

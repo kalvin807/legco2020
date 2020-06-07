@@ -4,6 +4,7 @@ import SEO from "@/components/seo"
 import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
+import FCStackedBarChart from "@/components/charts/FCStackedBar"
 import theme from "@/themes"
 import { Typography, Collapse } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
@@ -13,6 +14,9 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { PastElectionResult } from "@/data/ElectionResults"
 
+const FullWidithWrapper = styled.div`
+margin: 0 -${theme.spacing(2)}px;
+`
 const DirectWrapper = styled.div`
   margin: 0 ${theme.spacing(2)}px;
   display: grid;
@@ -311,8 +315,16 @@ const IndexPage = props => {
                             `/constituency/${c.key}`
                           )
                         }}>
-                        <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: c.seats })}</Typography>
+                        <Typography variant="caption" color="textSecondary">{t(`electors_composition_${c.electors_composition}`)}</Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
+                        <Typography variant="body2">親中 - 民主 = {c.last_election_vote_beijing_minus_demo}</Typography>
+                        <Typography variant="body2">新增選民 + 上屆未投票 = {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}</Typography>
+                        {/* <FCStackedBarChart data={{
+                            electors_total_2020: Number(c.electors_total_2020),
+                            electors_total_2016: Number(c.electors_total_2016),
+                            last_election_vote_beijing_minus_demo: Number(c.last_election_vote_beijing_minus_demo),
+                            last_election_voted_count: Number(c.last_election_voted_count)
+                        }}/> */}
                       </div>
                     )
                   })
@@ -328,7 +340,8 @@ const IndexPage = props => {
   return (
     <Layout>
       <SEO title="Home" />
-      <SingleStackedBarChart data={chartData} summary={summary} />
+      <FullWidithWrapper>
+        <SingleStackedBarChart data={chartData} summary={summary} />
       <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
         {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ExpandButton>
@@ -361,6 +374,7 @@ const IndexPage = props => {
           // })
         }}
       />
+      </FullWidithWrapper>
     </Layout>
   )
 
@@ -398,6 +412,11 @@ export const IndexPageQuery = graphql`
         type
         order
         seats
+        electors_composition
+        electors_total_2016
+        electors_total_2020
+        last_election_vote_beijing_minus_demo
+        last_election_voted_count
         situation
         situation_order
         candidates_beijing

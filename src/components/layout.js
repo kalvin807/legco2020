@@ -11,10 +11,10 @@ const Layout = ({ children }) => {
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
       <Header />
-      </Container>
         <main>{children}</main>
         <footer>
         </footer>
+      </Container>
     </ThemeProvider>
   )
 }

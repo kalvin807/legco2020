@@ -4,6 +4,7 @@ import { Container, Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
+import SimpleTabs from "@/components/SimpleTabs"
 import SocialPost from "@/components/SocialPost"
 
 const Header = styled.div`
@@ -36,7 +37,6 @@ const CandidateTemplate = ({ pageContext: { candidate } }) => {
 
   return (
     <Layout>
-      <Container maxWidth="lg">
         <Header>
           <Avatar className={`avatar-main ${candidate.camp}`} alt={candidate.alias_zh} src={candidate.image_url} />
           <Typography variant="h2">{candidate.name_zh}</Typography>
@@ -51,8 +51,22 @@ const CandidateTemplate = ({ pageContext: { candidate } }) => {
             }
           </div>
         </Header>
-        <SocialPost candidate={candidate} />
-      </Container>
+        <SimpleTabs
+          tabs={[
+            {
+              name: `social_posts`,
+              title: t(`social_posts`),
+              content: <SocialPost candidate={candidate} />,
+            }
+          ]}
+          onTabChange={name => {
+            // trackCustomEvent({
+            //   category: "news",
+            //   action: "tab_select",
+            //   label: name,
+            // })
+          }}
+        />
     </Layout>
   )
 }

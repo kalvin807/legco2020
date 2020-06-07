@@ -71,7 +71,6 @@ const SocialPost = ({ ...props }) => {
   const { socialPosts: { nodes: posts } } = res.response
   return (
     <PostsWrapper>
-      <Typography variant="h5">網民熱門POST</Typography>
       {
         posts.map(post => {
           return (

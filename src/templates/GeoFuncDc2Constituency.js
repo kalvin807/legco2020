@@ -36,13 +36,11 @@ const CandidatesWrapper = styled.div`
   }
 `
 
-const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency } }) => {
-  const candidates = allPeople.edges.filter(c => c.node.constituency === constituency.key)
+const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency, candidates } }) => {
   const { t } = useTranslation()
 
   return (
     <Layout>
-      <Container maxWidth="lg">
         <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
         <Typography variant="h2">{constituency.name_zh}</Typography>
         <Grid container spacing={3}>
@@ -69,6 +67,26 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
               </div>
           </Grid>
           <Grid item xs={6}>
+            <div>
+                <Typography>有意出選：{candidates.filter(c => c.node.camp === "BEIJING").length}張名單</Typography>
+                <CandidatesWrapper>
+                  {
+                    candidates.filter(c => c.node.camp === "BEIJING").map(c => {
+                      return (
+                        <div 
+                          className="avatar-group"
+                          onClick={() => {
+                            navigate(`/candidate/${c.node.name_zh}`)
+                          }}
+                          >
+                          <Avatar className={`avatar ${"BEIJING".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
+                          <span className="title">{c.node.name_zh}</span>
+                        </div>
+                      )
+                    })
+                  }
+                </CandidatesWrapper>
+              </div>
              {candidates.filter(c => c.node.camp === "MODERATE").length && <div>
                 <Typography>有意出選：{candidates.filter(c => c.node.camp === "MODERATE").length}張名單</Typography>
                 <CandidatesWrapper>
@@ -89,26 +107,6 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                   }
                 </CandidatesWrapper>
                 </div> || ''}
-                <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === "BEIJING").length}張名單</Typography>
-                <CandidatesWrapper>
-                  {
-                    candidates.filter(c => c.node.camp === "BEIJING").map(c => {
-                      return (
-                        <div 
-                          className="avatar-group"
-                          onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
-                          }}
-                          >
-                          <Avatar className={`avatar ${"BEIJING".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
-                          <span className="title">{c.node.name_zh}</span>
-                        </div>
-                      )
-                    })
-                  }
-                </CandidatesWrapper>
-              </div>
           </Grid>
        </Grid>
        <Grid container spacing={3}>
@@ -157,7 +155,6 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
             })
           }
         </Grid>
-      </Container>
     </Layout>
   )
 }

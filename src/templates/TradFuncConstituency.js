@@ -42,9 +42,11 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
 
   return (
     <Layout>
-      <Container maxWidth="lg">
         <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
+        <Typography variant="h6">{t(`electors_composition_${constituency.electors_composition}`)}</Typography>
         <Typography variant="h2">{constituency.name_zh}</Typography>
+  <Typography variant="body1">{`選民人數：${constituency.electors_total_2020}（較16年${Number(constituency.electors_total_2020) - Number(constituency.electors_total_2016)}）`}</Typography>
+        <Typography variant="body1">票差：{constituency.last_election_vote_beijing_minus_demo}</Typography>
         <Typography variant="body1">{constituency.description_zh}</Typography>
         <Grid container spacing={3}>
             <Grid item xs={3}>
@@ -88,7 +90,6 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                 </CandidatesWrapper>
             </Grid>
        </Grid>
-      </Container>
     </Layout>
   )
 }
