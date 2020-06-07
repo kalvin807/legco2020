@@ -14,7 +14,7 @@ const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091"
 const PUBLISHED_SPREADSHEET_PEOPLE_URL = 
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0"
-    
+
 const createPublishedGoogleSpreadsheetNode = async (
     { actions: { createNode }, createNodeId, createContentDigest },
     publishedURL,
@@ -197,9 +197,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   })
 
   const Candidates = result.data.allPeople.edges
-  // Should use promise.all, change later
-  Candidates.forEach(candidate => {
 
+  let requests = Candidates.map(candidate => {
     const query = `
           query getSocialPosts($regex: String!) {
             socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
@@ -217,15 +216,24 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       regex: candidate.node.name_zh
     }
 
-    const data = await request(`https://graphql.maatproject.org`, query, variables)
+    return request('https://graphql.maatproject.org', query, variables).then(data => ({
+      candidate: candidate.node,
+      socialPosts: data.socialPosts.nodes
+    }))
+  });
 
-    createPage({
-      path: `/candidate/${candidate.node.name_zh}`,
-      component: CandidateTemplate,
-      context: {
-        candidate: candidate.node
-      },
-    })
-  })
+  Promise.all(requests)
+    .then(responses => responses.forEach(
+      response => {
+        const { candidate, socialPosts } = response
+        createPage({
+          path: `/candidate/${candidate.name_zh}`,
+          component: CandidateTemplate,
+          context: {
+            candidate,
+            socialPosts
+          },
+        })
+      }
+    ));
 }
-
