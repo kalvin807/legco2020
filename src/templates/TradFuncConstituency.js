@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "@/components/layout"
-import { Container, Grid, Avatar, Typography } from '@material-ui/core';
+import { Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"

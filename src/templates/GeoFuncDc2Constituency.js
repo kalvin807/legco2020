@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "@/components/layout"
-import { Container, Grid, Avatar, Typography } from '@material-ui/core';
+import { Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
@@ -87,7 +87,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                   }
                 </CandidatesWrapper>
               </div>
-             {candidates.filter(c => c.node.camp === "MODERATE").length && <div>
+             {candidates.filter(c => c.node.camp === "MODERATE").length ? <div>
                 <Typography>有意出選：{candidates.filter(c => c.node.camp === "MODERATE").length}張名單</Typography>
                 <CandidatesWrapper>
                   {
@@ -106,7 +106,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                     })
                   }
                 </CandidatesWrapper>
-                </div> || ''}
+                </div> : ''}
           </Grid>
        </Grid>
        <Grid container spacing={3}>

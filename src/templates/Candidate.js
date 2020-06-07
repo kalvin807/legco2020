@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import Layout from "@/components/layout"
-import { Container, Grid, Avatar, Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
 import SimpleTabs from "@/components/SimpleTabs"
-import SocialPost from "@/components/SocialPost"
+import SocialPost from "@/components/SocialPost"  
 
 const Header = styled.div`
   .avatar-main {
@@ -32,9 +32,8 @@ const Header = styled.div`
 `
 
 
-const CandidateTemplate = ({ pageContext: { candidate } }) => {
+const CandidateTemplate = ({ pageContext: { candidate, socialPosts } }) => {
   const { t } = useTranslation()
-
   return (
     <Layout>
         <Header>
@@ -56,7 +55,7 @@ const CandidateTemplate = ({ pageContext: { candidate } }) => {
             {
               name: `social_posts`,
               title: t(`social_posts`),
-              content: <SocialPost candidate={candidate} />,
+              content: <SocialPost socialPosts={socialPosts} />,
             }
           ]}
           onTabChange={name => {
