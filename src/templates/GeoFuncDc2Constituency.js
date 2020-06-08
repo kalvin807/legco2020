@@ -11,11 +11,20 @@ const CandidatesWrapper = styled.div`
   grid-gap: ${theme.spacing(1)}px;
   grid-template-columns: repeat(3, 1fr);
 
+  ${theme.breakpoints.up('sm')} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  ${theme.breakpoints.up('md')} {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
   .avatar-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-end;
+    cursor: pointer;
 
     .avatar.demo {
       border: 3px ${theme.palette.warning.main} solid;

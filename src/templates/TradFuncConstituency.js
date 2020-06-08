@@ -16,6 +16,7 @@ const CandidatesWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-end;
+    cursor: pointer;
 
     .avatar {
       width: 64px;

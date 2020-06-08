@@ -6,7 +6,7 @@ import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
 import FCStackedBarChart from "@/components/charts/FCStackedBar"
 import theme from "@/themes"
-import { Typography, Collapse } from "@material-ui/core"
+import { Typography, Collapse, useMediaQuery, Grid } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
 import styled from "styled-components"
 import { useTranslation } from "react-i18next" 
@@ -15,10 +15,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { PastElectionResult } from "@/data/ElectionResults"
 
 const FullWidithWrapper = styled.div`
-margin: 0 -${theme.spacing(2)}px;
+  margin: 0 -${theme.spacing(2)}px;
 `
-const DirectWrapper = styled.div`
+
+const Container = styled.div`
   margin: 0 ${theme.spacing(2)}px;
+`
+
+const DirectWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: ${theme.spacing(1)}px;
@@ -27,6 +31,7 @@ const DirectWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    cursor: pointer;
     
     .title {
       display: flex;
@@ -79,7 +84,6 @@ const DirectWrapper = styled.div`
 `
 
 const TradFCWrapper = styled.div`
-  margin: 0 ${theme.spacing(2)}px;
 
   .seat-group {
     display: grid;
@@ -103,6 +107,7 @@ const TradFCWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    cursor: pointer;
     
     .title {
       display: flex;
@@ -142,6 +147,7 @@ const IndexPage = props => {
   const seat = [...Array.from(allGeoFuncDc2.nodes), ...Array.from(allTradFunc.nodes)]
   
   const { t } = useTranslation()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // group data for chart
   let seatCount = {
     UNRESOLVED: 70
@@ -353,17 +359,26 @@ const IndexPage = props => {
           </>)
         }
       </Collapse>
-      <SimpleTabs
+      {isDesktop ? <Grid container spacing={3}>
+        <Grid item xs={6}>
+        <Typography variant="h5">{t(`geo_func_dc2`)}</Typography>
+          {renderDirect(allGeoFuncDc2.nodes)}
+        </Grid>
+        <Grid item xs={6}>
+        <Typography variant="h5">{t(`trad_func`)}</Typography>
+          {renderTradFC(allTradFunc.nodes)}
+        </Grid>
+      </Grid> : <SimpleTabs
         tabs={[
           {
             name: `geo_func_dc2`,
             title: t(`geo_func_dc2`),
-            content: renderDirect(allGeoFuncDc2.nodes),
+            content: <Container>{renderDirect(allGeoFuncDc2.nodes)}</Container>,
           },
           {
             name: `trad_func`,
             title: t(`trad_func`),
-            content: renderTradFC(allTradFunc.nodes),
+            content: <Container>{renderTradFC(allTradFunc.nodes)}</Container>,
           }
         ]}
         onTabChange={name => {
@@ -373,7 +388,8 @@ const IndexPage = props => {
           //   label: name,
           // })
         }}
-      />
+      />}
+      
       </FullWidithWrapper>
     </Layout>
   )
