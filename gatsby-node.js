@@ -222,7 +222,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     }))
   });
 
-  Promise.all(requests)
+  return Promise.all(requests)
     .then(responses => responses.forEach(
       response => {
         const { candidate, socialPosts } = response
