@@ -198,42 +198,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const Candidates = result.data.allPeople.edges
 
-  let requests = Candidates.map(candidate => {
-    const query = `
-          query getSocialPosts($regex: String!) {
-            socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
-              nodes {
-                createdAt
-                title
-                platformUrl
-                performance
-              }
-            }
-          }
-        `
-
-    const variables =  {
-      regex: candidate.node.name_zh
-    }
-
-    return request('https://graphql.maatproject.org', query, variables).then(data => ({
-      candidate: candidate.node,
-      socialPosts: data.socialPosts.nodes
-    }))
-  });
-
-  Promise.all(requests)
-    .then(responses => responses.forEach(
-      response => {
-        const { candidate, socialPosts } = response
-        createPage({
-          path: `/candidate/${candidate.name_zh}`,
-          component: CandidateTemplate,
-          context: {
-            candidate,
-            socialPosts
-          },
-        })
-      }
-    ));
+  Candidates.forEach(candidate => {
+    createPage({
+      path: `/candidate/${candidate.node.name_zh}`,
+      component: CandidateTemplate,
+      context: {
+        candidate: candidate.node
+      },
+    })
+  })
 }

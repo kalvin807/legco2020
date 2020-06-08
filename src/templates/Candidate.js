@@ -55,7 +55,7 @@ const CandidateTemplate = ({ pageContext: { candidate, socialPosts } }) => {
             {
               name: `social_posts`,
               title: t(`social_posts`),
-              content: <SocialPost socialPosts={socialPosts} />,
+              content: <SocialPost candidate={candidate} />,
             }
           ]}
           onTabChange={name => {

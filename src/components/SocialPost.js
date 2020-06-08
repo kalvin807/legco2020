@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import Layout from "@/components/layout"
+import { Container, Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
-import { Typography } from '@material-ui/core';
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
+import { request } from "graphql-request"
 import moment from "moment"
 
 const PostsWrapper = styled.div`
@@ -19,14 +21,58 @@ const Post = styled.div`
     justify-content: space-between;
   }
 `
+
+const query = `
+  query getSocialPosts($regex: String!) {
+    socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
+      nodes {
+        createdAt
+        title
+        platformUrl
+        performance
+      }
+    }
+  }
+`
+
 const SocialPost = ({ ...props }) => {
   const { t } = useTranslation()
-  const { socialPosts } = props
-  console.log(socialPosts)
+
+  const useFetch = (url, { query, variables }) => {
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const data = await request(url, query, variables)
+          setResponse(data)
+
+        } catch (error) {
+          setError(error);
+        }
+      };
+      fetchData();
+    }, []);
+    return { response, error };
+  };
+
+  const res = useFetch(`https://graphql.maatproject.org`,
+    {
+      query,
+      variables: {
+        regex: `(${props.candidate.name_zh})`,
+      }
+    }
+  );
+
+  if (!res.response) {
+    return <div>Loading...</div>
+  }
+  const { socialPosts: { nodes: posts } } = res.response
   return (
     <PostsWrapper>
       {
-        socialPosts.map(post => {
+        posts.map(post => {
           return (
             <Post onClick={() => {
               window.open(post.platformUrl, '_blank')
