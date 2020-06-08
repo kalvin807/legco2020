@@ -32,19 +32,19 @@ const Header = styled.div`
 `
 
 
-const CandidateTemplate = ({ pageContext: { candidate, socialPosts } }) => {
+const PersonTemplate = ({ pageContext: { person, socialPosts } }) => {
   const { t } = useTranslation()
   return (
     <Layout>
         <Header>
-          <Avatar className={`avatar-main ${candidate.camp}`} alt={candidate.alias_zh} src={candidate.image_url} />
-          <Typography variant="h2">{candidate.name_zh}</Typography>
-          <Typography variant="body2" color="textSecondary">{candidate.title_zh}</Typography>
+          <Avatar className={`avatar-main ${person.camp}`} alt={person.alias_zh} src={person.image_url} />
+          <Typography variant="h2">{person.name_zh}</Typography>
+          <Typography variant="body2" color="textSecondary">{person.title_zh}</Typography>
           <div className="list-members">
             {
               [1, 1, 1, 1, 1, 1, 1, 1].map(c => {
                 return (
-                  <Avatar className={`avatar-others`} alt={candidate.alias_zh} src={candidate.image_url} />
+                  <Avatar className={`avatar-others`} alt={person.alias_zh} src={person.image_url} />
                 )
               })
             }
@@ -70,4 +70,4 @@ const CandidateTemplate = ({ pageContext: { candidate, socialPosts } }) => {
   )
 }
 
-export default CandidateTemplate
+export default PersonTemplate

@@ -54,7 +54,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
+                            navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${"DEMO".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
@@ -76,7 +76,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
+                            navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${"BEIJING".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
@@ -96,7 +96,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
+                            navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${"MODERATE".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />

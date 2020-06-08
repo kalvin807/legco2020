@@ -22,7 +22,6 @@ const Post = styled.div`
 const SocialPost = ({ ...props }) => {
   const { t } = useTranslation()
   const { socialPosts } = props
-  console.log(socialPosts)
   return (
     <PostsWrapper>
       {
