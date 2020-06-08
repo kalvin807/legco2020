@@ -37,42 +37,11 @@ const query = `
 
 const SocialPost = ({ ...props }) => {
   const { t } = useTranslation()
-
-  const useFetch = (url, { query, variables }) => {
-    const [response, setResponse] = useState(null);
-    const [error, setError] = useState(null);
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const data = await request(url, query, variables)
-          setResponse(data)
-
-        } catch (error) {
-          setError(error);
-        }
-      };
-      fetchData();
-    }, []);
-    return { response, error };
-  };
-
-  const res = useFetch(`https://graphql.maatproject.org`,
-    {
-      query,
-      variables: {
-        regex: `(${props.candidate.name_zh})`,
-      }
-    }
-  );
-
-  if (!res.response) {
-    return <div>Loading...</div>
-  }
-  const { socialPosts: { nodes: posts } } = res.response
+  const { socialPosts } = props
   return (
     <PostsWrapper>
       {
-        posts.map(post => {
+        socialPosts.map(post => {
           return (
             <Post onClick={() => {
               window.open(post.platformUrl, '_blank')

@@ -37,7 +37,6 @@ const CandidatesWrapper = styled.div`
 `
 
 const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency, councillors, candidates } }) => {
-  console.log(councillors)
   const { t } = useTranslation()
 
   return (
@@ -58,7 +57,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
+                            navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
@@ -78,7 +77,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/candidate/${c.node.name_zh}`)
+                            navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />

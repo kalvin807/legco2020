@@ -94,7 +94,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   const GeoFuncDc2ConstituencyTemplate = path.resolve("./src/templates/GeoFuncDc2Constituency.js")
   const TradFuncTemplate = path.resolve("./src/templates/TradFuncConstituency.js")
-  const CandidateTemplate = path.resolve("./src/templates/Candidate.js")
+  const PersonTemplate = path.resolve("./src/templates/Person.js")
   
   const result = await graphql(`
     {
@@ -159,6 +159,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 camp
                 status
                 name_zh
+                keywords
                 title_zh
                 is_current
                 is_2020_candidate
@@ -196,15 +197,44 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
   })
 
-  const Candidates = result.data.allPeople.edges
+  const People = result.data.allPeople.edges
 
-  Candidates.forEach(candidate => {
-    createPage({
-      path: `/candidate/${candidate.node.name_zh}`,
-      component: CandidateTemplate,
-      context: {
-        candidate: candidate.node
-      },
-    })
-  })
+  let requests = People.map(person => {
+    const query = `
+          query getSocialPosts($regex: String!) {
+            socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
+              nodes {
+                createdAt
+                title
+                platformUrl
+                performance
+              }
+            }
+          }
+        `
+
+    const variables =  {
+      regex: `(${person.node.name_zh}|${person.nodekeywords})`
+    }
+
+    return request('https://graphql.maatproject.org', query, variables).then(data => ({
+      person: person.node,
+      socialPosts: data.socialPosts.nodes
+    }))
+  });
+
+  return Promise.all(requests)
+    .then(responses => responses.forEach(
+      response => {
+        const { person, socialPosts } = response
+        createPage({
+          path: `/person/${person.name_zh}`,
+          component: PersonTemplate,
+          context: {
+            person,
+            socialPosts
+          },
+        })
+      }
+    ));
 }
