@@ -32,14 +32,14 @@ function SingleStackedBar({ data, summary }) {
 
         const config = {
             margin: { top: 0, right: 0, bottom: 0, left: 0 },
-            barHeight: 35,
+            barHeight: 25,
             // ...config
         }
 
         const { margin, barHeight } = config
         const w = dimensions.width - margin.left - margin.right
         const h = dimensions.height - margin.top - margin.bottom
-        const halfBarHeight = barHeight / 2
+        const barPostition = h / 2
 
         const groupData = (data, total) => {
             // use scale to get percent values
@@ -78,7 +78,7 @@ function SingleStackedBar({ data, summary }) {
             .join('rect')
             .attr('class', 'rect-stacked')
             .attr('x', d => xScale(d.cumulative))
-            .attr('y', h / 2 - halfBarHeight)
+            .attr('y', barPostition)
             .attr('height', barHeight)
             .attr('width', d => xScale(d.value))
             .style('fill', (d, i) => d.color)
@@ -125,7 +125,7 @@ function SingleStackedBar({ data, summary }) {
                 .attr('text-anchor', summary[camp].pos)
                 .text(summary[camp].total)
                 .attr('x', () => i === 0 ? 0 + theme.spacing(2) : dimensions.width - theme.spacing(2))
-                .attr('y', h / 2 - halfBarHeight - 4)
+                .attr('y', barPostition)
                 .style('fill', 'black')
                 .style('font-size', 36)
                 .style('font-weight', 900)
@@ -133,16 +133,25 @@ function SingleStackedBar({ data, summary }) {
 
         })
 
-
         svg.selectAll('.halfway').remove()
         svg
             .append("line")
             .attr("class", "halfway")
-            .style("stroke", theme.palette.text.primary)
+            .style("stroke", theme.palette.background.default)
             .attr("x1", xScale(total / 2))
-            .attr("y1", h / 2 - halfBarHeight - 12)
+            .attr("y1", barPostition - 2)
             .attr("x2", xScale(total / 2))
-            .attr("y2", h / 2 + halfBarHeight + 12)
+            .attr("y2", barPostition + barHeight + 2)
+
+        svg.selectAll('.halfway-triangle').remove()
+        svg
+            .append("text")
+            .attr("class", "halfway-triangle")
+            .attr('text-anchor', 'middle')
+            .attr('x', xScale(total / 2))
+            .attr('y', barPostition - 6)
+            .style('font-size', 12)
+            .text(d => '▾')
 
         svg.selectAll('.halfway-text').remove()
         svg
@@ -150,7 +159,7 @@ function SingleStackedBar({ data, summary }) {
             .attr('class', 'halfway-text')
             .attr('text-anchor', 'middle')
             .attr('x', xScale(total / 2))
-            .attr('y', h / 2 - halfBarHeight - 16)
+            .attr('y', barPostition - 16)
             .style('font-size', 12)
             .text(d => total / 2)
 
@@ -161,7 +170,7 @@ function SingleStackedBar({ data, summary }) {
             .attr('class', 'text-label')
             .attr('text-anchor', 'middle')
             .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
-            .attr('y', (h / 2) + (halfBarHeight * 1.1) + 12)
+            .attr('y', (h / 2) + barHeight + 12)
             .style('fill', (d, i) => d.color)
             .style('font-size', 12)
             .style('font-weight', 700)
@@ -175,7 +184,7 @@ function SingleStackedBar({ data, summary }) {
                 overflow: 'visible',
                 display: 'block',
                 width: '100%',
-                height: `150px`,
+                height: `100px`,
             }}>
             </svg>
         </div>

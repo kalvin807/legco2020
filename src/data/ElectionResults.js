@@ -90,5 +90,54 @@ export const PastElectionResult = [
             "color": "#29b6f6"
           }
         ]
-  }
+  },
+  {
+    year: 2008,
+    summary: {
+        "DEMO": {
+            "name": "非建制",
+            "pos": "start",
+            "total": 23,
+            "background": "rgb(255, 212, 83)"
+          },
+          "BEIJING": {
+            "name": "親中",
+            "pos": "end",
+            "total": 36,
+            "background": "rgb(83, 196, 247)"
+        }
+    },
+    result: [
+        {
+          "key": "FC_EXPECTED_WIN_DEMO",
+          "label": "功能組別",
+          "value": 4,
+          "color": "#ffca28"
+        },
+        {
+          "key": "GC_EXPECTED_WIN_DEMO",
+          "label": "地區直選",
+          "value": 19,
+          "color": "rgb(255, 212, 83)"
+        },
+        {
+          "key": "FC_EXPECTED_WIN_OTHER",
+          "label": "其他",
+          "value": 1,
+          "color": "#26a69a"
+        },
+        {
+          "key": "GC_EXPECTED_WIN_BEIJING",
+          "label": "地區直選",
+          "value": 11,
+          "color": "rgb(83, 196, 247)"
+        },
+        {
+          "key": "FC_EXPECTED_WIN_BEIJING",
+          "label": "功能組別",
+          "value": 25,
+          "color": "#29b6f6"
+        }
+      ]
+}
 ]
