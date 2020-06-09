@@ -137,7 +137,7 @@ function SingleStackedBar({ data, summary }) {
         svg
             .append("line")
             .attr("class", "halfway")
-            .style("stroke", theme.palette.background.default)
+            .style("stroke", theme.palette.text.primary)
             .attr("x1", xScale(total / 2))
             .attr("y1", barPostition - 2)
             .attr("x2", xScale(total / 2))
