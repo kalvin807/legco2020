@@ -34,7 +34,7 @@ const CandidatesWrapper = styled.div`
       border: 3px ${theme.palette.info.main} solid;
     }
 
-    .avatar.moderate {
+    .avatar.other {
       border: 3px ${theme.palette.success.main} solid;
     }
     
@@ -96,11 +96,11 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                   }
                 </CandidatesWrapper>
               </div>
-             {candidates.filter(c => c.node.camp === "MODERATE").length ? <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === "MODERATE").length}張名單</Typography>
+             {candidates.filter(c => c.node.camp === "OTHER").length ? <div>
+                <Typography>有意出選：{candidates.filter(c => c.node.camp === "OTHER").length}張名單</Typography>
                 <CandidatesWrapper>
                   {
-                    candidates.filter(c => c.node.camp === "MODERATE").map(c => {
+                    candidates.filter(c => c.node.camp === "OTHER").map(c => {
                       return (
                         <div 
                           className="avatar-group"
@@ -108,7 +108,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { co
                             navigate(`/person/${c.node.name_zh}`)
                           }}
                           >
-                          <Avatar className={`avatar ${"MODERATE".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
+                          <Avatar className={`avatar ${"OTHER".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
                           <span className="title">{c.node.name_zh}</span>
                         </div>
                       )

@@ -111,7 +111,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 unresolved_seats
                 expected_win_demo
                 expected_win_beijing
-                expected_win_moderate
+                expected_win_other
                 candidates_demo
                 candidates_beijing
                 stage_1_title_demo_zh
@@ -146,7 +146,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               unresolved_seats
               expected_win_demo
               expected_win_beijing
-              expected_win_moderate
+              expected_win_other
               candidates_demo
               candidates_beijing
             }

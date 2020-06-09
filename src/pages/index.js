@@ -77,7 +77,7 @@ const DirectWrapper = styled.div`
       color: ${theme.palette.info.main};
     }
 
-    .moderate {
+    .other {
       color: ${theme.palette.success.main};
     }
   }
@@ -134,8 +134,8 @@ const ExpandButton = styled.div`
 const seatColorMapping = {
   FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
   GC_EXPECTED_WIN_DEMO: theme.palette.warning.light,
-  GC_EXPECTED_WIN_MODERATE: theme.palette.success.main,
-  FC_EXPECTED_WIN_MODERATE: theme.palette.success.main,
+  GC_EXPECTED_WIN_OTHER: theme.palette.success.main,
+  FC_EXPECTED_WIN_OTHER: theme.palette.success.main,
   UNRESOLVED: theme.palette.divider,
   GC_EXPECTED_WIN_BEIJING: theme.palette.info.light,
   FC_EXPECTED_WIN_BEIJING: theme.palette.info.main,
@@ -211,7 +211,7 @@ const IndexPage = props => {
           const expectedWinBeijing = Number(e.expected_win_beijing) || 0
 
           const candiBeijing = Number(e.candidates_beijing) || 0
-          const candiModerate = Number(e.candidates_moderate) || 0
+          const candiModerate = Number(e.candidates_other) || 0
           const candiDemo = Number(e.candidates_demo) || 0
           
           const expectedResultRows = [
@@ -261,7 +261,7 @@ const IndexPage = props => {
                   <Typography variant="body1" color="textSecondary">vs</Typography>
                 </div>
                 {candiModerate ? <>
-                <div className="large-number moderate">{candiModerate || "-"}</div>
+                <div className="large-number other">{candiModerate || "-"}</div>
                 <div>
                   <Typography variant="body1" color="textSecondary">vs</Typography>
                 </div>
@@ -416,10 +416,10 @@ export const IndexPageQuery = graphql`
         unresolved_seats
         expected_win_demo
         expected_win_beijing
-        expected_win_moderate
+        expected_win_other
         candidates_demo
         candidates_beijing
-        candidates_moderate
+        candidates_other
       }
     }
     allTradFunc {
@@ -437,11 +437,11 @@ export const IndexPageQuery = graphql`
         situation_order
         candidates_beijing
         candidates_demo
-        candidates_moderate
+        candidates_other
         unresolved_seats
         expected_win_beijing
         expected_win_demo
-        expected_win_moderate
+        expected_win_other
         name_zh
         name_en
         alias_zh

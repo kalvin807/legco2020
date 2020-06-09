@@ -29,7 +29,7 @@ export const PastElectionResult = [
               "color": "rgb(255, 212, 83)"
             },
             {
-              "key": "FC_EXPECTED_WIN_MODERATE",
+              "key": "FC_EXPECTED_WIN_OTHER",
               "label": "其他",
               "value": 1,
               "color": "#26a69a"

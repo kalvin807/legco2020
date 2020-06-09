@@ -12,7 +12,7 @@ import theme from "@/themes"
 const mapCampColor = {
   'DEMO': theme.palette.warning.main,
   'BEIJING': theme.palette.info.main,
-  'MODERATE': theme.palette.success.main,
+  'OTHER': theme.palette.success.main,
 }
 
 const AvatarContainer = styled(Grid)`
