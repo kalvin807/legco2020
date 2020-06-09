@@ -6,6 +6,34 @@ import theme from "@/themes";
 import { useTranslation } from "react-i18next"
 import { navigate } from "gatsby"
 
+const CampWrapper = styled(Grid)`
+  .list-number {
+    font-size: 32px;
+    font-weight: 900;
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  .camp-text {
+    padding: 3px 5px;
+    font-weight: 700;
+  }
+
+  .camp-text.demo {
+    background: ${theme.palette.warning.light};
+  }
+
+  .camp-text.beijing {
+    background: ${theme.palette.info.light};
+  }
+
+  .camp-text.other {
+    background: ${theme.palette.success.light};
+  }
+`
+
 const CandidatesWrapper = styled.div`
   display: grid;
   grid-gap: ${theme.spacing(1)}px;
@@ -22,7 +50,7 @@ const CandidatesWrapper = styled.div`
   .avatar-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: space-end;
     cursor: pointer;
 
@@ -38,150 +66,126 @@ const CandidatesWrapper = styled.div`
       border: 3px ${theme.palette.success.main} solid;
     }
     
-    .title {
+    .center {
       font-size: 12px;
       text-align: center;
     }
   }
 `
 
-const GeoFuncDc2ConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency, candidates } }) => {
+const People = props => {
+  const { info } = props
+  return (
+    <div
+      className="avatar-group"
+      onClick={() => {
+        navigate(`/person/${info.name_zh}`)
+      }}
+    >
+      <div className="center">
+        <Avatar className={`avatar ${info.camp.toLowerCase()}`} alt={info.name_zh} src={info.image_url} />
+        <span>{`${info.name_zh}${info.primary === "FALSE" ? "*" : ""}`}</span>
+      </div>
+    </div>
+  )
+}
+
+const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidates } }) => {
   const { t } = useTranslation()
+
+  const demoCandidates = candidates.filter(c => c.node.camp === "DEMO")
+  const beijingCandidates = candidates.filter(c => c.node.camp === "BEIJING")
+  const otherCandidates = candidates.filter(c => c.node.camp === "OTHER")
 
   return (
     <Layout>
-        <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
-        <Typography variant="h2">{constituency.name_zh}</Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-              <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === "DEMO").length}張名單</Typography>
-                <CandidatesWrapper>
-                  {
-                    candidates.filter(c => c.node.camp === "DEMO").map(c => {
-                      return (
-                        <div 
-                          className="avatar-group"
-                          onClick={() => {
-                            navigate(`/person/${c.node.name_zh}`)
-                          }}
-                          >
-                          <Avatar className={`avatar ${"DEMO".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
-                          <span className="title">{c.node.name_zh}</span>
-                        </div>
-                      )
-                    })
-                  }
-                </CandidatesWrapper>
-              </div>
-          </Grid>
-          <Grid item xs={6}>
-            <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === "BEIJING").length}張名單</Typography>
-                <CandidatesWrapper>
-                  {
-                    candidates.filter(c => c.node.camp === "BEIJING").map(c => {
-                      return (
-                        <div 
-                          className="avatar-group"
-                          onClick={() => {
-                            navigate(`/person/${c.node.name_zh}`)
-                          }}
-                          >
-                          <Avatar className={`avatar ${"BEIJING".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
-                          <span className="title">{c.node.name_zh}</span>
-                        </div>
-                      )
-                    })
-                  }
-                </CandidatesWrapper>
-              </div>
-             {candidates.filter(c => c.node.camp === "OTHER").length ? <div>
-                <Typography>有意出選：{candidates.filter(c => c.node.camp === "OTHER").length}張名單</Typography>
-                <CandidatesWrapper>
-                  {
-                    candidates.filter(c => c.node.camp === "OTHER").map(c => {
-                      return (
-                        <div 
-                          className="avatar-group"
-                          onClick={() => {
-                            navigate(`/person/${c.node.name_zh}`)
-                          }}
-                          >
-                          <Avatar className={`avatar ${"OTHER".toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
-                          <span className="title">{c.node.name_zh}</span>
-                        </div>
-                      )
-                    })
-                  }
-                </CandidatesWrapper>
-                </div> : ''}
-          </Grid>
-       </Grid>
-       <Grid container spacing={3}>
-          {
-            ["DEMO", "BEIJING"].map(camp => {
-              return (
-                  <>
-                  <Grid item xs={6}>
-                    <Typography variant="h6">
-                      名單協調方法
-                    </Typography>
-
-                    <Typography variant="body1">
-                      {constituency[`stage_1_title_${camp.toLowerCase()}_zh`]}
-                    </Typography>
-
-                    <Typography variant="body1">
-                      {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
-                    </Typography>
-                </Grid>
-                  </>
-              )
-            })
-          }
+      <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
+      <Typography variant="h2">{constituency.name_zh}</Typography>
+      <CampWrapper container spacing={3}>
+        <Grid item xs={6}>
+          <div>
+            <div><span className="camp-text demo">{t("alias.DEMO")}</span></div>
+            <div className="list-number">{demoCandidates.length}</div>
+            <Typography variant="caption">有意出選名單</Typography>
+            <CandidatesWrapper>
+              {
+                demoCandidates.map(c => <People info={c.node} />)
+              }
+            </CandidatesWrapper>
+          </div>
+          <Typography variant="caption">* 表明不參加民主派初選</Typography>
         </Grid>
-        <Grid container spacing={3}>
-          {
-            ["DEMO", "BEIJING"].map(camp => {
-              return (
-                  <>
-                  <Grid item xs={6}>
-                    <Typography variant="h6">
-                      配票方法
-                    </Typography>
-
-                    <Typography variant="body1">
-                      {constituency[`stage_2_title_${camp.toLowerCase()}_zh`]}
-                    </Typography>
-
-                    <Typography variant="body1">
-                      {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
-                    </Typography>
-                </Grid>
-                  </>
-              )
-            })
-          }
+        <Grid item xs={6}>
+          <div className="right">
+            <div><span className="camp-text beijing">{t("alias.BEIJING")}</span></div>
+            <div className="list-number">{beijingCandidates.length}</div>
+            <Typography variant="caption">有意出選名單</Typography>
+            <CandidatesWrapper mt={2}>
+              {
+                beijingCandidates.map(c => <People info={c.node} />)
+              }
+            </CandidatesWrapper>
+          </div>
+          {otherCandidates.length ? 
+          <div className="right">
+          <div><span className="camp-text other">{t("alias.OTHER")}</span></div>
+            <Typography variant="caption">有意出選名單</Typography>
+            <CandidatesWrapper>
+              {
+                otherCandidates.map(c => <People info={c.node} />)
+              }
+            </CandidatesWrapper>
+          </div> : ''}
         </Grid>
+      </CampWrapper>
+      <CampWrapper container spacing={3}>
+        {
+          ["DEMO", "BEIJING"].map(camp => {
+            return (
+              <>
+                <Grid item xs={6}>
+                  <Typography variant="h6">
+                    名單協調方法
+                    </Typography>
+
+                  <Typography variant="body1">
+                    {constituency[`stage_1_title_${camp.toLowerCase()}_zh`]}
+                  </Typography>
+
+                  <Typography variant="body1">
+                    {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
+                  </Typography>
+                </Grid>
+              </>
+            )
+          })
+        }
+      </CampWrapper>
+      <CampWrapper container spacing={3}>
+        {
+          ["DEMO", "BEIJING"].map(camp => {
+            return (
+              <>
+                <Grid item xs={6}>
+                  <Typography variant="h6">
+                    配票方法
+                    </Typography>
+
+                  <Typography variant="body1">
+                    {constituency[`stage_2_title_${camp.toLowerCase()}_zh`]}
+                  </Typography>
+
+                  <Typography variant="body1">
+                    {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
+                  </Typography>
+                </Grid>
+              </>
+            )
+          })
+        }
+      </CampWrapper>
     </Layout>
   )
 }
 
 export default GeoFuncDc2ConstituencyTemplate
-
-export const GeoFuncDc2ConstituencyTemplateQuery = graphql`
-  query {
-    allPeople {
-      edges {
-        node {
-          constituency
-          camp
-          status
-          name_zh
-        }
-      }
-    }
-  }
-`
-

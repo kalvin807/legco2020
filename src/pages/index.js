@@ -99,6 +99,12 @@ const TradFCWrapper = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 
+  ${theme.breakpoints.up('sm')} {
+    .fierce, .compatible {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   .foreseeable, .uncontested {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -114,7 +120,6 @@ const TradFCWrapper = styled.div`
       justify-content: space-between;
       line-height: 0;
     }
-
   }
 
 
@@ -323,8 +328,9 @@ const IndexPage = props => {
                         }}>
                         <Typography variant="caption" color="textSecondary">{t(`electors_composition_${c.electors_composition}`)}</Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
-                        <Typography variant="body2">親中 - 民主 = {c.last_election_vote_beijing_minus_demo}</Typography>
-                        <Typography variant="body2">新增選民 + 上屆未投票 = {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}</Typography>
+                        {c.situation !== "uncontested" ? <><Typography variant="body2">親中 - 民主 = {c.last_election_vote_beijing_minus_demo}</Typography>
+                          <Typography variant="body2">新增選民 + 上屆未投票 = {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}</Typography></> : null}
+                        
                         {/* <FCStackedBarChart data={{
                             electors_total_2020: Number(c.electors_total_2020),
                             electors_total_2016: Number(c.electors_total_2016),

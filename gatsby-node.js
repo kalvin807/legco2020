@@ -83,7 +83,7 @@ exports.sourceNodes = async props => {
             props,
             PUBLISHED_SPREADSHEET_PEOPLE_URL,
             "People",
-            { skipFirstLine: false, alwaysEnabled: true }
+            { skipFirstLine: false }
         ),
     ])
 }
@@ -162,6 +162,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 keywords
                 title_zh
                 is_current
+                primary
                 is_2020_candidate
               }
             }
