@@ -155,15 +155,18 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         allPeople {
             edges {
               node {
+                enabled
                 constituency
                 camp
                 status
                 name_zh
                 keywords
                 title_zh
-                is_current
+                is_current_lc
+                is_current_dc
                 primary
                 is_2020_candidate
+                img_url
               }
             }
         }
@@ -192,7 +195,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: TradFuncTemplate,
       context: {
         constituency: constituency.node,
-        councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current === 'TRUE'),
+        councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current_lc === 'TRUE'),
         candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE') 
       },
     })
@@ -233,9 +236,32 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           component: PersonTemplate,
           context: {
             person,
-            socialPosts
+            socialPosts,
+            tags: handleTags(person)
           },
         })
       }
     ));
+}
+
+const handleTags = person => {
+  const tags = []
+
+  const pushIfTrue = key => {
+    if (person[key] === "TRUE") {
+      tags.push({
+        i18nKey: key
+      })
+    }
+  }
+
+  pushIfTrue("is_current_lc")
+  pushIfTrue("is_current_dc")
+
+  if (person.camp === "DEMO") {
+    tags.push({
+      i18nKey: person.primary === "FALSE" ? "no_primary" : "primary"
+    })
+  }
+  return tags
 }

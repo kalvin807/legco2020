@@ -4,7 +4,7 @@ import { Container, Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
-import { request } from "graphql-request"
+import Alert from "@/components/Alert"  
 import moment from "moment"
 
 const PostsWrapper = styled.div`
@@ -40,6 +40,9 @@ const SocialPost = ({ ...props }) => {
   const { socialPosts } = props
   return (
     <PostsWrapper>
+      <Alert 
+        severity="warning"
+        children="以下鏈結皆由系統自動搜集，並非完全準確。" />
       {
         socialPosts.map(post => {
           return (

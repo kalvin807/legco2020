@@ -83,7 +83,7 @@ const People = props => {
       }}
     >
       <div className="center">
-        <Avatar className={`avatar ${info.camp.toLowerCase()}`} alt={info.name_zh} src={info.image_url} />
+        <Avatar className={`avatar ${info.camp.toLowerCase()}`} alt={info.name_zh} src={info.img_url} />
         <span>{`${info.name_zh}${info.primary === "FALSE" ? "*" : ""}`}</span>
       </div>
     </div>
