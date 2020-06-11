@@ -58,7 +58,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/person/${c.node.name_zh}`)
+                            navigate(`/profile/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
@@ -78,7 +78,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                         <div 
                           className="avatar-group"
                           onClick={() => {
-                            navigate(`/person/${c.node.name_zh}`)
+                            navigate(`/profile/${c.node.name_zh}`)
                           }}
                           >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />

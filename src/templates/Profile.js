@@ -41,7 +41,7 @@ const ProfileHeader = styled(Grid)`
 `
 
 
-const PersonTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
+const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
   const { t } = useTranslation()
   return (
     <Layout>
@@ -77,7 +77,6 @@ const PersonTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           {tags.map(tag =>  <Chip 
             label={t(`tag.${tag.i18nKey}`)}
             variant="outlined" />)}
-       
         </Grid>
         <SimpleTabs
           tabs={[
@@ -99,4 +98,4 @@ const PersonTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
   )
 }
 
-export default PersonTemplate
+export default ProfileTemplate

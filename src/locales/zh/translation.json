@@ -28,5 +28,6 @@
     "tag.is_current_lc": "競逐連任",
     "tag.is_current_dc": "現任區議員",
     "platform.lihkg": "LIHKG",
-    "platform.uwants": "Uwants"
+    "platform.uwants": "Uwants",
+    "simulation_result": "推算形勢"
 }

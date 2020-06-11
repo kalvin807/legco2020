@@ -50,9 +50,23 @@ const CandidatesWrapper = styled.div`
   .avatar-group {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: space-end;
     cursor: pointer;
+
+    ${theme.breakpoints.up('sm')} {
+      .avatar {
+        width: 48px;
+        height: 48px;
+      }
+    }
+    
+    ${theme.breakpoints.up('md')} {
+      .avatar {
+        width: 64px;
+        height: 64px;
+      }
+    }
 
     .avatar.demo {
       border: 3px ${theme.palette.warning.main} solid;
@@ -69,6 +83,13 @@ const CandidatesWrapper = styled.div`
     .center {
       font-size: 12px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .center span {
+      margin-top: 3px;
     }
   }
 `
@@ -79,7 +100,7 @@ const People = props => {
     <div
       className="avatar-group"
       onClick={() => {
-        navigate(`/person/${info.name_zh}`)
+        navigate(`/profile/${info.name_zh}`)
       }}
     >
       <div className="center">

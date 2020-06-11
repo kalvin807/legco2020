@@ -94,7 +94,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   const GeoFuncDc2ConstituencyTemplate = path.resolve("./src/templates/GeoFuncDc2Constituency.js")
   const TradFuncTemplate = path.resolve("./src/templates/TradFuncConstituency.js")
-  const PersonTemplate = path.resolve("./src/templates/Person.js")
+  const ProfileTemplate = path.resolve("./src/templates/Profile.js")
   
   const result = await graphql(`
     {
@@ -266,8 +266,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       response => {
         const { person, socialPosts } = response
         createPage({
-          path: `/person/${person.name_zh}`,
-          component: PersonTemplate,
+          path: `/profile/${person.name_zh}`,
+          component: ProfileTemplate,
           context: {
             person,
             socialPosts,
