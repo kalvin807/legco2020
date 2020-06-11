@@ -16,7 +16,6 @@ const CandidatesWrapper = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: space-end;
-    cursor: pointer;
 
     .avatar {
       width: 64px;
@@ -56,7 +55,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                     councillors.map(c => {
                       return (
                         <div 
-                          className="avatar-group"
+                          className="avatar-group clickable"
                           onClick={() => {
                             navigate(`/profile/${c.node.name_zh}`)
                           }}

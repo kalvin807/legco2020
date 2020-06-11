@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    cursor: 'pointer',
   },
 }));
 
@@ -38,7 +37,7 @@ export default function Header(props) {
       <Toolbar className={classes.toolBar}>
         <Typography 
           variant="h1" 
-          className={classes.title}
+          className={`${classes.title} clickable`}
           dangerouslySetInnerHTML={renderTitle()} 
           onClick={() => {
             navigate(`/`)

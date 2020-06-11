@@ -52,7 +52,6 @@ const CandidatesWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-end;
-    cursor: pointer;
 
     ${theme.breakpoints.up('sm')} {
       .avatar {
@@ -98,7 +97,7 @@ const People = props => {
   const { info } = props
   return (
     <div
-      className="avatar-group"
+      className="avatar-group clickable"
       onClick={() => {
         navigate(`/profile/${info.name_zh}`)
       }}

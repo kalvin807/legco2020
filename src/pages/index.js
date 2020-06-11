@@ -31,7 +31,6 @@ const DirectWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
-    cursor: pointer;
     
     .title {
       display: flex;
@@ -113,7 +112,6 @@ const TradFCWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
-    cursor: pointer;
     
     .title {
       display: flex;
@@ -231,7 +229,7 @@ const IndexPage = props => {
             })),
           ]
           return (
-            <div key={i} className="seat" onClick={() => {
+            <div key={i} className="seat clickable" onClick={() => {
               navigate(
                 `/constituency/${e.key}`
               )
@@ -320,7 +318,7 @@ const IndexPage = props => {
                     return (
                       <div 
                         key={i} 
-                        className={`seat ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}
+                        className={`seat clickable ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}
                         onClick={() => {
                           navigate(
                             `/constituency/${c.key}`
