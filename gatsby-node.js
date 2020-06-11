@@ -160,6 +160,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 camp
                 status
                 name_zh
+                description_zh
                 keywords
                 title_zh
                 is_current_lc
@@ -167,6 +168,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 primary
                 is_2020_candidate
                 img_url
+                facebook_id
+                instagram_id
+                twitter_id
+                telegram_id
+                youtube_id
               }
             }
         }

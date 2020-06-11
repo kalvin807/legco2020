@@ -7,9 +7,23 @@ import { useTranslation } from "react-i18next"
 import SimpleTabs from "@/components/SimpleTabs"
 import SocialPost from "@/components/SocialPost"
 import Chip from "@/components/Chip"
+import { RiFacebookCircleLine, RiInstagramLine, RiTwitterLine, RiYoutubeLine, RiTelegramLine } from 'react-icons/ri';
+import { openInNewTab } from "@/utils"
+const ProfileTemplateWrapper = styled.div`
+  .block {
+    margin: ${theme.spacing(1)}px 0;
+  }
+
+  .social {
+    font-size: 24px;
+  }
+
+  .social svg {
+    margin-left: ${theme.spacing(1)}px;
+  }
+`
 
 const ProfileHeader = styled(Grid)`
-
   margin-bottom: ${theme.spacing(0.5)}px;
 
   .avatar-main {
@@ -45,6 +59,20 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
   const { t } = useTranslation()
   return (
     <Layout>
+      <ProfileTemplateWrapper>
+        <Grid 
+          className="social"
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="flex-start"
+        >
+          {person.facebook_id && <RiFacebookCircleLine className="clickable" onClick={e => openInNewTab(`https://fb.me/${person.facebook_id}`)} />}
+          {person.instagram_id && <RiInstagramLine className="clickable" onClick={e => openInNewTab(`https://www.instagram.com/${person.instagram_id}`)} />}
+          {person.twitter_id && <RiTwitterLine className="clickable" onClick={e => openInNewTab(`https://twitter.com/${person.twitter_id}`)} />}
+          {person.telegram_id   && <RiTelegramLine className="clickable" onClick={e => openInNewTab(`https://t.me/${person.telegram_id}`)} />}
+          {person.youtube_id && <RiYoutubeLine className="clickable" onClick={e => openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)} />}
+        </Grid>
         <ProfileHeader container spacing={3}>
           <Grid item>
 
@@ -73,7 +101,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
             }
           </div> */}
         </ProfileHeader>
-        <Grid container>
+        <Typography className="block" variant="body2">{person.description_zh}</Typography>
+        <Grid className="block" container>
           {tags.map(tag =>  <Chip 
             label={t(`tag.${tag.i18nKey}`)}
             variant="outlined" />)}
@@ -94,6 +123,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
             // })
           }}
         />
+      </ProfileTemplateWrapper>
     </Layout>
   )
 }
