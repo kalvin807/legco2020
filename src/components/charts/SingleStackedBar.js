@@ -20,7 +20,7 @@ const useResizeObserver = ref => {
     return dimensions;
 };
 
-function SingleStackedBar({ data, summary }) {
+function SingleStackedBar({ data, summary, title }) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
@@ -112,10 +112,9 @@ function SingleStackedBar({ data, summary }) {
                 .text(summary[camp].name)
                 .attr('x', () => i === 0 ? 0 + theme.spacing(2) + bg.xMargin : dimensions.width - theme.spacing(2) - bg.xMargin)
                 .attr('y', 16)
-                .style('fill', 'black')
+                .style('fill', theme.palette.text.primary)
                 .style('font-size', 12)
                 .style('font-weight', 500)
-            
             
             // Camp Total
             svg.selectAll(`.${camp}-total`).remove()
@@ -126,12 +125,26 @@ function SingleStackedBar({ data, summary }) {
                 .text(summary[camp].total)
                 .attr('x', () => i === 0 ? 0 + theme.spacing(2) : dimensions.width - theme.spacing(2))
                 .attr('y', barPostition)
-                .style('fill', 'black')
+                .style('fill', theme.palette.text.primary)
                 .style('font-size', 36)
                 .style('font-weight', 900)
 
 
         })
+
+        // Title
+        svg.selectAll(`.center-text`).remove()
+        svg
+            .append('text')
+            .attr('class', `center-text`)
+            .attr('text-anchor', 'middle')
+            .text(title)
+            .attr('x', dimensions.width /2)
+            .attr('y', 16)
+            .style('fill', theme.palette.text.primary)
+            .style('font-size', 12)
+            .style('font-weight', 500)
+
 
         svg.selectAll('.halfway').remove()
         svg

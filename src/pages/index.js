@@ -353,15 +353,14 @@ const IndexPage = props => {
     <Layout>
       <SEO title="Home" />
       <FullWidithWrapper>
-        <SingleStackedBarChart data={chartData} summary={summary} />
+        <SingleStackedBarChart data={chartData} summary={summary} title={t(`simulation_result`)} />
       <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
         {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ExpandButton>
       <Collapse in={showSeatHistory} timeout={100}>
         {
           PastElectionResult.map(r => <>
-          <Typography variant="body1" style={{ textAlign: "center"}}>{r.year}</Typography>
-          <SingleStackedBarChart data={r.result} summary={r.summary} />
+          <SingleStackedBarChart data={r.result} summary={r.summary} title={r.year} />
           </>)
         }
       </Collapse>
