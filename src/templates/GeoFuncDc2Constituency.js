@@ -86,10 +86,6 @@ const CandidatesWrapper = styled.div`
       flex-direction: column;
       align-items: center;
     }
-
-    .center span {
-      margin-top: 3px;
-    }
   }
 `
 
