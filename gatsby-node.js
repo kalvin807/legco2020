@@ -205,20 +205,54 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   let requests = People.map(person => {
     const query = `
-          query getSocialPosts($regex: String!) {
-            socialPosts(query: $regex, timeframe: "1w", orderBy: performance, reverse: false) {
+          query getSocialPosts($regex: String!, $timeframe: String!) {
+            socialPosts(query: $regex, timeframe: $timeframe, orderBy: performance, reverse: false) {
               nodes {
-                createdAt
                 title
-                platformUrl
+                content
+                createdAt
+                poster {
+                  platform {
+                    name
+                  }
+                  name
+                }
+                group {
+                  platform {
+                      name
+                  }
+                  name
+                }
                 performance
+                platformUrl
+                platformId
+                ... on LIHKGSocialPost {
+                  likeCount
+                  dislikeCount
+                  replyCount
+                }
+                ... on DiscussHKSocialPost {
+                  replyCount
+                  viewCount
+                }
+                ... on UwantsSocialPost {
+                  likeCount
+                  dislikeCount
+                  replyCount
+                }
               }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              totalCount
             }
           }
         `
 
     const variables =  {
-      regex: `(${person.node.name_zh}|${person.nodekeywords})`
+      regex: `(${person.node.name_zh}${person.nodekeywords ? `|${person.nodekeywords}` : ""})`,
+      timeframe: "1w"
     }
 
     return request('https://graphql.maatproject.org', query, variables).then(data => ({

@@ -25,6 +25,8 @@
     "social_posts": "網上熱話",
     "tag.primary": "參加民主派初選",
     "tag.no_primary": "不參加民主派初選",
-    "tag.is_current_lc": "現任立法會議員",
-    "tag.is_current_dc": "現任區議員"
+    "tag.is_current_lc": "競逐連任",
+    "tag.is_current_dc": "現任區議員",
+    "platform.lihkg": "LIHKG",
+    "platform.uwants": "Uwants"
 }
