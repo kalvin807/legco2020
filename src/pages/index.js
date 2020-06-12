@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next"
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { PastElectionResult } from "@/data/ElectionResults"
+import { seatColorMapping } from "@/config"
+import { calculateSeatBox } from "@/utils"
 
 const FullWidithWrapper = styled.div`
   margin: 0 -${theme.spacing(2)}px;
@@ -134,15 +136,6 @@ const ExpandButton = styled.div`
   text-align: center;
 `
 
-const seatColorMapping = {
-  FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
-  GC_EXPECTED_WIN_DEMO: theme.palette.warning.light,
-  GC_EXPECTED_WIN_OTHER: theme.palette.success.main,
-  FC_EXPECTED_WIN_OTHER: theme.palette.success.main,
-  UNRESOLVED: theme.palette.divider,
-  GC_EXPECTED_WIN_BEIJING: theme.palette.info.light,
-  FC_EXPECTED_WIN_BEIJING: theme.palette.info.main,
-}
 
 const IndexPage = props => {
   const { data: { allGeoFuncDc2, allTradFunc } } = props
@@ -209,25 +202,10 @@ const IndexPage = props => {
           if (a.order > b.order) return 1
           if (a.order < b.order) return -1
         }).map((e, i) => {
-          const expectedWinDemo = Number(e.expected_win_demo) || 0
-          const unresolvedSeats = Number(e.unresolved_seats) || 0
-          const expectedWinBeijing = Number(e.expected_win_beijing) || 0
-
           const candiBeijing = Number(e.candidates_beijing) || 0
           const candiModerate = Number(e.candidates_other) || 0
           const candiDemo = Number(e.candidates_demo) || 0
-          
-          const expectedResultRows = [
-            ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
-              color: seatColorMapping['GC_EXPECTED_WIN_DEMO']
-            })),
-            ...[...Array(unresolvedSeats).keys()].map((d, i) => ({
-              color: seatColorMapping['UNRESOLVED']
-            })),
-            ...[...Array(expectedWinBeijing).keys()].map((d, i) => ({
-              color: seatColorMapping['GC_EXPECTED_WIN_BEIJING']
-            })),
-          ]
+
           return (
             <div key={i} className="seat clickable" onClick={() => {
               navigate(
@@ -244,7 +222,7 @@ const IndexPage = props => {
                 </div>
                 <div>
                   <div style={{ width: "40px", height: "40px" }} >
-                    <SeatRowChart width={40} height={40} data={expectedResultRows} />
+                    <SeatRowChart width={40} height={40} data={calculateSeatBox(e)} />
                   </div>
                 </div>
               </div>
@@ -302,10 +280,10 @@ const IndexPage = props => {
         {grouppedFc.sort((a, b) => {
           if (a.order > b.order) return 1
           if (a.order < b.order) return -1
-        }).map(group => {
+        }).map((group, i) => {
 
           return (
-            <>
+            <div key={i}>
               <div className="group-title">{t("no_of_seats_fc", { title: group.title, seats: group.content.length } )}</div>
               <div className={`seat-group ${group.situation}`}>
                 {
@@ -340,7 +318,7 @@ const IndexPage = props => {
                   })
                 }
               </div>
-            </>
+            </div>
           )
         })}
       </TradFCWrapper>
@@ -357,9 +335,7 @@ const IndexPage = props => {
       </ExpandButton>
       <Collapse in={showSeatHistory} timeout={100}>
         {
-          PastElectionResult.map(r => <>
-          <SingleStackedBarChart data={r.result} summary={r.summary} title={r.year} />
-          </>)
+          PastElectionResult.map(r => <SingleStackedBarChart key={r.year} data={r.result} summary={r.summary} title={r.year} />)
         }
       </Collapse>
       {isDesktop ? <Grid container spacing={3}>
