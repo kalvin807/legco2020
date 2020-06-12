@@ -1,23 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { select } from "d3";
-import ResizeObserver from "resize-observer-polyfill";
-
-const useResizeObserver = ref => {
-    const [dimensions, setDimensions] = useState(null);
-    useEffect(() => {
-        const observeTarget = ref.current;
-        const resizeObserver = new ResizeObserver(entries => {
-            entries.forEach(entry => {
-                setDimensions(entry.contentRect);
-            });
-        });
-        resizeObserver.observe(observeTarget);
-        return () => {
-            resizeObserver.unobserve(observeTarget);
-        };
-    }, [ref]);
-    return dimensions;
-};
+import useResizeObserver from "@/utils/ResizeObserver"
 
 function SeatRowChart({ data, width, height }) {
     const svgRef = useRef();

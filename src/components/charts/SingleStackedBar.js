@@ -1,24 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { select, sum, scaleLinear } from "d3";
-import ResizeObserver from "resize-observer-polyfill";
+import useResizeObserver from "@/utils/ResizeObserver"
 import theme from "@/themes"
-
-const useResizeObserver = ref => {
-    const [dimensions, setDimensions] = useState(null);
-    useEffect(() => {
-        const observeTarget = ref.current;
-        const resizeObserver = new ResizeObserver(entries => {
-            entries.forEach(entry => {
-                setDimensions(entry.contentRect);
-            });
-        });
-        resizeObserver.observe(observeTarget);
-        return () => {
-            resizeObserver.unobserve(observeTarget);
-        };
-    }, [ref]);
-    return dimensions;
-};
 
 function SingleStackedBar({ data, summary, title }) {
     const svgRef = useRef();
@@ -51,6 +34,7 @@ function SingleStackedBar({ data, summary, title }) {
             // (save having to format data for d3 stack)
             let cumulative = 0
             const _data = data.map(d => {
+                console.log(d)
                 cumulative += d.value
                 return {
                     ...d,
@@ -65,7 +49,8 @@ function SingleStackedBar({ data, summary, title }) {
 
         const total = sum(data, d => d.value)
         const _data = groupData(data, total)
-
+        console.log(data)
+        console.log(_data)
         // set up scales for horizontal placement
         const xScale = scaleLinear()
             .domain([0, total])

@@ -1,24 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { select, sum, scaleLinear } from "d3";
-import ResizeObserver from "resize-observer-polyfill";
+import useResizeObserver from "@/utils/ResizeObserver"
 import theme from "@/themes"
 
-const useResizeObserver = ref => {
-    const [dimensions, setDimensions] = useState(null);
-    useEffect(() => {
-        const observeTarget = ref.current;
-        const resizeObserver = new ResizeObserver(entries => {
-            entries.forEach(entry => {
-                setDimensions(entry.contentRect);
-            });
-        });
-        resizeObserver.observe(observeTarget);
-        return () => {
-            resizeObserver.unobserve(observeTarget);
-        };
-    }, [ref]);
-    return dimensions;
-};
 
 function FCStackedBar({ data }) {
     const svgRef = useRef();
