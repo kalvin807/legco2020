@@ -34,7 +34,6 @@ function SingleStackedBar({ data, summary, title }) {
             // (save having to format data for d3 stack)
             let cumulative = 0
             const _data = data.map(d => {
-                console.log(d)
                 cumulative += d.value
                 return {
                     ...d,
@@ -49,8 +48,7 @@ function SingleStackedBar({ data, summary, title }) {
 
         const total = sum(data, d => d.value)
         const _data = groupData(data, total)
-        console.log(data)
-        console.log(_data)
+        
         // set up scales for horizontal placement
         const xScale = scaleLinear()
             .domain([0, total])

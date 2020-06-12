@@ -141,3 +141,48 @@ export const PastElectionResult = [
       ]
 }
 ]
+
+export const DC2019Result = {
+  "HKI": {
+    "votes": {
+      "DEMO": 260244,
+      "BEIJING": 203709,
+      "OTHER": 3687
+    }
+  },
+  "KLW": {
+    "votes": {
+      "DEMO": 210642,
+      "BEIJING": 165632,
+      "OTHER": 4161
+    }
+  },
+  "KLE": {
+    "votes": {
+      "DEMO": 260050,
+      "BEIJING": 199902,
+      "OTHER": 5211
+    }
+  },
+  "NTW": {
+    "votes": {
+      "DEMO": 486416,
+      "BEIJING": 344159,
+      "OTHER": 22642
+    }
+  },
+  "NTE": {
+    "votes": {
+      "DEMO": 458767,
+      "BEIJING": 280363,
+      "OTHER": 30542
+    }
+  },
+  "DC2": {
+    "votes": {
+      "DEMO": 1676119,
+      "BEIJING": 1193765,
+      "OTHER": 66243
+    }
+  }
+}
