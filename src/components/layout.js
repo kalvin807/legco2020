@@ -1,9 +1,10 @@
 import React from "react"
 import { ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import ContextStore, { ContextStoreProvider } from "./contextStore"
 import Header from "./header"
 import Footer from "./footer"
-import Container from '@material-ui/core/Container';
 import "./layout.css"
 import theme from '../themes'
 
@@ -18,9 +19,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Layout = ({ children }) => {
+const ThemeProviderWrapper = ({ children }) => {
+  const {
+    pageOptions: { state },
+  } = React.useContext(ContextStore)
   const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -31,6 +34,14 @@ const Layout = ({ children }) => {
         <Footer />
       </div>
     </ThemeProvider>
+  )
+}
+
+const Layout = ({ children, initialStore }) => {
+  return (
+    <ContextStoreProvider initialStore={initialStore}>
+      <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+    </ContextStoreProvider>
   )
 }
 
