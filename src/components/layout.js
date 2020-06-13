@@ -2,7 +2,7 @@ import React from "react"
 import { ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import ContextStore, { ContextStoreProvider } from "./contextStore"
+import ContextStore, { ContextStoreProvider } from "@/contextStore"
 import Header from "./header"
 import Footer from "./footer"
 import "./layout.css"
