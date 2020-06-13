@@ -35,7 +35,22 @@
     "styled-components": "^5.1.0"
   },
   "devDependencies": {
-    "prettier": "2.0.5"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-app": "^5.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.10",
+    "prettier": "2.0.5",    
+    "typescript": "^3.9.5"
+  },
+  "remark": {
+    "todo": "remove typescript dev-dependencies once https://github.com/facebook/create-react-app/issues/8745 is fixed"
   },
   "keywords": [
     "gatsby"
@@ -48,7 +63,9 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "lint": "eslint .",
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -56,5 +73,10 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

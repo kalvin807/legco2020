@@ -1,20 +1,19 @@
 import React from "react"
-import { ThemeProvider } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
-import Header from "./header"
-import Footer from "./footer"
 import Container from '@material-ui/core/Container';
+import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
+import Header from "./header"
+import Footer from "./Footer"
 import "./layout.css"
 import theme from '../themes'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((t) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
   },
   container: {
-    marginBottom: theme.spacing(3),
+    marginBottom: t.spacing(3),
   }
 }));
 
