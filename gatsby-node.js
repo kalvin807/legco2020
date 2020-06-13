@@ -2,7 +2,9 @@ const fetch = require("node-fetch")
 const path = require("path")
 const csv2json = require("csvtojson")
 const { request } = require("graphql-request")
+const { getPath } = require("./src/utils/urlHelper")
 const isDebug = process.env.DEBUG_MODE === "true"
+const LANGUAGES = ["zh", "en"]
 
 const PUBLISHED_SPREADSHEET_I18N_URL = 
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
@@ -184,26 +186,32 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges
   GeoFuncDc2Constituencies.forEach(constituency => {
-    createPage({
-      path: `/constituency/${constituency.node.key}`,
-      component: GeoFuncDc2ConstituencyTemplate,
-      context: {
-        constituency: constituency.node,
-        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE')
-      },
+    LANGUAGES.forEach(lang => {
+      createPage({
+        path: getPath(lang, `/constituency/${constituency.node.key}`),
+        component: GeoFuncDc2ConstituencyTemplate,
+        context: {
+          constituency: constituency.node,
+          candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE'),
+          locale: lang,
+        },
+      })
     })
   })
 
   const TradFuncConstituencies = result.data.allTradFunc.edges
   TradFuncConstituencies.forEach(constituency => {
-    createPage({
-      path: `/constituency/${constituency.node.key}`,
-      component: TradFuncTemplate,
-      context: {
-        constituency: constituency.node,
-        councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current_lc === 'TRUE'),
-        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE') 
-      },
+    LANGUAGES.forEach(lang => {
+      createPage({
+        path: getPath(lang,`/constituency/${constituency.node.key}`),
+        component: TradFuncTemplate,
+        context: {
+          constituency: constituency.node,
+          councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current_lc === 'TRUE'),
+          candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE'),
+          locale: lang,
+        },
+      })
     })
   })
 
@@ -271,14 +279,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     .then(responses => responses.forEach(
       response => {
         const { person, socialPosts } = response
-        createPage({
-          path: `/profile/${person.name_zh}`,
-          component: ProfileTemplate,
-          context: {
-            person,
-            socialPosts,
-            tags: handleTags(person)
-          },
+        LANGUAGES.forEach(lang => {
+          createPage({
+            path: getPath(lang,`/profile/${person.name_zh}`),
+            component: ProfileTemplate,
+            context: {
+              person,
+              socialPosts,
+              tags: handleTags(person),
+              locale: lang,
+            },
+          })
         })
       }
     ));
