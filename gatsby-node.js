@@ -54,6 +54,48 @@ const createPublishedGoogleSpreadsheetNode = async (
         })
 }
 
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage, deletePage } = actions
+  return new Promise(resolve => {
+    // If it is already eng path we skip to re-generate the locale
+    if (!page.path.match(/^\/en/)) {
+      deletePage(page)
+      LANGUAGES.forEach(lang => {
+        createPage({
+          ...page,
+          path: getPath(lang, page.path),
+          context: {
+            ...page.context,
+            locale: lang,
+          },
+        })
+      })
+    }
+    resolve()
+  })
+}
+
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    const regex = [
+      /node_modules\/leaflet/,
+      /node_modules\\leaflet/,
+      /node_modules\/pixi.js/,
+      /node_modules\\pixi.js/,
+    ]
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: regex,
+            use: loaders.null(),
+          },
+        ],
+      },
+    })
+  }
+}
+
 exports.sourceNodes = async props => {
     await Promise.all([
         // TODO: Move i18n into google spreadsheet
@@ -89,8 +131,6 @@ exports.sourceNodes = async props => {
         ),
     ])
 }
-
-
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
