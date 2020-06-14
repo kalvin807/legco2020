@@ -114,7 +114,7 @@ exports.sourceNodes = async props => {
 
 
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async function createPages({ graphql, actions, reporter }) {
   const { createPage } = actions
   const GeoFuncDc2ConstituencyTemplate = path.resolve("./src/templates/GeoFuncDc2Constituency.js")
   const TradFuncTemplate = path.resolve("./src/templates/TradFuncConstituency.js")
@@ -204,7 +204,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   `)
   if (result.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`)
-    return
+    return Promise.resolve(false);
   }
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges
   GeoFuncDc2Constituencies.forEach(constituency => {
