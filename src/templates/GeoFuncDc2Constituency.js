@@ -5,6 +5,21 @@ import styled from "styled-components";
 import theme from "@/themes";
 import { useTranslation } from "react-i18next"
 import { navigate } from "gatsby"
+import { DC2019Result } from "@/data/ElectionResults"
+import VoteVsSeatChart from "@/components/charts/VoteVsSeat"
+import { calculateSeatBox } from "@/utils"
+
+const GeoHeader = styled(Grid)`
+
+  .title-box {
+    margin-right: ${theme.spacing(3)}px;
+  }
+  }
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+  }
+`
 
 const CampWrapper = styled(Grid)`
   .list-number {
@@ -115,8 +130,32 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
 
   return (
     <Layout>
-      <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
-      <Typography variant="h2">{constituency.name_zh}</Typography>
+      <GeoHeader
+        container
+      >
+        <Grid item>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            className="title-box"
+          >
+            <Typography variant="body2" color="textSecondary">{t("no_of_seats", { seats: constituency.seats })}</Typography>
+            <div className="title">{constituency.name_zh}</div>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <VoteVsSeatChart
+              title={{
+                vote: t("dc2019_demo_beijing_ratio"),
+                seat: t("simulation_result"),
+              }}
+              votes={DC2019Result[constituency.key].votes}
+              seats={calculateSeatBox(constituency)}
+          />
+        </Grid>
+      </GeoHeader>
+      <Typography className="block" variant="body2">{constituency.description_zh}</Typography>
       <CampWrapper container spacing={3}>
         <Grid item xs={6}>
           <div>
@@ -125,7 +164,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
             <Typography variant="caption">有意出選名單</Typography>
             <CandidatesWrapper>
               {
-                demoCandidates.map(c => <People info={c.node} />)
+                demoCandidates.map((c, i) => <People key={i} info={c.node} />)
               }
             </CandidatesWrapper>
           </div>
@@ -138,7 +177,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
             <Typography variant="caption">有意出選名單</Typography>
             <CandidatesWrapper mt={2}>
               {
-                beijingCandidates.map(c => <People info={c.node} />)
+                beijingCandidates.map((c, i) => <People key={i} info={c.node} />)
               }
             </CandidatesWrapper>
           </div>
@@ -148,7 +187,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
             <Typography variant="caption">有意出選名單</Typography>
             <CandidatesWrapper>
               {
-                otherCandidates.map(c => <People info={c.node} />)
+                otherCandidates.map((c, i) => <People key={i} info={c.node} />)
               }
             </CandidatesWrapper>
           </div> : ''}
@@ -156,10 +195,9 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
       </CampWrapper>
       <CampWrapper container spacing={3}>
         {
-          ["DEMO", "BEIJING"].map(camp => {
+          ["DEMO", "BEIJING"].map((camp, i) => {
             return (
-              <>
-                <Grid item xs={6}>
+              <Grid item xs={6} key={i}>
                   <Typography variant="h6">
                     名單協調方法
                     </Typography>
@@ -171,18 +209,16 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
                   <Typography variant="body1">
                     {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
                   </Typography>
-                </Grid>
-              </>
+              </Grid>
             )
           })
         }
       </CampWrapper>
       <CampWrapper container spacing={3}>
         {
-          ["DEMO", "BEIJING"].map(camp => {
+          ["DEMO", "BEIJING"].map((camp, i) => {
             return (
-              <>
-                <Grid item xs={6}>
+              <Grid item xs={6} key={i}>
                   <Typography variant="h6">
                     配票方法
                     </Typography>
@@ -195,7 +231,6 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
                     {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
                   </Typography>
                 </Grid>
-              </>
             )
           })
         }
