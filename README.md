@@ -1,4 +1,4 @@
-# 2020 Hong Kong legislative election
+# 2020 Hong Kong Legislative Election
 
 This is the repository for <a href="https://vote4.hk">vote4.hk</a>
 
@@ -7,8 +7,20 @@ This is the repository for <a href="https://vote4.hk">vote4.hk</a>
 The data is updated automatically every 5 minutes. The information are all open for use. If you wish to cite anything from this site, please credit us as `vote4.hk - 立法會投票指南` or `vote4.hk - HK Legco Election`.
 
 - [2019 District Council Election results](https://bit.ly/vote4hkdata)
-- [2020 Legislative Election Constituencies](https://docs.google.com/spreadsheets/d/e/2PACX-1vTSlXzn8tUEIgTAtQK4cey1JzunOctvquNQr-_76l98vdhD9Y4It5ZoNk06wEuBGoPIccFcjan0RXm7/pub?gid=1850485765)
-- [2020 Legislative Election Candidates](https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0)
+- [2020 Legislative Election Functional Constituencies](https://docs.google.com/spreadsheets/d/13VRJl6urKSLsThswBzyuEERNI8xVTCCJwImYQF-jKz4/edit#gid=1850485765)
+- [2020 Legislative Election Geographical Constituencies](https://docs.google.com/spreadsheets/d/1F-M4kNSRmt36JwzDUERCtFWDWW7QIZLhnYCLIihp2QQ/edit#gid=1850485765)
+- [2020 Legislative Election Candidates](https://docs.google.com/spreadsheets/d/1Mva3xbJAXeVqh-pXld_1pHfz7d23Xm2ZmUFIzoU60AU/edit#gid=0)
+
+## 🎓 Our stacks
+
+Need help? Check below links for simple tutorial about our tech stack!
+
+### Gatsby.js
+- [In-depth tutorial for creating a site with Gatsby.](https://www.gatsbyjs.org/tutorial/)
+### React
+- [Intro to React](https://reactjs.org/tutorial/tutorial.html)
+### d3
+- [Using React (Hooks) with D3](https://muratorium.com/using-react-hooks-with-d3/)
 
 
 ## 🚀 Quick start
@@ -24,7 +36,7 @@ The data is updated automatically every 5 minutes. The information are all open 
     yarn develop
     ```
 
-1.  **Open the source code and start editing!**
+2.  **Open the source code and start editing!**
 
     Your site is now running at `http://localhost:8000`!
 
@@ -73,11 +85,3 @@ A quick look at the top-level files and directories you'll see in a Gatsby proje
 11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
 
 12. **`README.md`**: A text file containing useful reference information about your project.
-
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
