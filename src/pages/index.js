@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Layout from "@/components/layout"
 import SEO from "@/components/seo"
 import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
@@ -326,7 +325,7 @@ const IndexPage = props => {
   }
 
   return (
-    <Layout>
+    <>
       <SEO title="Home" />
       <FullWidithWrapper>
         <SingleStackedBarChart data={chartData} summary={summary} title={t(`simulation_result`)} />
@@ -370,7 +369,7 @@ const IndexPage = props => {
       />}
       
       </FullWidithWrapper>
-    </Layout>
+    </>
   )
 
 }

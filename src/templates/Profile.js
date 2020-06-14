@@ -1,5 +1,4 @@
 import React from "react"
-import Layout from "@/components/layout"
 import { Avatar, Typography, Grid } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
@@ -58,7 +57,7 @@ const ProfileHeader = styled(Grid)`
 const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
   const { t } = useTranslation()
   return (
-    <Layout>
+    <>
       <ProfileTemplateWrapper>
         <Grid 
           className="social"
@@ -124,7 +123,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           }}
         />
       </ProfileTemplateWrapper>
-    </Layout>
+    </>
   )
 }
 

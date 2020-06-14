@@ -1,6 +1,5 @@
 import React from "react"
 import styled from 'styled-components';
-import Layout from "@/components/layout"
 import SEO from "../components/seo"
 import { graphql } from "gatsby"
 import Container from '@material-ui/core/Container';
@@ -70,7 +69,7 @@ const FcPage = props => {
   }, [])
 
   return (
-    <Layout>
+    <>
       <Container maxWidth="lg">
       <SEO title="FC" />
       <Typography variant="h5" gutterBottom>當民主陣營談35+，究竟機會有多大？</Typography>
@@ -88,7 +87,7 @@ const FcPage = props => {
         )
       })}
       </Container>
-    </Layout>
+    </>
   )
 
 }

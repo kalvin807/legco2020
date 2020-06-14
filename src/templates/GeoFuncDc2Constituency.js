@@ -1,5 +1,4 @@
 import React from "react"
-import Layout from "@/components/layout"
 import { Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
@@ -129,7 +128,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
   const otherCandidates = candidates.filter(c => c.node.camp === "OTHER")
 
   return (
-    <Layout>
+    <>
       <GeoHeader
         container
       >
@@ -235,7 +234,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
           })
         }
       </CampWrapper>
-    </Layout>
+    </>
   )
 }
 

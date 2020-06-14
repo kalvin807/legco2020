@@ -1,5 +1,4 @@
 import React from "react"
-import Layout from "@/components/layout"
 import { Grid, Avatar, Typography } from '@material-ui/core';
 import styled from "styled-components";
 import theme from "@/themes";
@@ -40,7 +39,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
   const { t } = useTranslation()
 
   return (
-    <Layout>
+    <>
         <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
         <Typography variant="h6">{t(`electors_composition_${constituency.electors_composition}`)}</Typography>
         <Typography variant="h2">{constituency.name_zh}</Typography>
@@ -89,7 +88,7 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                 </CandidatesWrapper>
             </Grid>
        </Grid>
-    </Layout>
+    </>
   )
 }
 
