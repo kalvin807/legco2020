@@ -32,7 +32,9 @@ jobs:
         github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         # Keep previous build files, true to support PWA
         keep-history: true
-        committer_from_gh: true
+        committer_from_gh: false
+        name: "Deploy BOT"
+        email: bot@vote4.hk
         target_branch: gh-pages
         local-dir: public # the local dir is relative to root and ignoring the one set with before_install
         on:
