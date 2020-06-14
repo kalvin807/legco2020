@@ -26,9 +26,9 @@ jobs:
         provider: pages
         skip-cleanup: true
         # In case pushing to different repo
-        # repo: [github_user]/[reponame].github.io
+        # repo: vote4hk/vote4hk.github.io
         # In case you need to setup custom domain
-        fqdn: lego2020.vote4.hk
+        fqdn: legco2020.vote4.hk
         github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         # Keep previous build files, true to support PWA
         keep-history: true
