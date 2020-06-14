@@ -111,6 +111,7 @@ const People = props => {
       onClick={() => {
         navigate(`/profile/${info.name_zh}`)
       }}
+      onKeyDown={() => {}}
     >
       <div className="center">
         <Avatar className={`avatar ${info.camp.toLowerCase()}`} alt={info.name_zh} src={info.img_url} />
@@ -145,12 +146,12 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
         </Grid>
         <Grid item>
           <VoteVsSeatChart
-              title={{
+            title={{
                 vote: t("dc2019_demo_beijing_ratio"),
                 seat: t("simulation_result"),
               }}
-              votes={DC2019Result[constituency.key].votes}
-              seats={calculateSeatBox(constituency)}
+            votes={DC2019Result[constituency.key].votes}
+            seats={calculateSeatBox(constituency)}
           />
         </Grid>
       </GeoHeader>
@@ -163,7 +164,7 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
             <Typography variant="caption">有意出選名單</Typography>
             <CandidatesWrapper>
               {
-                demoCandidates.map((c, i) => <People key={i} info={c.node} />)
+                demoCandidates.map(c => <People key={c.node} info={c.node} />)
               }
             </CandidatesWrapper>
           </div>
@@ -176,38 +177,39 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
             <Typography variant="caption">有意出選名單</Typography>
             <CandidatesWrapper mt={2}>
               {
-                beijingCandidates.map((c, i) => <People key={i} info={c.node} />)
+                beijingCandidates.map(c => <People key={c.node} info={c.node} />)
               }
             </CandidatesWrapper>
           </div>
-          {otherCandidates.length ? 
-          <div className="right">
-          <div><span className="camp-text other">{t("alias.OTHER")}</span></div>
-            <Typography variant="caption">有意出選名單</Typography>
-            <CandidatesWrapper>
-              {
-                otherCandidates.map((c, i) => <People key={i} info={c.node} />)
+          {otherCandidates.length ? (
+            <div className="right">
+              <div><span className="camp-text other">{t("alias.OTHER")}</span></div>
+              <Typography variant="caption">有意出選名單</Typography>
+              <CandidatesWrapper>
+                {
+                otherCandidates.map(c => <People key={c.node} info={c.node} />)
               }
-            </CandidatesWrapper>
-          </div> : ''}
+              </CandidatesWrapper>
+            </div>
+        ) : ''}
         </Grid>
       </CampWrapper>
       <CampWrapper container spacing={3}>
         {
-          ["DEMO", "BEIJING"].map((camp, i) => {
+          ["DEMO", "BEIJING"].map(camp => {
             return (
-              <Grid item xs={6} key={i}>
-                  <Typography variant="h6">
-                    名單協調方法
-                    </Typography>
+              <Grid item xs={6} key={camp}>
+                <Typography variant="h6">
+                  名單協調方法
+                </Typography>
 
-                  <Typography variant="body1">
-                    {constituency[`stage_1_title_${camp.toLowerCase()}_zh`]}
-                  </Typography>
+                <Typography variant="body1">
+                  {constituency[`stage_1_title_${camp.toLowerCase()}_zh`]}
+                </Typography>
 
-                  <Typography variant="body1">
-                    {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
-                  </Typography>
+                <Typography variant="body1">
+                  {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
+                </Typography>
               </Grid>
             )
           })
@@ -215,21 +217,21 @@ const GeoFuncDc2ConstituencyTemplate = ({ pageContext: { constituency, candidate
       </CampWrapper>
       <CampWrapper container spacing={3}>
         {
-          ["DEMO", "BEIJING"].map((camp, i) => {
+          ["DEMO", "BEIJING"].map(camp => {
             return (
-              <Grid item xs={6} key={i}>
-                  <Typography variant="h6">
-                    配票方法
-                    </Typography>
+              <Grid item xs={6} key={camp}>
+                <Typography variant="h6">
+                  配票方法
+                </Typography>
 
-                  <Typography variant="body1">
-                    {constituency[`stage_2_title_${camp.toLowerCase()}_zh`]}
-                  </Typography>
+                <Typography variant="body1">
+                  {constituency[`stage_2_title_${camp.toLowerCase()}_zh`]}
+                </Typography>
 
-                  <Typography variant="body1">
-                    {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
-                  </Typography>
-                </Grid>
+                <Typography variant="body1">
+                  {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
+                </Typography>
+              </Grid>
             )
           })
         }

@@ -46,7 +46,7 @@
     "eslint-plugin-react-hooks": "^2.5.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.10",
-    "prettier": "2.0.5",    
+    "prettier": "2.0.5",
     "typescript": "^3.9.5"
   },
   "remark": {
@@ -73,10 +73,5 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }

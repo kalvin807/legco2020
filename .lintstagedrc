@@ -1,6 +1,7 @@
 {
   "src/**/*.{js,jsx}": [
+    "eslint --fix",
     "prettier --write",
-    "yarn run lint"
+    "git add"
   ]
 }

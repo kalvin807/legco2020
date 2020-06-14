@@ -6,8 +6,8 @@ const { getPath } = require("./src/utils/urlHelper")
 const isDebug = process.env.DEBUG_MODE === "true"
 const LANGUAGES = ["zh", "en"]
 
-const PUBLISHED_SPREADSHEET_I18N_URL = 
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
+// const PUBLISHED_SPREADSHEET_I18N_URL = 
+//     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
 const PUBLISHED_SPREADSHEET_GEOGRAPHICAL_CONSTITUENCIES_FC2_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSlXzn8tUEIgTAtQK4cey1JzunOctvquNQr-_76l98vdhD9Y4It5ZoNk06wEuBGoPIccFcjan0RXm7/pub?gid=1850485765"
 const PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL =
@@ -49,7 +49,7 @@ const createPublishedGoogleSpreadsheetNode = async (
                     contentDigest: createContentDigest(p),
                 },
             }
-            const node = Object.assign({}, { ...p, subtype }, meta)
+            const node = { ...p, subtype, ...meta}
             createNode(node)
         })
 }
@@ -132,7 +132,7 @@ exports.sourceNodes = async props => {
     ])
 }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async function createPages({ graphql, actions, reporter }) {
   const { createPage } = actions
   const GeoFuncDc2ConstituencyTemplate = path.resolve("./src/templates/GeoFuncDc2Constituency.js")
   const TradFuncTemplate = path.resolve("./src/templates/TradFuncConstituency.js")
@@ -222,7 +222,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   `)
   if (result.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`)
-    return
+    return Promise.resolve(false);
   }
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges
   GeoFuncDc2Constituencies.forEach(constituency => {
@@ -255,9 +255,32 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
   })
 
+
+const handleTags = person => {
+  const tags = []
+
+  const pushIfTrue = key => {
+    if (person[key] === "TRUE") {
+      tags.push({
+        i18nKey: key
+      })
+    }
+  }
+
+  pushIfTrue("is_current_lc")
+  pushIfTrue("is_current_dc")
+
+  if (person.camp === "DEMO") {
+    tags.push({
+      i18nKey: person.primary === "FALSE" ? "no_primary" : "primary"
+    })
+  }
+  return tags
+}
+
   const People = result.data.allPeople.edges
 
-  let requests = People.map(person => {
+  const requests = People.map(person => {
     const query = `
           query getSocialPosts($regex: String!, $timeframe: String!) {
             socialPosts(query: $regex, timeframe: $timeframe, orderBy: performance, reverse: false) {
@@ -333,26 +356,4 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         })
       }
     ));
-}
-
-const handleTags = person => {
-  const tags = []
-
-  const pushIfTrue = key => {
-    if (person[key] === "TRUE") {
-      tags.push({
-        i18nKey: key
-      })
-    }
-  }
-
-  pushIfTrue("is_current_lc")
-  pushIfTrue("is_current_dc")
-
-  if (person.camp === "DEMO") {
-    tags.push({
-      i18nKey: person.primary === "FALSE" ? "no_primary" : "primary"
-    })
-  }
-  return tags
 }
