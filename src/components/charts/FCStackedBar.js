@@ -187,15 +187,17 @@ function FCStackedBar({ data }) {
     }, [data, dimensions]);
 
     return (
-        <div ref={wrapperRef}>
-            <svg ref={svgRef} style={{
+      <div ref={wrapperRef}>
+        <svg
+          ref={svgRef}
+          style={{
                 overflow: 'visible',
                 display: 'block',
                 width: '100%',
                 height: `100px`,
-            }}>
-            </svg>
-        </div>
+            }}
+        />
+      </div>
     );
 }
 

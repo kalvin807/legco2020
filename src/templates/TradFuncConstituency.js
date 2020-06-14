@@ -36,22 +36,25 @@ const CandidatesWrapper = styled.div`
   }
 `
 
-const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { constituency, councillors, candidates } }) => {
+const TradFuncConstituencyTemplate = ({ pageContext: { constituency, councillors, candidates } }) => {
   const { t } = useTranslation()
 
   return (
     <Layout>
-        <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
-        <Typography variant="h6">{t(`electors_composition_${constituency.electors_composition}`)}</Typography>
-        <Typography variant="h2">{constituency.name_zh}</Typography>
-  <Typography variant="body1">{`選民人數：${constituency.electors_total_2020}（較16年${Number(constituency.electors_total_2020) - Number(constituency.electors_total_2016)}）`}</Typography>
-        <Typography variant="body1">票差：{constituency.last_election_vote_beijing_minus_demo}</Typography>
-        <Typography variant="body1">{constituency.description_zh}</Typography>
-        <Grid container spacing={3}>
-            <Grid item xs={3}>
-                <Typography>現任</Typography>
-                <CandidatesWrapper>
-                  {
+      <Typography variant="caption">{t("no_of_seats", { seats: constituency.seats })}</Typography>
+      <Typography variant="h6">{t(`electors_composition_${constituency.electors_composition}`)}</Typography>
+      <Typography variant="h2">{constituency.name_zh}</Typography>
+      <Typography variant="body1">{`選民人數：${constituency.electors_total_2020}（較16年${Number(constituency.electors_total_2020) - Number(constituency.electors_total_2016)}）`}</Typography>
+      <Typography variant="body1">
+        票差：
+        {constituency.last_election_vote_beijing_minus_demo}
+      </Typography>
+      <Typography variant="body1">{constituency.description_zh}</Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={3}>
+          <Typography>現任</Typography>
+          <CandidatesWrapper>
+            {
                     councillors.map(c => {
                       return (
                         <div 
@@ -59,19 +62,19 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                           onClick={() => {
                             navigate(`/profile/${c.node.name_zh}`)
                           }}
-                          >
+                        >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
                           <span className="title">{c.node.name_zh}</span>
                         </div>
                       )
                     })
                   }
-                </CandidatesWrapper>
-            </Grid>
-            <Grid item xs={9}>
-                <Typography>候選人</Typography>
-                <CandidatesWrapper>
-                  {
+          </CandidatesWrapper>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography>候選人</Typography>
+          <CandidatesWrapper>
+            {
                     candidates.map(c => {
                       return (
                         <div 
@@ -79,34 +82,19 @@ const TradFuncConstituencyTemplate = ({ data: { allPeople }, pageContext: { cons
                           onClick={() => {
                             navigate(`/profile/${c.node.name_zh}`)
                           }}
-                          >
+                        >
                           <Avatar className={`avatar ${c.node.camp.toLowerCase()}`} alt={c.node.name_zh} src={c.image_url} />
                           <span className="title">{c.node.name_zh}</span>
                         </div>
                       )
                     })
                   }
-                </CandidatesWrapper>
-            </Grid>
-       </Grid>
+          </CandidatesWrapper>
+        </Grid>
+      </Grid>
     </Layout>
   )
 }
 
 export default TradFuncConstituencyTemplate
-
-export const TradFuncConstituencyTemplateQuery = graphql`
-  query {
-    allPeople {
-      edges {
-        node {
-          constituency
-          camp
-          status
-          name_zh
-        }
-      }
-    }
-  }
-`
 

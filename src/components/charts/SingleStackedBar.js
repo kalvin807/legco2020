@@ -24,7 +24,7 @@ function SingleStackedBar({ data, summary, title }) {
         const h = dimensions.height - margin.top - margin.bottom
         const barPostition = h / 2
 
-        const groupData = (data, total) => {
+        const groupData = (dat, total) => {
             // use scale to get percent values
             const percent = scaleLinear()
                 .domain([0, total])
@@ -33,7 +33,7 @@ function SingleStackedBar({ data, summary, title }) {
             // also get mapping for next placement
             // (save having to format data for d3 stack)
             let cumulative = 0
-            const _data = data.map(d => {
+            const _data = dat.map(d => {
                 cumulative += d.value
                 return {
                     ...d,
@@ -64,7 +64,7 @@ function SingleStackedBar({ data, summary, title }) {
             .attr('y', barPostition)
             .attr('height', barHeight)
             .attr('width', d => xScale(d.value))
-            .style('fill', (d, i) => d.color)
+            .style('fill', d => d.color)
             .style('stroke', theme.palette.background.paper)
 
         Object.keys(summary).forEach((camp, i) => {
@@ -147,7 +147,7 @@ function SingleStackedBar({ data, summary, title }) {
             .attr('x', xScale(total / 2))
             .attr('y', barPostition - 6)
             .style('font-size', 12)
-            .text(d => '▾')
+            .text('▾')
 
         svg.selectAll('.halfway-text').remove()
         svg
@@ -157,7 +157,7 @@ function SingleStackedBar({ data, summary, title }) {
             .attr('x', xScale(total / 2))
             .attr('y', barPostition - 16)
             .style('font-size', 12)
-            .text(d => total / 2)
+            .text(total / 2)
 
         // add the labels
         svg.selectAll('.text-label')
@@ -167,7 +167,7 @@ function SingleStackedBar({ data, summary, title }) {
             .attr('text-anchor', 'middle')
             .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
             .attr('y', (h / 2) + barHeight + 12)
-            .style('fill', (d, i) => d.color)
+            .style('fill', d => d.color)
             .style('font-size', 12)
             .style('font-weight', 700)
             .text(d => d.label)
@@ -175,15 +175,17 @@ function SingleStackedBar({ data, summary, title }) {
     }, [data, dimensions]);
 
     return (
-        <div ref={wrapperRef}>
-            <svg ref={svgRef} style={{
+      <div ref={wrapperRef}>
+        <svg
+          ref={svgRef}
+          style={{
                 overflow: 'visible',
                 display: 'block',
                 width: '100%',
                 height: `100px`,
-            }}>
-            </svg>
-        </div>
+            }}
+        />
+      </div>
     );
 }
 

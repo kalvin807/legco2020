@@ -4,7 +4,7 @@ import SEO from "@/components/seo"
 import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
-import FCStackedBarChart from "@/components/charts/FCStackedBar"
+// import FCStackedBarChart from "@/components/charts/FCStackedBar"
 import theme from "@/themes"
 import { Typography, Collapse, useMediaQuery, Grid } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
@@ -145,19 +145,19 @@ const IndexPage = props => {
   const { t } = useTranslation()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // group data for chart
-  let seatCount = {
+  const seatCount = {
     UNRESOLVED: 70
   }
 
-  seat.forEach(seat => {
-    Object.keys(seat).filter(k => k.includes('expected')).map(key => {
-      const seatType = `${seat.type}_${key}`.toUpperCase()
+  seat.forEach(s => {
+    Object.keys(s).filter(k => k.includes('expected')).map(key => {
+      const seatType = `${s.type}_${key}`.toUpperCase()
       if (typeof seatCount[seatType] === 'undefined') {
         seatCount[seatType] = Number(seat[key])
       } else {
         seatCount[seatType] += Number(seat[key])
       }
-      seatCount['UNRESOLVED'] -= Number(seat[key])
+      seatCount.UNRESOLVED -= Number(seat[key])
     })
   });
 
@@ -171,7 +171,7 @@ const IndexPage = props => {
   }))
 
   // Build chart data
-  let summary = {
+  const summary = {
     DEMO: {
       name: t(`alias.DEMO`),
       pos: 'start',
@@ -188,10 +188,10 @@ const IndexPage = props => {
 
   chartData.forEach(c => {
     if (c.key.includes('DEMO')) {
-      summary['DEMO'].total += c.value
+      summary.DEMO.total += c.value
     }
     if (c.key.includes('BEIJING')) {
-      summary['BEIJING'].total += c.value
+      summary.BEIJING.total += c.value
     }
   })
 
@@ -207,21 +207,25 @@ const IndexPage = props => {
           const candiDemo = Number(e.candidates_demo) || 0
 
           return (
-            <div key={i} className="seat clickable" onClick={() => {
+            <div
+              key={i}
+              className="seat clickable"
+              onClick={() => {
               navigate(
                 `/constituency/${e.key}`
               )
-            }}>
+            }}
+            >
               <div className="title">
-                  <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: e.seats })}</Typography>
-                  <div className="sub-title">{t("estimated_result")}</div>
+                <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: e.seats })}</Typography>
+                <div className="sub-title">{t("estimated_result")}</div>
               </div>
               <div className="title">
                 <div>
                   <Typography variant="h5">{e.alias_zh}</Typography>
                 </div>
                 <div>
-                  <div style={{ width: "40px", height: "40px" }} >
+                  <div style={{ width: "40px", height: "40px" }}>
                     <SeatRowChart width={40} height={40} data={calculateSeatBox(e)} />
                   </div>
                 </div>
@@ -237,16 +241,18 @@ const IndexPage = props => {
                 </div>
               </div>
               <div className="roundup">
-              <div className="large-number demo">{candiDemo || "-"}</div>
+                <div className="large-number demo">{candiDemo || "-"}</div>
                 <div>
                   <Typography variant="body1" color="textSecondary">vs</Typography>
                 </div>
-                {candiModerate ? <>
-                <div className="large-number other">{candiModerate || "-"}</div>
-                <div>
-                  <Typography variant="body1" color="textSecondary">vs</Typography>
-                </div>
-                </> : 
+                {candiModerate ? (
+                  <>
+                    <div className="large-number other">{candiModerate || "-"}</div>
+                    <div>
+                      <Typography variant="body1" color="textSecondary">vs</Typography>
+                    </div>
+                  </>
+) : 
                 ''}
                 <div className="large-number beijing">{candiBeijing || "-"}</div>
               </div>
@@ -301,11 +307,22 @@ const IndexPage = props => {
                           navigate(
                             `/constituency/${c.key}`
                           )
-                        }}>
+                        }}
+                      >
                         <Typography variant="caption" color="textSecondary">{t(`electors_composition_${c.electors_composition}`)}</Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
-                        {c.situation !== "uncontested" ? <><Typography variant="body2">親中 - 民主 = {c.last_election_vote_beijing_minus_demo}</Typography>
-                          <Typography variant="body2">新增選民 + 上屆未投票 = {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}</Typography></> : null}
+                        {c.situation !== "uncontested" ? (
+                          <>
+                            <Typography variant="body2">
+                              親中 - 民主 =
+                              {c.last_election_vote_beijing_minus_demo}
+                            </Typography>
+                            <Typography variant="body2">
+                              新增選民 + 上屆未投票 =
+                              {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}
+                            </Typography>
+                          </>
+) : null}
                         
                         {/* <FCStackedBarChart data={{
                             electors_total_2020: Number(c.electors_total_2020),
@@ -330,25 +347,28 @@ const IndexPage = props => {
       <SEO title="Home" />
       <FullWidithWrapper>
         <SingleStackedBarChart data={chartData} summary={summary} title={t(`simulation_result`)} />
-      <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
-        {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-      </ExpandButton>
-      <Collapse in={showSeatHistory} timeout={100}>
-        {
+        <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
+          {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ExpandButton>
+        <Collapse in={showSeatHistory} timeout={100}>
+          {
           PastElectionResult.map(r => <SingleStackedBarChart key={r.year} data={r.result} summary={r.summary} title={r.year} />)
         }
-      </Collapse>
-      {isDesktop ? <Grid container spacing={3}>
-        <Grid item xs={6}>
-        <Typography variant="h5">{t(`geo_func_dc2`)}</Typography>
-          {renderDirect(allGeoFuncDc2.nodes)}
-        </Grid>
-        <Grid item xs={6}>
-        <Typography variant="h5">{t(`trad_func`)}</Typography>
-          {renderTradFC(allTradFunc.nodes)}
-        </Grid>
-      </Grid> : <SimpleTabs
-        tabs={[
+        </Collapse>
+        {isDesktop ? (
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Typography variant="h5">{t(`geo_func_dc2`)}</Typography>
+              {renderDirect(allGeoFuncDc2.nodes)}
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="h5">{t(`trad_func`)}</Typography>
+              {renderTradFC(allTradFunc.nodes)}
+            </Grid>
+          </Grid>
+) : (
+  <SimpleTabs
+    tabs={[
           {
             name: `geo_func_dc2`,
             title: t(`geo_func_dc2`),
@@ -360,14 +380,15 @@ const IndexPage = props => {
             content: <Container>{renderTradFC(allTradFunc.nodes)}</Container>,
           }
         ]}
-        onTabChange={name => {
+    onTabChange={name => {
           // trackCustomEvent({
           //   category: "news",
           //   action: "tab_select",
           //   label: name,
           // })
         }}
-      />}
+  />
+)}
       
       </FullWidithWrapper>
     </Layout>

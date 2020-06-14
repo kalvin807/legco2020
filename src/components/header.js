@@ -41,7 +41,8 @@ export default function Header(props) {
           dangerouslySetInnerHTML={renderTitle()} 
           onClick={() => {
             navigate(`/`)
-          }} />
+          }}
+        />
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton> */}

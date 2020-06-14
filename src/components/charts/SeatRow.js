@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { select } from "d3";
 import useResizeObserver from "@/utils/ResizeObserver"
 
-function SeatRowChart({ data, width, height }) {
+function SeatRowChart({ data, width }) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
@@ -29,21 +29,23 @@ function SeatRowChart({ data, width, height }) {
             .attr('y', (d, i) => parseInt(i / 3) * (length + config.itemMargin))
             .attr('height', length)
             .attr('width', length)
-            .style('fill', (d, i) => d.color)
+            .style('fill', d => d.color)
         
 
     }, [data, dimensions]);
 
     return (
-        <div ref={wrapperRef}>
-            <svg ref={svgRef} style={{
+      <div ref={wrapperRef}>
+        <svg
+          ref={svgRef}
+          style={{
                 overflow: 'visible',
                 display: 'block',
                 width: `${width}px`,
                 height: `${width}px`,
-            }}>
-            </svg>
-        </div>
+            }}
+        />
+      </div>
     );
 }
 

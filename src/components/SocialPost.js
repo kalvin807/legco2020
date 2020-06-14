@@ -44,20 +44,25 @@ const SocialPost = ({ ...props }) => {
     <PostsWrapper>
       <Alert 
         severity="warning"
-        children="以下帖子由Factcheck Lab自動搜集，現正全力提升準確度。" />
+      >
+      以下帖子由Factcheck Lab自動搜集，現正全力提升準確度。
+      </Alert>
       {
         socialPosts.map(post => {
           return (
             <Post onClick={() => {
               window.open(post.platformUrl, '_blank')
-            }}>
+            }}
+            >
               <div className="sub-title">
-              <Typography variant="caption">
-              {t(`platform.${post.group.platform.name}`)} {post.group.name}
-              </Typography>
-              <Typography variant="caption">
-                {moment(post.createdAt).fromNow()}
-              </Typography>
+                <Typography variant="caption">
+                  {t(`platform.${post.group.platform.name}`)} 
+                  {' '}
+                  {post.group.name}
+                </Typography>
+                <Typography variant="caption">
+                  {moment(post.createdAt).fromNow()}
+                </Typography>
               </div>
 
               <Typography variant="h5">
@@ -67,19 +72,25 @@ const SocialPost = ({ ...props }) => {
               <Grid 
                 container
                 spacing={3}
-                >
+              >
                 <MetricsWrapper item>
                   <IoMdTrendingUp />
                   {post.performance ? `${post.performance.toFixed(2)}x` : "-"}
                 </MetricsWrapper>
                 <MetricsWrapper item>
-                  <FcLike /> {post.likeCount || "-"}
+                  <FcLike /> 
+                  {' '}
+                  {post.likeCount || "-"}
                 </MetricsWrapper>
                 <MetricsWrapper item>
-                  <IoMdHeartDislike /> {post.dislikeCount || "-"}
+                  <IoMdHeartDislike /> 
+                  {' '}
+                  {post.dislikeCount || "-"}
                 </MetricsWrapper>
                 <MetricsWrapper item>
-                  <MdModeComment /> {post.replyCount || "-"}
+                  <MdModeComment /> 
+                  {' '}
+                  {post.replyCount || "-"}
                 </MetricsWrapper>
               </Grid>
             </Post>

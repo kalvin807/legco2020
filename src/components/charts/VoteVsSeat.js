@@ -25,9 +25,7 @@ function VoteVsSeat({ votes, seats, title }) {
         if (!dimensions) return;
 
 
-        const { margin, barHeight, barMargin, textMargin, labelFontSize } = config
-        const w = dimensions.width - margin.left - margin.right
-        const h = dimensions.height - margin.top - margin.bottom
+        const { barHeight, barMargin, textMargin, labelFontSize } = config
         
         const total = votes.DEMO + votes.BEIJING
 
@@ -40,13 +38,13 @@ function VoteVsSeat({ votes, seats, title }) {
                 value: votes.DEMO,
                 cumulative: 0,
                 percentage: percent(votes.DEMO),
-                color: seatColorMapping["FC_EXPECTED_WIN_DEMO"]
+                color: seatColorMapping.FC_EXPECTED_WIN_DEMO
             },
             {
                 value: votes.BEIJING,
                 cumulative: votes.DEMO,
                 percentage: percent(votes.BEIJING),
-                color: seatColorMapping["FC_EXPECTED_WIN_BEIJING"]
+                color: seatColorMapping.FC_EXPECTED_WIN_BEIJING
             }
         ]
         
@@ -62,7 +60,7 @@ function VoteVsSeat({ votes, seats, title }) {
             .attr('text-anchor', 'start')
             .attr('x', 0)
             .attr('y', 0)
-            .attr("transform", "translate(" + 0 + "," + labelFontSize + ")")
+            .attr("transform", `translate(${  0  },${  labelFontSize  })`)
             .style('fill', theme.palette.text.primary)
             .style('font-size', labelFontSize)
             .style('font-weight', 400)
@@ -89,7 +87,7 @@ function VoteVsSeat({ votes, seats, title }) {
             .attr('text-anchor', 'start')
             .attr('x', 0)
             .attr('y', labelFontSize + textMargin + barHeight + barMargin / 2)
-            .attr("transform", "translate(" + 0 + "," + (labelFontSize) + ")")
+            .attr("transform", `translate(${  0  },${  labelFontSize  })`)
             .style('fill', theme.palette.text.primary)
             .style('font-size', labelFontSize)
             .style('font-weight', 400)
@@ -105,9 +103,8 @@ function VoteVsSeat({ votes, seats, title }) {
             .attr('y', labelFontSize + textMargin + barHeight + barMargin + labelFontSize)
             .attr('height', barHeight)
             .attr('width', barHeight)
-            .style('fill', (d, i) => d.color)
+            .style('fill', d => d.color)
             .style('stroke', theme.palette.background.paper)
-
 
         // add the labels
         svg.selectAll('.text-percentage-label')
@@ -127,15 +124,17 @@ function VoteVsSeat({ votes, seats, title }) {
     }, [votes, seats, dimensions]);
 
     return (
-        <div ref={wrapperRef}>
-            <svg ref={svgRef} style={{
+      <div ref={wrapperRef}>
+        <svg
+          ref={svgRef}
+          style={{
                 overflow: 'visible',
                 display: 'block',
                 width: `${config.barHeight * seats.length}px`,
                 height: '84px',
-            }}>
-            </svg>
-        </div>
+            }}
+        />
+      </div>
     );
 }
 
