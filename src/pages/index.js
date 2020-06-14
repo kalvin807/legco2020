@@ -319,7 +319,10 @@ const IndexPage = props => {
                 <div className="group-title">
                   {t('no_of_seats_fc', {
                     title: group.title,
-                    seats: group.content.length,
+                    seats: group.content.reduce(
+                      (a, c) => a + Number(c.seats),
+                      0
+                    ),
                   })}
                 </div>
                 <div className={`seat-group ${group.situation}`}>
@@ -348,6 +351,7 @@ const IndexPage = props => {
                         }}
                       >
                         <Typography variant="caption" color="textSecondary">
+                          {c.seats}席 -{' '}
                           {t(`electors_composition_${c.electors_composition}`)}
                         </Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>

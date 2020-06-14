@@ -17,7 +17,7 @@
   "compatible": "有競爭空間",
   "foreseeable": "可預測",
   "uncontested": "自動當選",
-  "no_of_seats_fc": "{{title}}（{{seats}}）",
+  "no_of_seats_fc": "{{title}}（{{seats}}席）",
   "estimated_result": "預測議席分布",
   "electors_composition_individual": "個人票",
   "electors_composition_body": "團體票",
