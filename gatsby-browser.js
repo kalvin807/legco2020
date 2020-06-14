@@ -6,14 +6,14 @@
 
 // You can delete this file if you're not using it
 
-import React, { useEffect } from "react"
+import React from "react"
 import "@/i18n"
 import I18nWrapper from "@/components/I18nWrapper"
 
-export const wrapPageElement = ({ element, props }) => {
+export const wrapPageElement = ({ element, props : { pageContext : { locale } } }) => {
     return (
       <>
-        <I18nWrapper locale={props.pageContext.locale}>{element}</I18nWrapper>
+        <I18nWrapper locale={locale}>{element}</I18nWrapper>
       </>
     )
   }

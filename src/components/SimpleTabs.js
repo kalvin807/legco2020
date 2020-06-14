@@ -58,10 +58,10 @@ export default function SimpleTabs(props) {
           indicatorColor="primary"
           textColor="primary"
         >
-          {tabs.map((tab, i) => (
+          {tabs.map(tab => (
             <Tab
-              onClick={e => onTabChange(tab.name)}
-              key={i}
+              onClick={() => onTabChange(tab.name)}
+              key={tab}
               label={tab.title}
               {...a11yProps(0)}
             />
@@ -69,7 +69,7 @@ export default function SimpleTabs(props) {
         </Tabs>
       </UnstyledAppBar>
       {tabs.map((tab, i) => (
-        <TabPanel key={i} value={value} index={i}>
+        <TabPanel key={tab} value={value} index={i}>
           {tab.content}
         </TabPanel>
       ))}

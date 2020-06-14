@@ -4,15 +4,17 @@ import SEO from "@/components/seo"
 import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
-import FCStackedBarChart from "@/components/charts/FCStackedBar"
+// import FCStackedBarChart from "@/components/charts/FCStackedBar"
 import theme from "@/themes"
 import { Typography, Collapse, useMediaQuery, Grid } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
 import styled from "styled-components"
-import { useTranslation } from "react-i18next" 
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { useTranslation } from "react-i18next"
+import ExpandLessIcon from "@material-ui/icons/ExpandLess"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { PastElectionResult } from "@/data/ElectionResults"
+import { seatColorMapping } from "@/config"
+import { calculateSeatBox } from "@/utils"
 
 const FullWidithWrapper = styled.div`
   margin: 0 -${theme.spacing(2)}px;
@@ -31,7 +33,7 @@ const DirectWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
-    
+
     .title {
       display: flex;
       justify-content: space-between;
@@ -65,7 +67,7 @@ const DirectWrapper = styled.div`
       font-size: 2rem;
       font-weight: 900;
     }
-    
+
     .demo {
       text-align: left;
       color: ${theme.palette.warning.main};
@@ -83,7 +85,6 @@ const DirectWrapper = styled.div`
 `
 
 const TradFCWrapper = styled.div`
-
   .seat-group {
     display: grid;
     grid-gap: ${theme.spacing(1)}px;
@@ -94,17 +95,20 @@ const TradFCWrapper = styled.div`
     margin: ${theme.spacing(1.5)}px 0;
   }
 
-  .fierce, .compatible {
+  .fierce,
+  .compatible {
     grid-template-columns: repeat(1, 1fr);
   }
 
-  ${theme.breakpoints.up('sm')} {
-    .fierce, .compatible {
+  ${theme.breakpoints.up("sm")} {
+    .fierce,
+    .compatible {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .foreseeable, .uncontested {
+  .foreseeable,
+  .uncontested {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -112,14 +116,13 @@ const TradFCWrapper = styled.div`
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
     border-radius: 2px;
     box-shadow: 0 1px 6px 0 ${theme.palette.divider};
-    
+
     .title {
       display: flex;
       justify-content: space-between;
       line-height: 0;
     }
   }
-
 
   .seat.demo {
     border-top: 3px ${theme.palette.warning.main} solid;
@@ -134,201 +137,239 @@ const ExpandButton = styled.div`
   text-align: center;
 `
 
-const seatColorMapping = {
-  FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
-  GC_EXPECTED_WIN_DEMO: theme.palette.warning.light,
-  GC_EXPECTED_WIN_OTHER: theme.palette.success.main,
-  FC_EXPECTED_WIN_OTHER: theme.palette.success.main,
-  UNRESOLVED: theme.palette.divider,
-  GC_EXPECTED_WIN_BEIJING: theme.palette.info.light,
-  FC_EXPECTED_WIN_BEIJING: theme.palette.info.main,
-}
-
 const IndexPage = props => {
-  const { data: { allGeoFuncDc2, allTradFunc } } = props
-  const [ showSeatHistory, setShowSeatHistory ] = useState(false)
-  const seat = [...Array.from(allGeoFuncDc2.nodes), ...Array.from(allTradFunc.nodes)]
-  
+  const {
+    data: { allGeoFuncDc2, allTradFunc },
+  } = props
+  const [showSeatHistory, setShowSeatHistory] = useState(false)
+  const seat = [
+    ...Array.from(allGeoFuncDc2.nodes),
+    ...Array.from(allTradFunc.nodes),
+  ]
+
   const { t } = useTranslation()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
   // group data for chart
-  let seatCount = {
-    UNRESOLVED: 70
+  const seatCount = {
+    UNRESOLVED: 70,
   }
 
-  seat.forEach(seat => {
-    Object.keys(seat).filter(k => k.includes('expected')).map(key => {
-      const seatType = `${seat.type}_${key}`.toUpperCase()
-      if (typeof seatCount[seatType] === 'undefined') {
-        seatCount[seatType] = Number(seat[key])
-      } else {
-        seatCount[seatType] += Number(seat[key])
-      }
-      seatCount['UNRESOLVED'] -= Number(seat[key])
-    })
-  });
-
+  seat.forEach(s => {
+    Object.keys(s)
+      .filter(k => k.includes("expected"))
+      .map(key => {
+        const seatType = `${s.type}_${key}`.toUpperCase()
+        if (typeof seatCount[seatType] === "undefined") {
+          seatCount[seatType] = Number(seat[key])
+        } else {
+          seatCount[seatType] += Number(seat[key])
+        }
+        seatCount.UNRESOLVED -= Number(seat[key])
+      })
+  })
 
   // Build chart data
   const chartData = Object.keys(seatColorMapping).map(scm => ({
     key: scm,
     label: t(`stackedBar.${scm}`),
     value: seatCount[scm],
-    color: seatColorMapping[scm]
+    color: seatColorMapping[scm],
   }))
 
   // Build chart data
-  let summary = {
+  const summary = {
     DEMO: {
       name: t(`alias.DEMO`),
-      pos: 'start',
+      pos: "start",
       total: 0,
-      background: theme.palette.warning.light
+      background: theme.palette.warning.light,
     },
     BEIJING: {
       name: t(`alias.BEIJING`),
-      pos: 'end',
+      pos: "end",
       total: 0,
-      background: theme.palette.info.light
-    }
+      background: theme.palette.info.light,
+    },
   }
 
   chartData.forEach(c => {
-    if (c.key.includes('DEMO')) {
-      summary['DEMO'].total += c.value
+    if (c.key.includes("DEMO")) {
+      summary.DEMO.total += c.value
     }
-    if (c.key.includes('BEIJING')) {
-      summary['BEIJING'].total += c.value
+    if (c.key.includes("BEIJING")) {
+      summary.BEIJING.total += c.value
     }
   })
 
   const renderDirect = edges => {
     return (
       <DirectWrapper>
-        {edges.sort((a, b) => {
-          if (a.order > b.order) return 1
-          if (a.order < b.order) return -1
-        }).map((e, i) => {
-          const expectedWinDemo = Number(e.expected_win_demo) || 0
-          const unresolvedSeats = Number(e.unresolved_seats) || 0
-          const expectedWinBeijing = Number(e.expected_win_beijing) || 0
+        {edges
+          .sort((a, b) => {
+            if (a.order > b.order) return 1
+            if (a.order < b.order) return -1
+            return 0
+          })
+          .map((e, i) => {
+            const candiBeijing = Number(e.candidates_beijing) || 0
+            const candiModerate = Number(e.candidates_other) || 0
+            const candiDemo = Number(e.candidates_demo) || 0
 
-          const candiBeijing = Number(e.candidates_beijing) || 0
-          const candiModerate = Number(e.candidates_other) || 0
-          const candiDemo = Number(e.candidates_demo) || 0
-          
-          const expectedResultRows = [
-            ...[...Array(expectedWinDemo).keys()].map((d, i) => ({
-              color: seatColorMapping['GC_EXPECTED_WIN_DEMO']
-            })),
-            ...[...Array(unresolvedSeats).keys()].map((d, i) => ({
-              color: seatColorMapping['UNRESOLVED']
-            })),
-            ...[...Array(expectedWinBeijing).keys()].map((d, i) => ({
-              color: seatColorMapping['GC_EXPECTED_WIN_BEIJING']
-            })),
-          ]
-          return (
-            <div key={i} className="seat clickable" onClick={() => {
-              navigate(
-                `/constituency/${e.key}`
-              )
-            }}>
-              <div className="title">
-                  <Typography variant="caption" color="textSecondary">{t("no_of_seats", { seats: e.seats })}</Typography>
+            const key = `key-${i}`
+            return (
+              <div
+                key={key}
+                className="seat clickable"
+                onClick={() => {
+                  navigate(`/constituency/${e.key}`)
+                }}
+              >
+                <div className="title">
+                  <Typography variant="caption" color="textSecondary">
+                    {t("no_of_seats", { seats: e.seats })}
+                  </Typography>
                   <div className="sub-title">{t("estimated_result")}</div>
-              </div>
-              <div className="title">
-                <div>
-                  <Typography variant="h5">{e.alias_zh}</Typography>
                 </div>
-                <div>
-                  <div style={{ width: "40px", height: "40px" }} >
-                    <SeatRowChart width={40} height={40} data={expectedResultRows} />
+                <div className="title">
+                  <div>
+                    <Typography variant="h5">{e.alias_zh}</Typography>
+                  </div>
+                  <div>
+                    <div style={{ width: "40px", height: "40px" }}>
+                      <SeatRowChart
+                        width={40}
+                        height={40}
+                        data={calculateSeatBox(e)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="roundup-title">
+                  <div>
+                    <Typography variant="caption">{t("alias.DEMO")}</Typography>
+                    <div className="sub-title">{t("intented_list")}</div>
+                  </div>
+                  <div>
+                    <Typography variant="caption">
+                      {t("alias.BEIJING")}
+                    </Typography>
+                    <div className="sub-title">{t("intented_list")}</div>
+                  </div>
+                </div>
+                <div className="roundup">
+                  <div className="large-number demo">{candiDemo || "-"}</div>
+                  <div>
+                    <Typography variant="body1" color="textSecondary">
+                      vs
+                    </Typography>
+                  </div>
+                  {candiModerate ? (
+                    <>
+                      <div className="large-number other">
+                        {candiModerate || "-"}
+                      </div>
+                      <div>
+                        <Typography variant="body1" color="textSecondary">
+                          vs
+                        </Typography>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  <div className="large-number beijing">
+                    {candiBeijing || "-"}
                   </div>
                 </div>
               </div>
-              <div className="roundup-title">
-                <div>
-                  <Typography variant="caption">{t("alias.DEMO")}</Typography>
-                  <div className="sub-title">{t("intented_list")}</div>
-                </div>
-                <div>
-                  <Typography variant="caption">{t("alias.BEIJING")}</Typography>
-                  <div className="sub-title">{t("intented_list")}</div>
-                </div>
-              </div>
-              <div className="roundup">
-              <div className="large-number demo">{candiDemo || "-"}</div>
-                <div>
-                  <Typography variant="body1" color="textSecondary">vs</Typography>
-                </div>
-                {candiModerate ? <>
-                <div className="large-number other">{candiModerate || "-"}</div>
-                <div>
-                  <Typography variant="body1" color="textSecondary">vs</Typography>
-                </div>
-                </> : 
-                ''}
-                <div className="large-number beijing">{candiBeijing || "-"}</div>
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
       </DirectWrapper>
     )
   }
 
   const renderTradFC = edges => {
-
     const grouppedFc = edges.reduce((a, c) => {
-      const idx = a.findIndex(a => a.title === t(c.situation))
+      const idx = a.findIndex(element => element.title === t(c.situation))
       if (idx < 0) {
-        return [...a, {
-          key: c.key,
-          title: t(c.situation),
-          situation: c.situation,
-          order: c.situation_order,
-          content: [c]
-        }]
+        return [
+          ...a,
+          {
+            key: c.key,
+            title: t(c.situation),
+            situation: c.situation,
+            order: c.situation_order,
+            content: [c],
+          },
+        ]
       }
-  
+
       a[idx].content.push(c)
       return a
     }, [])
 
     return (
       <TradFCWrapper>
-        {grouppedFc.sort((a, b) => {
-          if (a.order > b.order) return 1
-          if (a.order < b.order) return -1
-        }).map(group => {
-
-          return (
-            <>
-              <div className="group-title">{t("no_of_seats_fc", { title: group.title, seats: group.content.length } )}</div>
-              <div className={`seat-group ${group.situation}`}>
-                {
-                  group.content.map((c, i) => {
-
+        {grouppedFc
+          .sort((a, b) => {
+            if (a.order > b.order) return 1
+            if (a.order < b.order) return -1
+            return 0
+          })
+          .map(group => {
+            return (
+              <div key={`group-${group.title}`}>
+                <div className="group-title">
+                  {t("no_of_seats_fc", {
+                    title: group.title,
+                    seats: group.content.length,
+                  })}
+                </div>
+                <div className={`seat-group ${group.situation}`}>
+                  {group.content.map(c => {
                     const expectedWinDemo = Number(c.expected_win_demo) || 0
-                    const unresolvedSeats = Number(c.unresolved_seats) || 0
-                    const expectedWinBeijing = Number(c.expected_win_beijing) || 0
+                    // const unresolvedSeats = Number(c.unresolved_seats) || 0
+                    const expectedWinBeijing =
+                      Number(c.expected_win_beijing) || 0
+
+                    // TODO: change the key
+                    const key = `${c.expected_win_demo}-${c.expected_win_beijing}`
+
+                    let className = ""
+                    if (expectedWinDemo > expectedWinBeijing) {
+                      className = "demo"
+                    } else if (expectedWinDemo < expectedWinBeijing) {
+                      className = "beijing"
+                    }
 
                     return (
-                      <div 
-                        key={i} 
-                        className={`seat clickable ${expectedWinDemo > expectedWinBeijing ? "demo" : ( expectedWinDemo < expectedWinBeijing ? "beijing" : "")}`}
+                      <div
+                        key={key}
+                        className={`seat clickable ${className}`}
                         onClick={() => {
-                          navigate(
-                            `/constituency/${c.key}`
-                          )
-                        }}>
-                        <Typography variant="caption" color="textSecondary">{t(`electors_composition_${c.electors_composition}`)}</Typography>
+                          navigate(`/constituency/${c.key}`)
+                        }}
+                      >
+                        <Typography variant="caption" color="textSecondary">
+                          {t(`electors_composition_${c.electors_composition}`)}
+                        </Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
-                        {c.situation !== "uncontested" ? <><Typography variant="body2">親中 - 民主 = {c.last_election_vote_beijing_minus_demo}</Typography>
-                          <Typography variant="body2">新增選民 + 上屆未投票 = {Number(c.electors_total_2020) - Number(c.electors_total_2016) + Number(c.electors_total_2016) - Number(c.last_election_voted_count)}</Typography></> : null}
-                        
+                        {c.situation !== "uncontested" ? (
+                          <>
+                            <Typography variant="body2">
+                              親中 - 民主 =
+                              {c.last_election_vote_beijing_minus_demo}
+                            </Typography>
+                            <Typography variant="body2">
+                              新增選民 + 上屆未投票 =
+                              {Number(c.electors_total_2020) -
+                                Number(c.electors_total_2016) +
+                                Number(c.electors_total_2016) -
+                                Number(c.last_election_voted_count)}
+                            </Typography>
+                          </>
+                        ) : null}
+
                         {/* <FCStackedBarChart data={{
                             electors_total_2020: Number(c.electors_total_2020),
                             electors_total_2016: Number(c.electors_total_2016),
@@ -337,12 +378,11 @@ const IndexPage = props => {
                         }}/> */}
                       </div>
                     )
-                  })
-                }
+                  })}
+                </div>
               </div>
-            </>
-          )
-        })}
+            )
+          })}
       </TradFCWrapper>
     )
   }
@@ -351,52 +391,65 @@ const IndexPage = props => {
     <Layout>
       <SEO title="Home" />
       <FullWidithWrapper>
-        <SingleStackedBarChart data={chartData} summary={summary} title={t(`simulation_result`)} />
-      <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
-        {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-      </ExpandButton>
-      <Collapse in={showSeatHistory} timeout={100}>
-        {
-          PastElectionResult.map(r => <>
-          <SingleStackedBarChart data={r.result} summary={r.summary} title={r.year} />
-          </>)
-        }
-      </Collapse>
-      {isDesktop ? <Grid container spacing={3}>
-        <Grid item xs={6}>
-        <Typography variant="h5">{t(`geo_func_dc2`)}</Typography>
-          {renderDirect(allGeoFuncDc2.nodes)}
-        </Grid>
-        <Grid item xs={6}>
-        <Typography variant="h5">{t(`trad_func`)}</Typography>
-          {renderTradFC(allTradFunc.nodes)}
-        </Grid>
-      </Grid> : <SimpleTabs
-        tabs={[
-          {
-            name: `geo_func_dc2`,
-            title: t(`geo_func_dc2`),
-            content: <Container>{renderDirect(allGeoFuncDc2.nodes)}</Container>,
-          },
-          {
-            name: `trad_func`,
-            title: t(`trad_func`),
-            content: <Container>{renderTradFC(allTradFunc.nodes)}</Container>,
-          }
-        ]}
-        onTabChange={name => {
-          // trackCustomEvent({
-          //   category: "news",
-          //   action: "tab_select",
-          //   label: name,
-          // })
-        }}
-      />}
-      
+        <SingleStackedBarChart
+          data={chartData}
+          summary={summary}
+          title={t(`simulation_result`)}
+        />
+        <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
+          {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ExpandButton>
+        <Collapse in={showSeatHistory} timeout={100}>
+          {PastElectionResult.map(r => (
+            <SingleStackedBarChart
+              key={r.year}
+              data={r.result}
+              summary={r.summary}
+              title={r.year}
+            />
+          ))}
+        </Collapse>
+        {isDesktop ? (
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Typography variant="h5">{t(`geo_func_dc2`)}</Typography>
+              {renderDirect(allGeoFuncDc2.nodes)}
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="h5">{t(`trad_func`)}</Typography>
+              {renderTradFC(allTradFunc.nodes)}
+            </Grid>
+          </Grid>
+        ) : (
+          <SimpleTabs
+            tabs={[
+              {
+                name: `geo_func_dc2`,
+                title: t(`geo_func_dc2`),
+                content: (
+                  <Container>{renderDirect(allGeoFuncDc2.nodes)}</Container>
+                ),
+              },
+              {
+                name: `trad_func`,
+                title: t(`trad_func`),
+                content: (
+                  <Container>{renderTradFC(allTradFunc.nodes)}</Container>
+                ),
+              },
+            ]}
+            onTabChange={() => {
+              // trackCustomEvent({
+              //   category: "news",
+              //   action: "tab_select",
+              //   label: name,
+              // })
+            }}
+          />
+        )}
       </FullWidithWrapper>
     </Layout>
   )
-
 }
 
 export default IndexPage
