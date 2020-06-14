@@ -3,5 +3,16 @@
  *
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
+import React from "react"
+import "@/i18n"
+import I18nWrapper from "@/components/I18nWrapper"
 
-// You can delete this file if you're not using it
+export const wrapPageElement = ({ element, props: { pageContext: { locale } } }) => {
+  return (
+    <>
+      <I18nWrapper locale={locale} ssr>
+        {element}
+      </I18nWrapper>
+    </>
+  )
+}

@@ -1,10 +1,8 @@
 import React, { useState } from "react"
-import Layout from "@/components/layout"
 import SEO from "@/components/seo"
 import { graphql, navigate } from "gatsby"
 import SingleStackedBarChart from "@/components/charts/SingleStackedBar"
 import SeatRowChart from "@/components/charts/SeatRow"
-// import FCStackedBarChart from "@/components/charts/FCStackedBar"
 import theme from "@/themes"
 import { Typography, Collapse, useMediaQuery, Grid } from "@material-ui/core"
 import SimpleTabs from "@/components/SimpleTabs"
@@ -142,7 +140,7 @@ const IndexPage = props => {
     data: { allGeoFuncDc2, allTradFunc },
   } = props
   const [showSeatHistory, setShowSeatHistory] = useState(false)
-  const seat = [
+  const seats = [
     ...Array.from(allGeoFuncDc2.nodes),
     ...Array.from(allTradFunc.nodes),
   ]
@@ -154,11 +152,11 @@ const IndexPage = props => {
     UNRESOLVED: 70,
   }
 
-  seat.forEach(s => {
-    Object.keys(s)
+  seats.forEach(seat => {
+    Object.keys(seat)
       .filter(k => k.includes("expected"))
       .map(key => {
-        const seatType = `${s.type}_${key}`.toUpperCase()
+        const seatType = `${seat.type}_${key}`.toUpperCase()
         if (typeof seatCount[seatType] === "undefined") {
           seatCount[seatType] = Number(seat[key])
         } else {
@@ -214,7 +212,6 @@ const IndexPage = props => {
             const candiBeijing = Number(e.candidates_beijing) || 0
             const candiModerate = Number(e.candidates_other) || 0
             const candiDemo = Number(e.candidates_demo) || 0
-
             const key = `key-${i}`
             return (
               <div
@@ -357,11 +354,11 @@ const IndexPage = props => {
                         {c.situation !== "uncontested" ? (
                           <>
                             <Typography variant="body2">
-                              親中 - 民主 =
+                              親中 - 民主 ={" "}
                               {c.last_election_vote_beijing_minus_demo}
                             </Typography>
                             <Typography variant="body2">
-                              新增選民 + 上屆未投票 =
+                              新增選民 + 上屆未投票 ={" "}
                               {Number(c.electors_total_2020) -
                                 Number(c.electors_total_2016) +
                                 Number(c.electors_total_2016) -
@@ -388,7 +385,7 @@ const IndexPage = props => {
   }
 
   return (
-    <Layout>
+    <>
       <SEO title="Home" />
       <FullWidithWrapper>
         <SingleStackedBarChart
@@ -448,7 +445,7 @@ const IndexPage = props => {
           />
         )}
       </FullWidithWrapper>
-    </Layout>
+    </>
   )
 }
 

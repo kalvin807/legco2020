@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import Layout from "@/components/layout"
 import { graphql } from "gatsby"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
@@ -78,7 +77,7 @@ const FcPage = props => {
   }, [])
 
   return (
-    <Layout>
+    <>
       <Container maxWidth="lg">
         <SEO title="FC" />
         <Typography variant="h5" gutterBottom>
@@ -108,7 +107,7 @@ const FcPage = props => {
             )
           })}
       </Container>
-    </Layout>
+    </>
   )
 }
 

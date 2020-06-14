@@ -2,8 +2,10 @@ const fetch = require("node-fetch")
 const path = require("path")
 const csv2json = require("csvtojson")
 const { request } = require("graphql-request")
+const { getPath } = require("./src/utils/urlHelper")
 
 const isDebug = process.env.DEBUG_MODE === "true"
+const LANGUAGES = ["zh", "en"]
 
 // const PUBLISHED_SPREADSHEET_I18N_URL = 
 //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
@@ -53,27 +55,46 @@ const createPublishedGoogleSpreadsheetNode = async (
         })
 }
 
-
-const handleTags = person => {
-  const tags = []
-
-  const pushIfTrue = key => {
-    if (person[key] === "TRUE") {
-      tags.push({
-        i18nKey: key
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage, deletePage } = actions
+  return new Promise(resolve => {
+    // If it is already eng path we skip to re-generate the locale
+    if (!page.path.match(/^\/en/)) {
+      deletePage(page)
+      LANGUAGES.forEach(lang => {
+        createPage({
+          ...page,
+          path: getPath(lang, page.path),
+          context: {
+            ...page.context,
+            locale: lang,
+          },
+        })
       })
     }
-  }
+    resolve()
+  })
+}
 
-  pushIfTrue("is_current_lc")
-  pushIfTrue("is_current_dc")
-
-  if (person.camp === "DEMO") {
-    tags.push({
-      i18nKey: person.primary === "FALSE" ? "no_primary" : "primary"
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    const regex = [
+      /node_modules\/leaflet/,
+      /node_modules\\leaflet/,
+      /node_modules\/pixi.js/,
+      /node_modules\\pixi.js/,
+    ]
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: regex,
+            use: loaders.null(),
+          },
+        ],
+      },
     })
   }
-  return tags
 }
 
 exports.sourceNodes = async props => {
@@ -111,8 +132,6 @@ exports.sourceNodes = async props => {
         ),
     ])
 }
-
-
 
 exports.createPages = async function createPages({ graphql, actions, reporter }) {
   const { createPage } = actions
@@ -208,28 +227,57 @@ exports.createPages = async function createPages({ graphql, actions, reporter })
   }
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges
   GeoFuncDc2Constituencies.forEach(constituency => {
-    createPage({
-      path: `/constituency/${constituency.node.key}`,
-      component: GeoFuncDc2ConstituencyTemplate,
-      context: {
-        constituency: constituency.node,
-        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE')
-      },
+    LANGUAGES.forEach(lang => {
+      createPage({
+        path: getPath(lang, `/constituency/${constituency.node.key}`),
+        component: GeoFuncDc2ConstituencyTemplate,
+        context: {
+          constituency: constituency.node,
+          candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE'),
+          locale: lang,
+        },
+      })
     })
   })
 
   const TradFuncConstituencies = result.data.allTradFunc.edges
   TradFuncConstituencies.forEach(constituency => {
-    createPage({
-      path: `/constituency/${constituency.node.key}`,
-      component: TradFuncTemplate,
-      context: {
-        constituency: constituency.node,
-        councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current_lc === 'TRUE'),
-        candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE') 
-      },
+    LANGUAGES.forEach(lang => {
+      createPage({
+        path: getPath(lang,`/constituency/${constituency.node.key}`),
+        component: TradFuncTemplate,
+        context: {
+          constituency: constituency.node,
+          councillors: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_current_lc === 'TRUE'),
+          candidates: result.data.allPeople.edges.filter(p => p.node.constituency === constituency.node.key && p.node.is_2020_candidate === 'TRUE'),
+          locale: lang,
+        },
+      })
     })
   })
+
+
+const handleTags = person => {
+  const tags = []
+
+  const pushIfTrue = key => {
+    if (person[key] === "TRUE") {
+      tags.push({
+        i18nKey: key
+      })
+    }
+  }
+
+  pushIfTrue("is_current_lc")
+  pushIfTrue("is_current_dc")
+
+  if (person.camp === "DEMO") {
+    tags.push({
+      i18nKey: person.primary === "FALSE" ? "no_primary" : "primary"
+    })
+  }
+  return tags
+}
 
   const People = result.data.allPeople.edges
 
@@ -295,14 +343,17 @@ exports.createPages = async function createPages({ graphql, actions, reporter })
     .then(responses => responses.forEach(
       response => {
         const { person, socialPosts } = response
-        createPage({
-          path: `/profile/${person.name_zh}`,
-          component: ProfileTemplate,
-          context: {
-            person,
-            socialPosts,
-            tags: handleTags(person)
-          },
+        LANGUAGES.forEach(lang => {
+          createPage({
+            path: getPath(lang,`/profile/${person.name_zh}`),
+            component: ProfileTemplate,
+            context: {
+              person,
+              socialPosts,
+              tags: handleTags(person),
+              locale: lang,
+            },
+          })
         })
       }
     ));
