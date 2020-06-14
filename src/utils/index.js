@@ -1,14 +1,14 @@
-import { seatColorMapping } from "@/config"
+import { seatColorMapping } from '@/config';
 
 export function openInNewTab(url) {
-  const win = window.open(url, "_blank")
-  win.focus()
+  const win = window.open(url, '_blank');
+  win.focus();
 }
 
 export function calculateSeatBox(e) {
-  const expectedWinDemo = Number(e.expected_win_demo) || 0
-  const unresolvedSeats = Number(e.unresolved_seats) || 0
-  const expectedWinBeijing = Number(e.expected_win_beijing) || 0
+  const expectedWinDemo = Number(e.expected_win_demo) || 0;
+  const unresolvedSeats = Number(e.unresolved_seats) || 0;
+  const expectedWinBeijing = Number(e.expected_win_beijing) || 0;
 
   return [
     ...[...Array(expectedWinDemo).keys()].map(() => ({
@@ -20,14 +20,14 @@ export function calculateSeatBox(e) {
     ...[...Array(expectedWinBeijing).keys()].map(() => ({
       color: seatColorMapping.FC_EXPECTED_WIN_BEIJING,
     })),
-  ]
+  ];
 }
 
 export const saveToLocalStorage = (key, value) => {
-  if (typeof Storage !== "undefined") {
-    window.localStorage.setItem(key, value)
+  if (typeof Storage !== 'undefined') {
+    window.localStorage.setItem(key, value);
   }
-}
+};
 
 export const get = (obj, path, defaultValue = undefined) => {
   const travel = regexp =>
@@ -37,7 +37,7 @@ export const get = (obj, path, defaultValue = undefined) => {
       .reduce(
         (res, key) => (res !== null && res !== undefined ? res[key] : res),
         obj
-      )
-  const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/)
-  return result === undefined || result === obj ? defaultValue : result
-}
+      );
+  const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
+  return result === undefined || result === obj ? defaultValue : result;
+};

@@ -1,15 +1,15 @@
-import React from "react"
-import { navigate } from "gatsby"
-import { makeStyles } from "@material-ui/core/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
+import React from 'react';
+import { navigate } from 'gatsby';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
     background: theme.palette.background.paper,
     color: theme.palette.text.primary,
-    boxShadow: "none",
+    boxShadow: 'none',
     flexGrow: 1,
   },
   toolBar: {
@@ -20,14 +20,14 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
-}))
+}));
 
 const renderTitle = () => {
-  return { __html: `vote 4 <br />hongkong` }
-}
+  return { __html: 'vote 4 <br />hongkong' };
+};
 
 export default function Header() {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <AppBar position="static" className={classes.root}>
@@ -37,7 +37,7 @@ export default function Header() {
           className={`${classes.title} clickable`}
           dangerouslySetInnerHTML={renderTitle()}
           onClick={() => {
-            navigate(`/`)
+            navigate('/');
           }}
         />
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -45,5 +45,5 @@ export default function Header() {
         </IconButton> */}
       </Toolbar>
     </AppBar>
-  )
+  );
 }

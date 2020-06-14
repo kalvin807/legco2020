@@ -1,26 +1,26 @@
-import React from "react"
-import routeReducer from "@/reducers/route"
-import pageOptionsReducer from "@/reducers/pageOptions"
+import React from 'react';
+import routeReducer from '@/reducers/route';
+import pageOptionsReducer from '@/reducers/pageOptions';
 
 export const routeInitialState = {
-  path: "/",
-  fullPath: "/",
-}
+  path: '/',
+  fullPath: '/',
+};
 
-export const pageOptionsInitialState = {}
+export const pageOptionsInitialState = {};
 
 const ContextStore = React.createContext({
   route: routeInitialState,
   pageOptions: pageOptionsInitialState,
-})
+});
 
 export const ContextStoreProvider = props => {
-  const { initialStore = {} } = props
+  const { initialStore = {} } = props;
 
   const [routeState, routeDispatch] = React.useReducer(routeReducer, {
     ...routeInitialState,
     ...initialStore.route,
-  })
+  });
 
   const [pageOptionsState, pageOptionsDispatch] = React.useReducer(
     pageOptionsReducer,
@@ -28,7 +28,7 @@ export const ContextStoreProvider = props => {
       ...pageOptionsInitialState,
       ...initialStore.pageOptions,
     }
-  )
+  );
 
   return (
     <ContextStore.Provider
@@ -44,7 +44,7 @@ export const ContextStoreProvider = props => {
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
-export default ContextStore
+export default ContextStore;

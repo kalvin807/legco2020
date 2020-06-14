@@ -3,12 +3,12 @@
  */
 
 const removePathTrailingSlash = _path =>
-  _path === `/` ? _path : _path.replace(/\/$/, ``)
+  _path === '/' ? _path : _path.replace(/\/$/, '');
 
 const getPath = (lang, path) =>
-  removePathTrailingSlash(`${lang === "zh" ? "" : `/${lang}`}${path}`)
+  removePathTrailingSlash(`${lang === 'zh' ? '' : `/${lang}`}${path}`);
 
 module.exports = {
   getPath,
   removePathTrailingSlash,
-}
+};

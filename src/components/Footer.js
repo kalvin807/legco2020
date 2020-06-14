@@ -1,16 +1,16 @@
-import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Container from "@material-ui/core/Container"
-import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
-import { FaGithub, FaFacebook } from "react-icons/fa"
-import { openInNewTab } from "@/utils"
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { FaGithub, FaFacebook } from 'react-icons/fa';
+import { openInNewTab } from '@/utils';
 
 const useStyles = makeStyles(theme => ({
   root: {
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
-    marginTop: "auto",
+    marginTop: 'auto',
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
   },
@@ -24,15 +24,15 @@ const useStyles = makeStyles(theme => ({
   },
   noStyle: {
     color: theme.palette.text.primary,
-    textDecoration: "none",
+    textDecoration: 'none',
   },
   text: {
     fontSize: 12,
   },
-}))
+}));
 
 export default function Footer() {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div position="static" className={classes.root}>
@@ -59,14 +59,14 @@ export default function Footer() {
                 <FaGithub
                   className="clickable"
                   onClick={() =>
-                    openInNewTab("https://github.com/vote4hk/legco2020")
+                    openInNewTab('https://github.com/vote4hk/legco2020')
                   }
                 />
               </Grid>
               <Grid item>
                 <FaFacebook
                   className="clickable"
-                  onClick={() => openInNewTab("https://fb.me/vote4hongkong")}
+                  onClick={() => openInNewTab('https://fb.me/vote4hongkong')}
                 />
               </Grid>
             </Grid>
@@ -101,5 +101,5 @@ export default function Footer() {
         </Grid>
       </Container>
     </div>
-  )
+  );
 }

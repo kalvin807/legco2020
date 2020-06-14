@@ -1,17 +1,17 @@
-import React from "react"
-import { Grid, Typography } from "@material-ui/core"
-import styled from "styled-components"
-import theme from "@/themes"
-import { useTranslation } from "react-i18next"
-import Alert from "@/components/Alert"
-import moment from "moment"
-import { FcLike } from "react-icons/fc"
-import { IoMdHeartDislike, IoMdTrendingUp } from "react-icons/io"
-import { MdModeComment } from "react-icons/md"
+import React from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import theme from '@/themes';
+import { useTranslation } from 'react-i18next';
+import Alert from '@/components/Alert';
+import moment from 'moment';
+import { FcLike } from 'react-icons/fc';
+import { IoMdHeartDislike, IoMdTrendingUp } from 'react-icons/io';
+import { MdModeComment } from 'react-icons/md';
 
 const PostsWrapper = styled.div`
   margin: ${theme.spacing(2)}px 0;
-`
+`;
 
 const MetricsWrapper = styled(Grid)`
   margin-top: ${theme.spacing(1)}px;
@@ -22,7 +22,7 @@ const MetricsWrapper = styled(Grid)`
   svg {
     margin-right: 3px;
   }
-`
+`;
 
 const Post = styled.div`
   margin: ${theme.spacing(2)}px 0;
@@ -34,11 +34,11 @@ const Post = styled.div`
     justify-content: space-between;
     margin-bottom: ${theme.spacing(1)}px;
   }
-`
+`;
 
 const SocialPost = ({ ...props }) => {
-  const { t } = useTranslation()
-  const { socialPosts } = props
+  const { t } = useTranslation();
+  const { socialPosts } = props;
   return (
     <PostsWrapper>
       <Alert severity="warning">
@@ -48,7 +48,7 @@ const SocialPost = ({ ...props }) => {
         return (
           <Post
             onClick={() => {
-              window.open(post.platformUrl, "_blank")
+              window.open(post.platformUrl, '_blank');
             }}
           >
             <div className="sub-title">
@@ -65,23 +65,23 @@ const SocialPost = ({ ...props }) => {
             <Grid container spacing={3}>
               <MetricsWrapper item>
                 <IoMdTrendingUp />
-                {post.performance ? `${post.performance.toFixed(2)}x` : "-"}
+                {post.performance ? `${post.performance.toFixed(2)}x` : '-'}
               </MetricsWrapper>
               <MetricsWrapper item>
-                <FcLike /> {post.likeCount || "-"}
+                <FcLike /> {post.likeCount || '-'}
               </MetricsWrapper>
               <MetricsWrapper item>
-                <IoMdHeartDislike /> {post.dislikeCount || "-"}
+                <IoMdHeartDislike /> {post.dislikeCount || '-'}
               </MetricsWrapper>
               <MetricsWrapper item>
-                <MdModeComment /> {post.replyCount || "-"}
+                <MdModeComment /> {post.replyCount || '-'}
               </MetricsWrapper>
             </Grid>
           </Post>
-        )
+        );
       })}
     </PostsWrapper>
-  )
-}
+  );
+};
 
-export default SocialPost
+export default SocialPost;

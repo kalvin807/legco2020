@@ -1,9 +1,9 @@
-import React from "react"
-import { Grid, Avatar, Typography } from "@material-ui/core"
-import styled from "styled-components"
-import theme from "@/themes"
-import { useTranslation } from "react-i18next"
-import { navigate } from "gatsby"
+import React from 'react';
+import { Grid, Avatar, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import theme from '@/themes';
+import { useTranslation } from 'react-i18next';
+import { navigate } from 'gatsby';
 
 const CandidatesWrapper = styled.div`
   display: grid;
@@ -33,17 +33,17 @@ const CandidatesWrapper = styled.div`
       text-align: center;
     }
   }
-`
+`;
 
 const TradFuncConstituencyTemplate = ({
   pageContext: { constituency, councillors, candidates },
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
       <Typography variant="caption">
-        {t("no_of_seats", { seats: constituency.seats })}
+        {t('no_of_seats', { seats: constituency.seats })}
       </Typography>
       <Typography variant="h6">
         {t(`electors_composition_${constituency.electors_composition}`)}
@@ -69,7 +69,7 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group clickable"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`)
+                    navigate(`/profile/${c.node.name_zh}`);
                   }}
                 >
                   <Avatar
@@ -79,7 +79,7 @@ const TradFuncConstituencyTemplate = ({
                   />
                   <span className="title">{c.node.name_zh}</span>
                 </div>
-              )
+              );
             })}
           </CandidatesWrapper>
         </Grid>
@@ -91,7 +91,7 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`)
+                    navigate(`/profile/${c.node.name_zh}`);
                   }}
                 >
                   <Avatar
@@ -101,13 +101,13 @@ const TradFuncConstituencyTemplate = ({
                   />
                   <span className="title">{c.node.name_zh}</span>
                 </div>
-              )
+              );
             })}
           </CandidatesWrapper>
         </Grid>
       </Grid>
     </>
-  )
-}
+  );
+};
 
-export default TradFuncConstituencyTemplate
+export default TradFuncConstituencyTemplate;

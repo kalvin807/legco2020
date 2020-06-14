@@ -3,16 +3,21 @@
  *
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
-import React from "react"
-import "@/i18n"
-import I18nWrapper from "@/components/I18nWrapper"
+import React from 'react';
+import '@/i18n';
+import I18nWrapper from '@/components/I18nWrapper';
 
-export const wrapPageElement = ({ element, props: { pageContext: { locale } } }) => {
+export const wrapPageElement = ({
+  element,
+  props: {
+    pageContext: { locale },
+  },
+}) => {
   return (
     <>
       <I18nWrapper locale={locale} ssr>
         {element}
       </I18nWrapper>
     </>
-  )
-}
+  );
+};

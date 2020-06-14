@@ -16,12 +16,16 @@ The data is updated automatically every 5 minutes. The information are all open 
 Need help? Check below links for simple tutorial about our tech stack!
 
 ### Gatsby.js
-- [In-depth tutorial for creating a site with Gatsby.](https://www.gatsbyjs.org/tutorial/)
-### React
-- [Intro to React](https://reactjs.org/tutorial/tutorial.html)
-### d3
-- [Using React (Hooks) with D3](https://muratorium.com/using-react-hooks-with-d3/)
 
+- [In-depth tutorial for creating a site with Gatsby.](https://www.gatsbyjs.org/tutorial/)
+
+### React
+
+- [Intro to React](https://reactjs.org/tutorial/tutorial.html)
+
+### d3
+
+- [Using React (Hooks) with D3](https://muratorium.com/using-react-hooks-with-d3/)
 
 ## 🚀 Quick start
 

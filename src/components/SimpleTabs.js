@@ -1,10 +1,10 @@
-import React from "react"
-import AppBar from "@material-ui/core/AppBar"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
-import Typography from "@material-ui/core/Typography"
-import Box from "@material-ui/core/Box"
-import styled from "styled-components"
+import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
 
 const UnstyledAppBar = styled(AppBar)`
   background: transparent;
@@ -13,10 +13,10 @@ const UnstyledAppBar = styled(AppBar)`
   button {
     text-transform: inherit;
   }
-`
+`;
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props
+  const { children, value, index, ...other } = props;
 
   return (
     <Typography
@@ -29,23 +29,23 @@ function TabPanel(props) {
     >
       {value === index && <Box>{children}</Box>}
     </Typography>
-  )
+  );
 }
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  }
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
 }
 
 export default function SimpleTabs(props) {
-  const { tabs, onTabChange } = props
-  const [value, setValue] = React.useState(0)
+  const { tabs, onTabChange } = props;
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -74,5 +74,5 @@ export default function SimpleTabs(props) {
         </TabPanel>
       ))}
     </>
-  )
+  );
 }
