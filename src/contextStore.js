@@ -1,5 +1,4 @@
 import React from "react"
-import { loadFromLocalStorage } from "@/utils"
 import routeReducer from "@/reducers/route"
 import pageOptionsReducer from "@/reducers/pageOptions"
 
@@ -8,9 +7,7 @@ export const routeInitialState = {
   fullPath: "/",
 }
 
-export const pageOptionsInitialState = {
-
-}
+export const pageOptionsInitialState = {}
 
 const ContextStore = React.createContext({
   route: routeInitialState,

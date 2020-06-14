@@ -1,28 +1,25 @@
 import React from "react"
-import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import ContextStore, { ContextStoreProvider } from "@/contextStore"
+import { ThemeProvider, makeStyles } from "@material-ui/core/styles"
+import Container from "@material-ui/core/Container"
+import { ContextStoreProvider } from "@/contextStore"
 import Header from "./header"
 import Footer from "./Footer"
 import "./layout.css"
-import theme from '../themes'
+import theme from "../themes"
 
-const useStyles = makeStyles((t) => ({
+const useStyles = makeStyles(t => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
   },
   container: {
     marginBottom: t.spacing(3),
-  }
-}));
+  },
+}))
 
 const ThemeProviderWrapper = ({ children }) => {
-  const {
-    pageOptions: { state },
-  } = React.useContext(ContextStore)
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>

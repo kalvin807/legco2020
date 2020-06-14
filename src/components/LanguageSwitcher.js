@@ -12,8 +12,8 @@ const LocaleButton = styled(ListItemText)`
   }
 `
 
-function LanguageSwitcher(props, context) {
-  var {
+function LanguageSwitcher() {
+  let {
     route: {
       state: { fullPath },
     },

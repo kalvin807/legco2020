@@ -32,7 +32,7 @@ const Router = ({ path }) => {
 export const wrapPageElement = ({ element, props : { pageContext : { locale }, uri } }) => {
   return (
     <>
-      <Router path={uri}></Router>
+      <Router path={uri} />
       <I18nWrapper locale={locale}>{element}</I18nWrapper>
     </>
   )

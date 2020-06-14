@@ -3,6 +3,7 @@ const path = require("path")
 const csv2json = require("csvtojson")
 const { request } = require("graphql-request")
 const { getPath } = require("./src/utils/urlHelper")
+
 const isDebug = process.env.DEBUG_MODE === "true"
 const LANGUAGES = ["zh", "en"]
 
