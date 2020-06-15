@@ -1,9 +1,24 @@
 import React from 'react';
 import { Grid, Avatar, Typography } from '@material-ui/core';
+import Chip from '@/components/Chip';
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
 import { navigate } from 'gatsby';
+
+const TradTemplateWrapper = styled.div`
+  .block {
+    margin: ${theme.spacing(1)}px 0;
+  }
+
+  .social {
+    font-size: 24px;
+  }
+
+  .social svg {
+    margin-left: ${theme.spacing(1)}px;
+  }
+`;
 
 const TradHeader = styled(Grid)`
 
@@ -48,12 +63,12 @@ const CandidatesWrapper = styled.div`
 `;
 
 const TradFuncConstituencyTemplate = ({
-  pageContext: { constituency, councillors, candidates },
+  pageContext: { constituency, councillors, candidates, tags },
 }) => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <TradTemplateWrapper>
       <TradHeader container>
         <Grid item>
           <Grid
@@ -63,7 +78,7 @@ const TradFuncConstituencyTemplate = ({
             className="title-box"
           >
             <Typography variant="body2" color="textSecondary">
-              {t(`electors_composition_${constituency.electors_composition}`)}
+              {t('no_of_seats', { seats: constituency.seats })}
             </Typography>
             <div className="title">{constituency.name_zh}</div>
           </Grid>
@@ -81,7 +96,14 @@ const TradFuncConstituencyTemplate = ({
           </Typography>
         </Grid>
       </TradHeader>
-      <Typography variant="body1">{constituency.description_zh}</Typography>
+      <Grid className="block" container>
+        {tags.map(tag => (
+          <Chip label={t(`tag.${tag.i18nKey}`)} variant="outlined" />
+        ))}
+      </Grid>
+      <Typography className="block" variant="body2">
+        {constituency.description_zh}
+      </Typography>
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Typography>現任</Typography>
@@ -91,7 +113,7 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group clickable"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`);
+                    navigate(`/profile/${c.node.uuid}/${c.node.name_zh}`);
                   }}
                 >
                   <Avatar
@@ -113,7 +135,7 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`);
+                    navigate(`/profile/${c.node.uuid}/${c.node.name_zh}`);
                   }}
                 >
                   <Avatar
@@ -128,7 +150,7 @@ const TradFuncConstituencyTemplate = ({
           </CandidatesWrapper>
         </Grid>
       </Grid>
-    </>
+    </TradTemplateWrapper>
   );
 };
 

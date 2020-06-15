@@ -109,7 +109,7 @@ const People = props => {
     <div
       className="avatar-group clickable"
       onClick={() => {
-        navigate(`/profile/${info.name_zh}`);
+        navigate(`/profile/${info.uuid}/${info.name_zh}`);
       }}
       onKeyDown={() => {}}
     >
