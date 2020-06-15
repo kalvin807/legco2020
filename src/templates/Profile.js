@@ -76,24 +76,21 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
             <RiFacebookCircleLine
               className="clickable"
               onClick={() =>
-                openInNewTab(`https://fb.me/${person.facebook_id}`)
-              }
+                openInNewTab(`https://fb.me/${person.facebook_id}`)}
             />
           )}
           {person.instagram_id && (
             <RiInstagramLine
               className="clickable"
               onClick={() =>
-                openInNewTab(`https://www.instagram.com/${person.instagram_id}`)
-              }
+                openInNewTab(`https://www.instagram.com/${person.instagram_id}`)}
             />
           )}
           {person.twitter_id && (
             <RiTwitterLine
               className="clickable"
               onClick={() =>
-                openInNewTab(`https://twitter.com/${person.twitter_id}`)
-              }
+                openInNewTab(`https://twitter.com/${person.twitter_id}`)}
             />
           )}
           {person.telegram_id && (
@@ -106,8 +103,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
             <RiYoutubeLine
               className="clickable"
               onClick={() =>
-                openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)
-              }
+                openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)}
             />
           )}
         </Grid>
