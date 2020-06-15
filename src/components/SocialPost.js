@@ -5,6 +5,7 @@ import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
 import Alert from '@/components/Alert';
 import moment from 'moment';
+import { GoLinkExternal } from 'react-icons/go';
 import { FcLike } from 'react-icons/fc';
 import { IoMdHeartDislike, IoMdTrendingUp } from 'react-icons/io';
 import { MdModeComment } from 'react-icons/md';
@@ -41,26 +42,47 @@ const SocialPost = ({ ...props }) => {
   const { socialPosts } = props;
   return (
     <PostsWrapper>
-      <Alert severity="warning">
-        以下帖子由Factcheck Lab自動搜集，現正全力提升準確度。
+      <Alert
+        severity="warning"
+        action={
+          <GoLinkExternal
+            onClick={() => {
+              window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
+            }}
+          />
+        }
+      >
+        以下帖子由 事實查核實驗室 Factcheck Lab 自動搜集，請多多支持。
       </Alert>
       {socialPosts.map(post => {
         return (
           <Post
             onClick={() => {
-              window.open(post.platformUrl, '_blank');
+              if (post.platformUrl) {
+                window.open(post.platformUrl, '_blank');
+              } else if (
+                post.poster.platform.name === 'facebook' &&
+                post.platformId
+              ) {
+                window.open(
+                  `https://www.facebook.com/${post.platformId}`,
+                  '_blank'
+                );
+              }
             }}
           >
             <div className="sub-title">
-              <Typography variant="caption">
-                {t(`platform.${post.group.platform.name}`)} {post.group.name}
-              </Typography>
+              {post.group && (
+                <Typography variant="caption">
+                  {t(`platform.${post.group.platform.name}`)} {post.group.name}
+                </Typography>
+              )}
               <Typography variant="caption">
                 {moment(post.createdAt).fromNow()}
               </Typography>
             </div>
 
-            <Typography variant="h5">{post.title}</Typography>
+            <Typography variant="h5">{post.title || post.content}</Typography>
 
             <Grid container spacing={3}>
               <MetricsWrapper item>
