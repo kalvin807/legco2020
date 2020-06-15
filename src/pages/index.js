@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PastElectionResult } from '@/data/ElectionResults';
 import { seatColorMapping } from '@/config';
 import { calculateSeatBox } from '@/utils';
+import { getLocalizedPath } from '@/utils/i18n';
 
 const FullWidithWrapper = styled.div`
   margin: 0 -${theme.spacing(2)}px;
@@ -199,6 +200,8 @@ const IndexPage = props => {
     }
   });
 
+  const { i18n } = useTranslation();
+
   const renderDirect = edges => {
     return (
       <DirectWrapper>
@@ -218,7 +221,7 @@ const IndexPage = props => {
                 key={key}
                 className="seat clickable"
                 onClick={() => {
-                  navigate(`/constituency/${e.key}`);
+                  navigate(getLocalizedPath(i18n, `/constituency/${e.key}`));
                 }}
               >
                 <div className="title">
@@ -347,7 +350,9 @@ const IndexPage = props => {
                         key={key}
                         className={`seat clickable ${className}`}
                         onClick={() => {
-                          navigate(`/constituency/${c.key}`);
+                          navigate(
+                            getLocalizedPath(i18n, `/constituency/${c.key}`)
+                          );
                         }}
                       >
                         <Typography variant="caption" color="textSecondary">

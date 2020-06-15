@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
 import { navigate } from 'gatsby';
+import { getLocalizedPath } from '@/utils/i18n';
 
 const TradHeader = styled(Grid)`
 
@@ -50,7 +51,7 @@ const CandidatesWrapper = styled.div`
 const TradFuncConstituencyTemplate = ({
   pageContext: { constituency, councillors, candidates },
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <>
@@ -91,7 +92,9 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group clickable"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`);
+                    navigate(
+                      getLocalizedPath(i18n, `/profile/${c.node.name_zh}`)
+                    );
                   }}
                 >
                   <Avatar
@@ -113,7 +116,9 @@ const TradFuncConstituencyTemplate = ({
                 <div
                   className="avatar-group"
                   onClick={() => {
-                    navigate(`/profile/${c.node.name_zh}`);
+                    navigate(
+                      getLocalizedPath(i18n, `/profile/${c.node.name_zh}`)
+                    );
                   }}
                 >
                   <Avatar
