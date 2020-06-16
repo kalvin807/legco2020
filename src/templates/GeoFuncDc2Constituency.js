@@ -7,6 +7,7 @@ import { navigate } from 'gatsby';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBox } from '@/utils';
+import { getLocalizedPath } from '@/utils/i18n';
 
 const GeoHeader = styled(Grid)`
 
@@ -105,11 +106,14 @@ const CandidatesWrapper = styled.div`
 
 const People = props => {
   const { info } = props;
+  const { i18n } = useTranslation();
   return (
     <div
       className="avatar-group clickable"
       onClick={() => {
-        navigate(`/profile/${info.uuid}/${info.name_zh}`);
+        navigate(
+          getLocalizedPath(i18n, `/profile/${info.uuid}/${info.name_zh}`)
+        );
       }}
       onKeyDown={() => {}}
     >

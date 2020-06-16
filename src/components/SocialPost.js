@@ -44,13 +44,9 @@ const SocialPost = ({ ...props }) => {
     <PostsWrapper>
       <Alert
         severity="warning"
-        action={(
-          <GoLinkExternal
-            onClick={() => {
-              window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
-            }}
-          />
-        )}
+        action={
+          <GoLinkExternal onClick={() => { window.open('https://www.facebook.com/FactcheckLabHK', '_blank'); }} />
+        }
       >
         以下帖子由 事實查核實驗室 Factcheck Lab 自動搜集，請多多支持。
       </Alert>

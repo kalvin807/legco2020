@@ -58,8 +58,7 @@ export default function Footer() {
               <Grid item>
                 <FaGithub
                   className="clickable"
-                  onClick={() =>
-                    openInNewTab('https://github.com/vote4hk/legco2020')}
+                  onClick={() => openInNewTab('https://github.com/vote4hk/legco2020')}
                 />
               </Grid>
               <Grid item>
