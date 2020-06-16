@@ -290,13 +290,15 @@ const IndexPage = props => {
 
   const renderTradFC = edges => {
     const grouppedFc = edges.reduce((a, c) => {
-      const idx = a.findIndex(element => element.title === t(c.situation));
+      const idx = a.findIndex(
+        element => element.title === t(`tag.${c.situation}`)
+      );
       if (idx < 0) {
         return [
           ...a,
           {
             key: c.key,
-            title: t(c.situation),
+            title: t(`tag.${c.situation}`),
             situation: c.situation,
             order: c.situation_order,
             content: [c],
@@ -357,7 +359,9 @@ const IndexPage = props => {
                       >
                         <Typography variant="caption" color="textSecondary">
                           {c.seats}席 -{' '}
-                          {t(`electors_composition_${c.electors_composition}`)}
+                          {t(
+                            `tag.electors_composition_${c.electors_composition}`
+                          )}
                         </Typography>
                         <Typography variant="h5">{c.name_zh}</Typography>
                         {c.situation !== 'uncontested' ? (

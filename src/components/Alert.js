@@ -13,11 +13,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function SimpleAlerts({ ...props }) {
   const classes = useStyles();
-  const { severity, children } = props;
+  const { severity, action, children } = props;
 
   return (
     <div className={classes.root}>
-      <Alert severity={severity}>{children}</Alert>
+      <Alert severity={severity} action={action}>
+        {children}
+      </Alert>
     </div>
   );
 }

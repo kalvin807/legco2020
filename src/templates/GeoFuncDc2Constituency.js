@@ -111,7 +111,9 @@ const People = props => {
     <div
       className="avatar-group clickable"
       onClick={() => {
-        navigate(getLocalizedPath(i18n, `/profile/${info.name_zh}`));
+        navigate(
+          getLocalizedPath(i18n, `/profile/${info.uuid}/${info.name_zh}`)
+        );
       }}
       onKeyDown={() => {}}
     >

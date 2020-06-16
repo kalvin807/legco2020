@@ -4,7 +4,7 @@ const csv2json = require('csvtojson');
 const { request } = require('graphql-request');
 const { getPath } = require('./src/utils/urlHelper');
 
-const isDebug = process.env.DEBUG_MODE === 'true';
+const isDebug = process.env.DEBUG_MODE === 'false';
 const LANGUAGES = ['zh', 'en'];
 
 // const PUBLISHED_SPREADSHEET_I18N_URL =
@@ -53,6 +53,48 @@ const createPublishedGoogleSpreadsheetNode = async (
       const node = { ...p, subtype, ...meta };
       createNode(node);
     });
+};
+
+
+const handlePeopleTags = person => {
+  const tags = [];
+
+  const pushIfTrue = key => {
+    if (person[key] === 'TRUE') {
+      tags.push({
+        i18nKey: key,
+      });
+    }
+  };
+
+  pushIfTrue('is_current_lc');
+  pushIfTrue('is_current_dc');
+
+  if (person.camp === 'DEMO') {
+    tags.push({
+      i18nKey: person.primary === 'FALSE' ? 'no_primary' : 'primary',
+    });
+  }
+  return tags;
+};
+
+const handleTradFCTags = constituency => {
+  const tags = [
+    {
+      i18nKey: constituency.situation
+    },
+    {
+      i18nKey: `electors_composition_${constituency.electors_composition}`
+    }
+  ]
+
+  if (!Number(constituency.last_election_voted_count)) {
+    tags.push({
+      i18nKey: 'uncontested_2016'
+    })
+  }
+
+  return tags;
 };
 
 exports.onCreatePage = async ({ page, actions }) => {
@@ -185,7 +227,7 @@ exports.createPages = async function createPages({
             name_en
             alias_zh
             alias_en
-            electors_composition
+            situation
             electors_composition
             electors_total_2016
             electors_total_2020
@@ -207,6 +249,7 @@ exports.createPages = async function createPages({
         edges {
           node {
             enabled
+            uuid
             constituency
             camp
             status
@@ -243,8 +286,7 @@ exports.createPages = async function createPages({
           constituency: constituency.node,
           candidates: result.data.allPeople.edges.filter(
             p =>
-              p.node.constituency === constituency.node.key &&
-              p.node.is_2020_candidate === 'TRUE'
+              p.node.constituency === constituency.node.key
           ),
           locale: lang,
         },
@@ -267,36 +309,14 @@ exports.createPages = async function createPages({
           ),
           candidates: result.data.allPeople.edges.filter(
             p =>
-              p.node.constituency === constituency.node.key &&
-              p.node.is_2020_candidate === 'TRUE'
+              p.node.constituency === constituency.node.key
           ),
+          tags: handleTradFCTags(constituency.node),
           locale: lang,
         },
       });
     });
   });
-
-  const handleTags = person => {
-    const tags = [];
-
-    const pushIfTrue = key => {
-      if (person[key] === 'TRUE') {
-        tags.push({
-          i18nKey: key,
-        });
-      }
-    };
-
-    pushIfTrue('is_current_lc');
-    pushIfTrue('is_current_dc');
-
-    if (person.camp === 'DEMO') {
-      tags.push({
-        i18nKey: person.primary === 'FALSE' ? 'no_primary' : 'primary',
-      });
-    }
-    return tags;
-  };
 
   const People = result.data.allPeople.edges;
 
@@ -367,12 +387,12 @@ exports.createPages = async function createPages({
       const { person, socialPosts } = response;
       LANGUAGES.forEach(lang => {
         createPage({
-          path: getPath(lang, `/profile/${person.name_zh}`),
+          path: getPath(lang, `/profile/${person.uuid}/${person.name_zh}`),
           component: ProfileTemplate,
           context: {
             person,
             socialPosts,
-            tags: handleTags(person),
+            tags: handlePeopleTags(person),
             locale: lang,
           },
         });
