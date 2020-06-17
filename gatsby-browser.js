@@ -37,14 +37,14 @@ export const wrapPageElement = ({
   },
 }) => {
   return (
-    <>
+    <Layout>
       <Router path={uri} />
       <I18nWrapper locale={locale}>{element}</I18nWrapper>
-    </>
+    </Layout>
   );
 };
 
 // Wrap the theme
-export const wrapRootElement = ({ element }) => {
-  return <Layout>{element}</Layout>;
-};
+// export const wrapRootElement = ({ element }) => {
+//   return <Layout>{element}</Layout>;
+// };

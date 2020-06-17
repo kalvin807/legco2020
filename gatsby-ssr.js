@@ -6,6 +6,7 @@
 import React from 'react';
 import '@/i18n';
 import I18nWrapper from '@/components/I18nWrapper';
+import Layout from '@/components/layout';
 
 export const wrapPageElement = ({
   element,
@@ -14,10 +15,10 @@ export const wrapPageElement = ({
   },
 }) => {
   return (
-    <>
+    <Layout>
       <I18nWrapper locale={locale} ssr>
         {element}
       </I18nWrapper>
-    </>
+    </Layout>
   );
 };
