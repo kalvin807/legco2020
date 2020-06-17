@@ -28,7 +28,7 @@ const createPublishedGoogleSpreadsheetNode = async (
   const result = await fetch(
     `${publishedURL}&single=true&output=csv&headers=0${
       skipFirstLine ? '&range=A2:ZZ' : ''
-    }`
+    }&q=${Math.floor(new Date().getTime(), 1000)}`
   );
   const data = await result.text();
   const records = await csv2json().fromString(data);
