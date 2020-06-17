@@ -1,12 +1,13 @@
-import React from "react"
-import Container from '@material-ui/core/Container';
+import React from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import Header from "./header"
-import Footer from "./Footer"
-import "./layout.css"
-import theme from '../themes'
+import Container from '@material-ui/core/Container';
+import { ContextStoreProvider } from '@/contextStore';
+import Header from './header';
+import Footer from './Footer';
+import './layout.css';
+import theme from '../themes';
 
-const useStyles = makeStyles((t) => ({
+const useStyles = makeStyles(t => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -14,12 +15,11 @@ const useStyles = makeStyles((t) => ({
   },
   container: {
     marginBottom: t.spacing(3),
-  }
+  },
 }));
 
-const Layout = ({ children }) => {
+const ThemeProviderWrapper = ({ children }) => {
   const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -30,7 +30,15 @@ const Layout = ({ children }) => {
         <Footer />
       </div>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default Layout
+const Layout = ({ children, initialStore }) => {
+  return (
+    <ContextStoreProvider initialStore={initialStore}>
+      <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+    </ContextStoreProvider>
+  );
+};
+
+export default Layout;

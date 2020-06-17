@@ -1,4 +1,4 @@
-import theme from "@/themes"
+import theme from '@/themes';
 
 export const seatColorMapping = {
   FC_EXPECTED_WIN_DEMO: theme.palette.warning.main,
@@ -8,4 +8,4 @@ export const seatColorMapping = {
   UNRESOLVED: theme.palette.divider,
   GC_EXPECTED_WIN_BEIJING: theme.palette.info.light,
   FC_EXPECTED_WIN_BEIJING: theme.palette.info.main,
-}
+};

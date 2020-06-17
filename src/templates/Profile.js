@@ -1,20 +1,19 @@
-import React from "react"
-import Layout from "@/components/layout"
-import { Avatar, Typography, Grid } from "@material-ui/core"
-import styled from "styled-components"
-import theme from "@/themes"
-import { useTranslation } from "react-i18next"
-import SimpleTabs from "@/components/SimpleTabs"
-import SocialPost from "@/components/SocialPost"
-import Chip from "@/components/Chip"
+import React from 'react';
+import { Avatar, Typography, Grid } from '@material-ui/core';
+import styled from 'styled-components';
+import theme from '@/themes';
+import { useTranslation } from 'react-i18next';
+import SimpleTabs from '@/components/SimpleTabs';
+import SocialPost from '@/components/SocialPost';
+import Chip from '@/components/Chip';
 import {
   RiFacebookCircleLine,
   RiInstagramLine,
   RiTwitterLine,
   RiYoutubeLine,
   RiTelegramLine,
-} from "react-icons/ri"
-import { openInNewTab } from "@/utils"
+} from 'react-icons/ri';
+import { openInNewTab } from '@/utils';
 
 const ProfileTemplateWrapper = styled.div`
   .block {
@@ -28,7 +27,7 @@ const ProfileTemplateWrapper = styled.div`
   .social svg {
     margin-left: ${theme.spacing(1)}px;
   }
-`
+`;
 
 const ProfileHeader = styled(Grid)`
   margin-bottom: ${theme.spacing(0.5)}px;
@@ -59,12 +58,12 @@ const ProfileHeader = styled(Grid)`
       margin-right: ${theme.spacing(1)}px;
     }
   }
-`
+`;
 
 const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
-    <Layout>
+    <>
       <ProfileTemplateWrapper>
         <Grid
           className="social"
@@ -76,25 +75,19 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           {person.facebook_id && (
             <RiFacebookCircleLine
               className="clickable"
-              onClick={() =>
-                openInNewTab(`https://fb.me/${person.facebook_id}`)
-              }
+              onClick={() => openInNewTab(`https://fb.me/${person.facebook_id}`)}
             />
           )}
           {person.instagram_id && (
             <RiInstagramLine
               className="clickable"
-              onClick={() =>
-                openInNewTab(`https://www.instagram.com/${person.instagram_id}`)
-              }
+              onClick={() => openInNewTab(`https://www.instagram.com/${person.instagram_id}`)}
             />
           )}
           {person.twitter_id && (
             <RiTwitterLine
               className="clickable"
-              onClick={() =>
-                openInNewTab(`https://twitter.com/${person.twitter_id}`)
-              }
+              onClick={() => openInNewTab(`https://twitter.com/${person.twitter_id}`)}
             />
           )}
           {person.telegram_id && (
@@ -106,9 +99,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           {person.youtube_id && (
             <RiYoutubeLine
               className="clickable"
-              onClick={() =>
-                openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)
-              }
+              onClick={() => openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)}
             />
           )}
         </Grid>
@@ -127,7 +118,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
               direction="column"
               justify="center"
               alignItems="flex-start"
-              style={{ height: "100%" }}
+              style={{ height: '100%' }}
             >
               <div className="name">{person.name_zh}</div>
               <Typography variant="body2" color="textSecondary">
@@ -156,8 +147,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
         <SimpleTabs
           tabs={[
             {
-              name: `social_posts`,
-              title: t(`social_posts`),
+              name: 'social_posts',
+              title: t('social_posts'),
               content: <SocialPost socialPosts={socialPosts} />,
             },
           ]}
@@ -170,8 +161,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           }}
         />
       </ProfileTemplateWrapper>
-    </Layout>
-  )
-}
+    </>
+  );
+};
 
-export default ProfileTemplate
+export default ProfileTemplate;

@@ -1,19 +1,18 @@
-import React from "react"
-import styled from "styled-components"
-import Layout from "@/components/layout"
-import { graphql } from "gatsby"
-import Container from "@material-ui/core/Container"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import Avatar from "@material-ui/core/Avatar"
-import theme from "@/themes"
-import SEO from "../components/seo"
+import React from 'react';
+import styled from 'styled-components';
+import { graphql } from 'gatsby';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import theme from '@/themes';
+import SEO from '../components/seo';
 
 const mapCampColor = {
   DEMO: theme.palette.warning.main,
   BEIJING: theme.palette.info.main,
   OTHER: theme.palette.success.main,
-}
+};
 
 const AvatarContainer = styled(Grid)`
   margin-right: ${theme.spacing(2)}px;
@@ -33,10 +32,10 @@ const AvatarContainer = styled(Grid)`
   .hint {
     font-size: ${theme.typography.caption};
   }
-`
+`;
 
 const AvatarChart = props => {
-  const { content } = props
+  const { content } = props;
   return (
     <Grid container>
       {content.map(c => (
@@ -49,19 +48,19 @@ const AvatarChart = props => {
         </AvatarContainer>
       ))}
     </Grid>
-  )
-}
+  );
+};
 
 const FcPage = props => {
   const {
     data: {
       allFcOverview: { edges: fc },
     },
-  } = props
+  } = props;
 
   const grouppedFc = fc.reduce((a, c) => {
-    const { node } = c
-    const idx = a.findIndex(element => element.title === node.chance_zh)
+    const { node } = c;
+    const idx = a.findIndex(element => element.title === node.chance_zh);
     if (idx < 0) {
       return [
         ...a,
@@ -70,15 +69,15 @@ const FcPage = props => {
           order: node.chance_order,
           content: [node],
         },
-      ]
+      ];
     }
 
-    a[idx].content.push(node)
-    return a
-  }, [])
+    a[idx].content.push(node);
+    return a;
+  }, []);
 
   return (
-    <Layout>
+    <>
       <Container maxWidth="lg">
         <SEO title="FC" />
         <Typography variant="h5" gutterBottom>
@@ -105,14 +104,14 @@ const FcPage = props => {
                   </Container>
                 </Grid>
               </Grid>
-            )
+            );
           })}
       </Container>
-    </Layout>
-  )
-}
+    </>
+  );
+};
 
-export default FcPage
+export default FcPage;
 
 export const FcOverviewPageQuery = graphql`
   query {
@@ -131,4 +130,4 @@ export const FcOverviewPageQuery = graphql`
       }
     }
   }
-`
+`;

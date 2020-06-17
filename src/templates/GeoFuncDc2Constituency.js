@@ -1,13 +1,13 @@
-import React from "react"
-import Layout from "@/components/layout"
-import { Grid, Avatar, Typography } from "@material-ui/core"
-import styled from "styled-components"
-import theme from "@/themes"
-import { useTranslation } from "react-i18next"
-import { navigate } from "gatsby"
-import { DC2019Result } from "@/data/ElectionResults"
-import VoteVsSeatChart from "@/components/charts/VoteVsSeat"
-import { calculateSeatBox } from "@/utils"
+import React from 'react';
+import { Grid, Avatar, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import theme from '@/themes';
+import { useTranslation } from 'react-i18next';
+import { navigate } from 'gatsby';
+import { DC2019Result } from '@/data/ElectionResults';
+import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
+import { calculateSeatBox } from '@/utils';
+import { getLocalizedPath } from '@/utils/i18n';
 
 const GeoHeader = styled(Grid)`
 
@@ -19,7 +19,7 @@ const GeoHeader = styled(Grid)`
     font-size: 24px;
     font-weight: 700;
   }
-`
+`;
 
 const CampWrapper = styled(Grid)`
   .list-number {
@@ -47,18 +47,18 @@ const CampWrapper = styled(Grid)`
   .camp-text.other {
     background: ${theme.palette.success.light};
   }
-`
+`;
 
 const CandidatesWrapper = styled.div`
   display: grid;
   grid-gap: ${theme.spacing(1)}px;
   grid-template-columns: repeat(3, 1fr);
 
-  ${theme.breakpoints.up("sm")} {
+  ${theme.breakpoints.up('sm')} {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  ${theme.breakpoints.up("md")} {
+  ${theme.breakpoints.up('md')} {
     grid-template-columns: repeat(6, 1fr);
   }
 
@@ -68,14 +68,14 @@ const CandidatesWrapper = styled.div`
     align-items: center;
     justify-content: space-end;
 
-    ${theme.breakpoints.up("sm")} {
+    ${theme.breakpoints.up('sm')} {
       .avatar {
         width: 48px;
         height: 48px;
       }
     }
 
-    ${theme.breakpoints.up("md")} {
+    ${theme.breakpoints.up('md')} {
       .avatar {
         width: 64px;
         height: 64px;
@@ -102,15 +102,18 @@ const CandidatesWrapper = styled.div`
       align-items: center;
     }
   }
-`
+`;
 
 const People = props => {
-  const { info } = props
+  const { info } = props;
+  const { i18n } = useTranslation();
   return (
     <div
       className="avatar-group clickable"
       onClick={() => {
-        navigate(`/profile/${info.name_zh}`)
+        navigate(
+          getLocalizedPath(i18n, `/profile/${info.uuid}/${info.name_zh}`)
+        );
       }}
       onKeyDown={() => {}}
     >
@@ -120,23 +123,23 @@ const People = props => {
           alt={info.name_zh}
           src={info.img_url}
         />
-        <span>{`${info.name_zh}${info.primary === "FALSE" ? "*" : ""}`}</span>
+        <span>{`${info.name_zh}${info.primary === 'FALSE' ? '*' : ''}`}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const GeoFuncDc2ConstituencyTemplate = ({
   pageContext: { constituency, candidates },
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const demoCandidates = candidates.filter(c => c.node.camp === "DEMO")
-  const beijingCandidates = candidates.filter(c => c.node.camp === "BEIJING")
-  const otherCandidates = candidates.filter(c => c.node.camp === "OTHER")
+  const demoCandidates = candidates.filter(c => c.node.camp === 'DEMO');
+  const beijingCandidates = candidates.filter(c => c.node.camp === 'BEIJING');
+  const otherCandidates = candidates.filter(c => c.node.camp === 'OTHER');
 
   return (
-    <Layout>
+    <>
       <GeoHeader container>
         <Grid item>
           <Grid
@@ -146,7 +149,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
             className="title-box"
           >
             <Typography variant="body2" color="textSecondary">
-              {t("no_of_seats", { seats: constituency.seats })}
+              {t('no_of_seats', { seats: constituency.seats })}
             </Typography>
             <div className="title">{constituency.name_zh}</div>
           </Grid>
@@ -154,8 +157,8 @@ const GeoFuncDc2ConstituencyTemplate = ({
         <Grid item>
           <VoteVsSeatChart
             title={{
-              vote: t("dc2019_demo_beijing_ratio"),
-              seat: t("simulation_result"),
+              vote: t('dc2019_demo_beijing_ratio'),
+              seat: t('simulation_result'),
             }}
             votes={DC2019Result[constituency.key].votes}
             seats={calculateSeatBox(constituency)}
@@ -169,7 +172,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
         <Grid item xs={6}>
           <div>
             <div>
-              <span className="camp-text demo">{t("alias.DEMO")}</span>
+              <span className="camp-text demo">{t('alias.DEMO')}</span>
             </div>
             <div className="list-number">{demoCandidates.length}</div>
             <Typography variant="caption">有意出選名單</Typography>
@@ -184,7 +187,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
         <Grid item xs={6}>
           <div className="right">
             <div>
-              <span className="camp-text beijing">{t("alias.BEIJING")}</span>
+              <span className="camp-text beijing">{t('alias.BEIJING')}</span>
             </div>
             <div className="list-number">{beijingCandidates.length}</div>
             <Typography variant="caption">有意出選名單</Typography>
@@ -197,7 +200,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
           {otherCandidates.length ? (
             <div className="right">
               <div>
-                <span className="camp-text other">{t("alias.OTHER")}</span>
+                <span className="camp-text other">{t('alias.OTHER')}</span>
               </div>
               <Typography variant="caption">有意出選名單</Typography>
               <CandidatesWrapper>
@@ -207,12 +210,12 @@ const GeoFuncDc2ConstituencyTemplate = ({
               </CandidatesWrapper>
             </div>
           ) : (
-            ""
+            ''
           )}
         </Grid>
       </CampWrapper>
       <CampWrapper container spacing={3}>
-        {["DEMO", "BEIJING"].map(camp => {
+        {['DEMO', 'BEIJING'].map(camp => {
           return (
             <Grid item xs={6} key={camp}>
               <Typography variant="h6">名單協調方法</Typography>
@@ -225,11 +228,11 @@ const GeoFuncDc2ConstituencyTemplate = ({
                 {constituency[`stage_1_description_${camp.toLowerCase()}_zh`]}
               </Typography>
             </Grid>
-          )
+          );
         })}
       </CampWrapper>
       <CampWrapper container spacing={3}>
-        {["DEMO", "BEIJING"].map(camp => {
+        {['DEMO', 'BEIJING'].map(camp => {
           return (
             <Grid item xs={6} key={camp}>
               <Typography variant="h6">配票方法</Typography>
@@ -242,11 +245,11 @@ const GeoFuncDc2ConstituencyTemplate = ({
                 {constituency[`stage_2_description_${camp.toLowerCase()}_zh`]}
               </Typography>
             </Grid>
-          )
+          );
         })}
       </CampWrapper>
-    </Layout>
-  )
-}
+    </>
+  );
+};
 
-export default GeoFuncDc2ConstituencyTemplate
+export default GeoFuncDc2ConstituencyTemplate;

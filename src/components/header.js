@@ -1,15 +1,17 @@
-import React from "react"
-import { navigate } from "gatsby"
-import { makeStyles } from "@material-ui/core/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
+import React from 'react';
+import { navigate } from 'gatsby';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { getLocalizedPath } from '@/utils/i18n';
 
 const useStyles = makeStyles(theme => ({
   root: {
     background: theme.palette.background.paper,
     color: theme.palette.text.primary,
-    boxShadow: "none",
+    boxShadow: 'none',
     flexGrow: 1,
   },
   toolBar: {
@@ -20,15 +22,15 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
-}))
+}));
 
 const renderTitle = () => {
-  return { __html: `vote 4 <br />hongkong` }
-}
+  return { __html: 'vote 4 <br />hongkong' };
+};
 
 export default function Header() {
-  const classes = useStyles()
-
+  const classes = useStyles();
+  const { i18n } = useTranslation();
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar className={classes.toolBar}>
@@ -37,7 +39,7 @@ export default function Header() {
           className={`${classes.title} clickable`}
           dangerouslySetInnerHTML={renderTitle()}
           onClick={() => {
-            navigate(`/`)
+            navigate(getLocalizedPath(i18n, '/'));
           }}
         />
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -45,5 +47,5 @@ export default function Header() {
         </IconButton> */}
       </Toolbar>
     </AppBar>
-  )
+  );
 }
