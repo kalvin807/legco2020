@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
 import { navigate } from 'gatsby';
-import { getLocalizedPath } from '@/utils/i18n';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 
 const TradTemplateWrapper = styled.div`
   .block {
@@ -81,7 +81,9 @@ const TradFuncConstituencyTemplate = ({
             <Typography variant="body2" color="textSecondary">
               {t('no_of_seats', { seats: constituency.seats })}
             </Typography>
-            <div className="title">{constituency.name_zh}</div>
+            <div className="title">
+              {withLanguage(i18n, constituency, 'name')}
+            </div>
           </Grid>
         </Grid>
         <Grid item>
@@ -103,7 +105,7 @@ const TradFuncConstituencyTemplate = ({
         ))}
       </Grid>
       <Typography className="block" variant="body2">
-        {constituency.description_zh}
+        {withLanguage(i18n, constituency, 'description')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={3}>
@@ -117,17 +119,23 @@ const TradFuncConstituencyTemplate = ({
                     navigate(
                       getLocalizedPath(
                         i18n,
-                        `/profile/${c.node.uuid}/${c.node.name_zh}`
+                        `/profile/${c.node.uuid}/${withLanguage(
+                          i18n,
+                          c.node,
+                          'name'
+                        )}`
                       )
                     );
                   }}
                 >
                   <Avatar
                     className={`avatar ${c.node.camp.toLowerCase()}`}
-                    alt={c.node.name_zh}
+                    alt={withLanguage(i18n, c.node, 'name')}
                     src={c.image_url}
                   />
-                  <span className="title">{c.node.name_zh}</span>
+                  <span className="title">
+                    {withLanguage(i18n, c.node, 'name')}
+                  </span>
                 </div>
               );
             })}
@@ -144,17 +152,23 @@ const TradFuncConstituencyTemplate = ({
                     navigate(
                       getLocalizedPath(
                         i18n,
-                        `/profile/${c.node.uuid}/${c.node.name_zh}`
+                        `/profile/${c.node.uuid}/${withLanguage(
+                          i18n,
+                          c.node,
+                          'name'
+                        )}`
                       )
                     );
                   }}
                 >
                   <Avatar
                     className={`avatar ${c.node.camp.toLowerCase()}`}
-                    alt={c.node.name_zh}
+                    alt={withLanguage(i18n, c.node, 'name')}
                     src={c.image_url}
                   />
-                  <span className="title">{c.node.name_zh}</span>
+                  <span className="title">
+                    {withLanguage(i18n, c.node, 'name')}
+                  </span>
                 </div>
               );
             })}
