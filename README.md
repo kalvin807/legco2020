@@ -27,6 +27,10 @@ Need help? Check below links for simple tutorial about our tech stack!
 
 - [Using React (Hooks) with D3](https://muratorium.com/using-react-hooks-with-d3/)
 
+### Internationalization (i18n)
+
+- [i18n Usages](https://github.com/vote4hk/legco2020/blob/master/i18n.md).
+
 ## 🚀 Quick start
 
 1.  **Start developing.**
