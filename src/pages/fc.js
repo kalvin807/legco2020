@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import theme from '@/themes';
+import { useTranslation } from 'react-i18next';
+import { withLanguage } from '@/utils/i18n';
 import SEO from '../components/seo';
 
 const mapCampColor = {
@@ -36,14 +38,25 @@ const AvatarContainer = styled(Grid)`
 
 const AvatarChart = props => {
   const { content } = props;
+  const { i18n } = useTranslation();
   return (
     <Grid container>
       {content.map(c => (
-        <AvatarContainer item key={`${c.councillor_name_zh}`} camp={c.camp}>
+        <AvatarContainer
+          item
+          key={`${withLanguage(i18n, c, 'councillor_name')}`}
+          camp={c.camp}
+        >
           <Grid container direction="column" alignItems="center">
-            <Avatar className="avatar" alt={c.alias_zh} src={c.image_url} />
-            <span className="title">{c.alias_zh}</span>
-            <span className="hint">{c.councillor_name_zh}</span>
+            <Avatar
+              className="avatar"
+              alt={withLanguage(i18n, c, 'alias')}
+              src={c.image_url}
+            />
+            <span className="title">{withLanguage(i18n, c, 'alias')}</span>
+            <span className="hint">
+              {withLanguage(i18n, c, 'councillor_name')}
+            </span>
           </Grid>
         </AvatarContainer>
       ))}
@@ -58,14 +71,17 @@ const FcPage = props => {
     },
   } = props;
 
+  const { i18n } = useTranslation();
   const grouppedFc = fc.reduce((a, c) => {
     const { node } = c;
-    const idx = a.findIndex(element => element.title === node.chance_zh);
+    const idx = a.findIndex(
+      element => element.title === withLanguage(i18n, node, 'chance')
+    );
     if (idx < 0) {
       return [
         ...a,
         {
-          title: node.chance_zh,
+          title: withLanguage(i18n, node, 'chance'),
           order: node.chance_order,
           content: [node],
         },

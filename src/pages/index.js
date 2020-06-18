@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PastElectionResult } from '@/data/ElectionResults';
 import { seatColorMapping } from '@/config';
 import { calculateSeatBox } from '@/utils';
-import { getLocalizedPath } from '@/utils/i18n';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 
 const FullWidithWrapper = styled.div`
   margin: 0 -${theme.spacing(2)}px;
@@ -250,7 +250,9 @@ const IndexPage = props => {
                   </div>
                   <div className="title">
                     <div>
-                      <Typography variant="h5">{e.alias_zh}</Typography>
+                      <Typography variant="h5">
+                        {withLanguage(i18n, e, 'alias')}
+                      </Typography>
                     </div>
                     <div>
                       <div style={{ width: '40px', height: '40px' }}>
@@ -392,7 +394,9 @@ const IndexPage = props => {
                               `tag.electors_composition_${c.electors_composition}`
                             )}
                           </Typography>
-                          <Typography variant="h5">{c.name_zh}</Typography>
+                          <Typography variant="h5">
+                            {withLanguage(i18n, c, 'name')}
+                          </Typography>
                           {c.situation !== 'uncontested' ? (
                             <>
                               <Typography variant="body2">
