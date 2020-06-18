@@ -14,6 +14,7 @@ import {
   RiTelegramLine,
 } from 'react-icons/ri';
 import { openInNewTab } from '@/utils';
+import { withLanguage } from '@/utils/i18n';
 
 const ProfileTemplateWrapper = styled.div`
   .block {
@@ -61,7 +62,8 @@ const ProfileHeader = styled(Grid)`
 `;
 
 const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <ProfileTemplateWrapper>
@@ -75,19 +77,25 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           {person.facebook_id && (
             <RiFacebookCircleLine
               className="clickable"
-              onClick={() => openInNewTab(`https://fb.me/${person.facebook_id}`)}
+              onClick={() =>
+                openInNewTab(`https://fb.me/${person.facebook_id}`)
+              }
             />
           )}
           {person.instagram_id && (
             <RiInstagramLine
               className="clickable"
-              onClick={() => openInNewTab(`https://www.instagram.com/${person.instagram_id}`)}
+              onClick={() =>
+                openInNewTab(`https://www.instagram.com/${person.instagram_id}`)
+              }
             />
           )}
           {person.twitter_id && (
             <RiTwitterLine
               className="clickable"
-              onClick={() => openInNewTab(`https://twitter.com/${person.twitter_id}`)}
+              onClick={() =>
+                openInNewTab(`https://twitter.com/${person.twitter_id}`)
+              }
             />
           )}
           {person.telegram_id && (
@@ -99,7 +107,9 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           {person.youtube_id && (
             <RiYoutubeLine
               className="clickable"
-              onClick={() => openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)}
+              onClick={() =>
+                openInNewTab(`https://youtube.com/channel/${person.youtube_id}`)
+              }
             />
           )}
         </Grid>
@@ -107,7 +117,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           <Grid item>
             <Avatar
               className={`avatar-main ${person.camp}`}
-              alt={person.alias_zh}
+              alt={withLanguage(i18n, person, 'alias')}
               src={person.img_url}
             />
           </Grid>
@@ -120,9 +130,9 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
               alignItems="flex-start"
               style={{ height: '100%' }}
             >
-              <div className="name">{person.name_zh}</div>
+              <div className="name">{withLanguage(i18n, person, 'name')}</div>
               <Typography variant="body2" color="textSecondary">
-                {person.title_zh}
+                {withLanguage(i18n, person, 'title')}
               </Typography>
             </Grid>
           </Grid>
@@ -137,7 +147,7 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts, tags } }) => {
           </div> */}
         </ProfileHeader>
         <Typography className="block" variant="body2">
-          {person.description_zh}
+          {withLanguage(i18n, person, 'description')}
         </Typography>
         <Grid className="block" container>
           {tags.map(tag => (

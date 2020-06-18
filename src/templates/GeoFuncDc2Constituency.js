@@ -7,7 +7,7 @@ import { navigate } from 'gatsby';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBox } from '@/utils';
-import { getLocalizedPath } from '@/utils/i18n';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 
 const GeoHeader = styled(Grid)`
 
@@ -107,23 +107,22 @@ const CandidatesWrapper = styled.div`
 const People = props => {
   const { info } = props;
   const { i18n } = useTranslation();
+  const name = withLanguage(i18n, info, 'name');
   return (
     <div
       className="avatar-group clickable"
       onClick={() => {
-        navigate(
-          getLocalizedPath(i18n, `/profile/${info.uuid}/${info.name_zh}`)
-        );
+        navigate(getLocalizedPath(i18n, `/profile/${info.uuid}/${name}`));
       }}
       onKeyDown={() => {}}
     >
       <div className="center">
         <Avatar
           className={`avatar ${info.camp.toLowerCase()}`}
-          alt={info.name_zh}
+          alt={name}
           src={info.img_url}
         />
-        <span>{`${info.name_zh}${info.primary === 'FALSE' ? '*' : ''}`}</span>
+        <span>{`${name}${info.primary === 'FALSE' ? '*' : ''}`}</span>
       </div>
     </div>
   );
@@ -132,7 +131,7 @@ const People = props => {
 const GeoFuncDc2ConstituencyTemplate = ({
   pageContext: { constituency, candidates },
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const demoCandidates = candidates.filter(c => c.node.camp === 'DEMO');
   const beijingCandidates = candidates.filter(c => c.node.camp === 'BEIJING');
@@ -151,7 +150,9 @@ const GeoFuncDc2ConstituencyTemplate = ({
             <Typography variant="body2" color="textSecondary">
               {t('no_of_seats', { seats: constituency.seats })}
             </Typography>
-            <div className="title">{constituency.name_zh}</div>
+            <div className="title">
+              {withLanguage(i18n, constituency, 'name')}
+            </div>
           </Grid>
         </Grid>
         <Grid item>
@@ -166,7 +167,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
         </Grid>
       </GeoHeader>
       <Typography className="block" variant="body2">
-        {constituency.description_zh}
+        {withLanguage(i18n, constituency, 'description')}
       </Typography>
       <CampWrapper container spacing={3}>
         <Grid item xs={6}>
