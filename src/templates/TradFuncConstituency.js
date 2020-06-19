@@ -36,17 +36,26 @@ const TradHeader = styled(Grid)`
 const CandidatesWrapper = styled.div`
   display: grid;
   grid-gap: ${theme.spacing(1)}px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 
   .avatar-group {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: space-end;
 
-    .avatar {
-      width: 64px;
-      height: 64px;
+    ${theme.breakpoints.up('sm')} {
+      .avatar {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    ${theme.breakpoints.up('md')} {
+      .avatar {
+        width: 64px;
+        height: 64px;
+      }
     }
 
     .avatar.demo {
@@ -57,8 +66,16 @@ const CandidatesWrapper = styled.div`
       border: 3px ${theme.palette.info.main} solid;
     }
 
-    .title {
+    .avatar.other {
+      border: 3px ${theme.palette.success.main} solid;
+    }
+
+    .center {
+      font-size: 12px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 `;
@@ -110,10 +127,11 @@ const TradFuncConstituencyTemplate = ({
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Typography>現任</Typography>
-          <CandidatesWrapper>
+          <Grid container>
             {councillors.map(c => {
               return (
-                <div
+                <Grid
+                  item
                   className="avatar-group clickable"
                   onClick={() => {
                     navigate(
@@ -136,42 +154,44 @@ const TradFuncConstituencyTemplate = ({
                   <span className="title">
                     {withLanguage(i18n, c.node, 'name')}
                   </span>
-                </div>
+                </Grid>
               );
             })}
-          </CandidatesWrapper>
+          </Grid>
         </Grid>
         <Grid item xs={9}>
           <Typography>候選人</Typography>
           <CandidatesWrapper>
-            {candidates.map(c => {
-              return (
-                <div
-                  className="avatar-group"
-                  onClick={() => {
-                    navigate(
-                      getLocalizedPath(
-                        i18n,
-                        `/profile/${c.node.uuid}/${withLanguage(
+            {candidates
+              .filter(c => c.node.is_2020_candidate === 'TRUE')
+              .map(c => {
+                return (
+                  <div
+                    className="avatar-group"
+                    onClick={() => {
+                      navigate(
+                        getLocalizedPath(
                           i18n,
-                          c.node,
-                          'name'
-                        )}`
-                      )
-                    );
-                  }}
-                >
-                  <Avatar
-                    className={`avatar ${c.node.camp.toLowerCase()}`}
-                    alt={withLanguage(i18n, c.node, 'name')}
-                    src={c.image_url}
-                  />
-                  <span className="title">
-                    {withLanguage(i18n, c.node, 'name')}
-                  </span>
-                </div>
-              );
-            })}
+                          `/profile/${c.node.uuid}/${withLanguage(
+                            i18n,
+                            c.node,
+                            'name'
+                          )}`
+                        )
+                      );
+                    }}
+                  >
+                    <Avatar
+                      className={`avatar ${c.node.camp.toLowerCase()}`}
+                      alt={withLanguage(i18n, c.node, 'name')}
+                      src={c.node.img_url}
+                    />
+                    <span className="title">
+                      {withLanguage(i18n, c.node, 'name')}
+                    </span>
+                  </div>
+                );
+              })}
           </CandidatesWrapper>
         </Grid>
       </Grid>
