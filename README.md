@@ -1,15 +1,15 @@
 # 2020 Hong Kong Legislative Election
 
-This is the repository for <a href="https://vote4.hk">vote4.hk</a>
+This is the repository for <a href="https://legco2020.vote4.hk">legco2020.vote4.hk</a>
 
 ## 📍 Data
 
 The data is updated automatically every 5 minutes. The information are all open for use. If you wish to cite anything from this site, please credit us as `vote4.hk - 立法會投票指南` or `vote4.hk - HK Legco Election`.
 
-- [2019 District Council Election results](https://bit.ly/vote4hkdata)
-- [2020 Legislative Election Functional Constituencies](https://docs.google.com/spreadsheets/d/13VRJl6urKSLsThswBzyuEERNI8xVTCCJwImYQF-jKz4/edit#gid=1850485765)
-- [2020 Legislative Election Geographical Constituencies](https://docs.google.com/spreadsheets/d/1F-M4kNSRmt36JwzDUERCtFWDWW7QIZLhnYCLIihp2QQ/edit#gid=1850485765)
-- [2020 Legislative Election Candidates](https://docs.google.com/spreadsheets/d/1Mva3xbJAXeVqh-pXld_1pHfz7d23Xm2ZmUFIzoU60AU/edit#gid=0)
+- [2019 District Councils Election results](https://bit.ly/vote4hkdata)
+- [2020 Legislative Election Functional Constituencies](https://docs.google.com/spreadsheets/d/13VRJl6urKSLsThswBzyuEERNI8xVTCCJwImYQF-jKz4/edit#gid=18504857655&range=A2:ZZ)
+- [2020 Legislative Election Geographical Constituencies](https://docs.google.com/spreadsheets/d/1F-M4kNSRmt36JwzDUERCtFWDWW7QIZLhnYCLIihp2QQ/edit#gid=1850485765&range=A2:ZZ)
+- [2020 Legislative Election Candidates](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0&range=B2:ZZ)
 
 ## 🎓 Our stacks
 
