@@ -152,13 +152,13 @@ exports.sourceNodes = async props => {
       props,
       PUBLISHED_SPREADSHEET_GEOGRAPHICAL_CONSTITUENCIES_FC2_URL,
       'GeoFuncDC2',
-      { skipFirstLine: false, alwaysEnabled: true }
+      { skipFirstLine: true, alwaysEnabled: true }
     ),
     createPublishedGoogleSpreadsheetNode(
       props,
       PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL,
       'TradFunc',
-      { skipFirstLine: false, alwaysEnabled: true }
+      { skipFirstLine: true, alwaysEnabled: true }
     ),
     createPublishedGoogleSpreadsheetNode(
       props,
@@ -170,7 +170,7 @@ exports.sourceNodes = async props => {
       props,
       PUBLISHED_SPREADSHEET_PEOPLE_URL,
       'People',
-      { skipFirstLine: false }
+      { skipFirstLine: true }
     ),
   ]);
 };
