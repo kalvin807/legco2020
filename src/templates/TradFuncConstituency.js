@@ -1,11 +1,11 @@
 import React from 'react';
-import { Grid, Avatar, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import Chip from '@/components/Chip';
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
-import { navigate } from 'gatsby';
-import { withLanguage, getLocalizedPath } from '@/utils/i18n';
+import { withLanguage } from '@/utils/i18n';
+import { PeopleCircle } from '@/components/People';
 
 const TradTemplateWrapper = styled.div`
   .block {
@@ -37,47 +37,6 @@ const CandidatesWrapper = styled.div`
   display: grid;
   grid-gap: ${theme.spacing(1)}px;
   grid-template-columns: repeat(4, 1fr);
-
-  .avatar-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-end;
-
-    ${theme.breakpoints.up('sm')} {
-      .avatar {
-        width: 48px;
-        height: 48px;
-      }
-    }
-
-    ${theme.breakpoints.up('md')} {
-      .avatar {
-        width: 64px;
-        height: 64px;
-      }
-    }
-
-    .avatar.demo {
-      border: 3px ${theme.palette.warning.main} solid;
-    }
-
-    .avatar.beijing {
-      border: 3px ${theme.palette.info.main} solid;
-    }
-
-    .avatar.other {
-      border: 3px ${theme.palette.success.main} solid;
-    }
-
-    .center {
-      font-size: 12px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
 `;
 
 const TradFuncConstituencyTemplate = ({
@@ -124,77 +83,20 @@ const TradFuncConstituencyTemplate = ({
       <Typography className="block" variant="body2">
         {withLanguage(i18n, constituency, 'description')}
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={3}>
-          <Typography>現任</Typography>
-          <Grid container>
-            {councillors.map(c => {
-              return (
-                <Grid
-                  item
-                  className="avatar-group clickable"
-                  onClick={() => {
-                    navigate(
-                      getLocalizedPath(
-                        i18n,
-                        `/profile/${c.node.uuid}/${withLanguage(
-                          i18n,
-                          c.node,
-                          'name'
-                        )}`
-                      )
-                    );
-                  }}
-                >
-                  <Avatar
-                    className={`avatar ${c.node.camp.toLowerCase()}`}
-                    alt={withLanguage(i18n, c.node, 'name')}
-                    src={c.image_url}
-                  />
-                  <span className="title">
-                    {withLanguage(i18n, c.node, 'name')}
-                  </span>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>候選人</Typography>
-          <CandidatesWrapper>
-            {candidates
-              .filter(c => c.node.is_2020_candidate === 'TRUE')
-              .map(c => {
-                return (
-                  <div
-                    className="avatar-group"
-                    onClick={() => {
-                      navigate(
-                        getLocalizedPath(
-                          i18n,
-                          `/profile/${c.node.uuid}/${withLanguage(
-                            i18n,
-                            c.node,
-                            'name'
-                          )}`
-                        )
-                      );
-                    }}
-                  >
-                    <Avatar
-                      className={`avatar ${c.node.camp.toLowerCase()}`}
-                      alt={withLanguage(i18n, c.node, 'name')}
-                      src={c.node.img_url}
-                    />
-                    <span className="title">
-                      {withLanguage(i18n, c.node, 'name')}
-                    </span>
-                  </div>
-                );
-              })}
-          </CandidatesWrapper>
-        </Grid>
+      <Typography variant="h5">現任議員</Typography>
+      <Grid container>
+        {councillors.map(c => (
+          <PeopleCircle key={c.node} info={c.node} />
+        ))}
       </Grid>
+      <Typography variant="h5">有意出選</Typography>
+      <CandidatesWrapper>
+        {candidates
+          .filter(c => c.node.is_2020_candidate === 'TRUE')
+          .map(c => (
+            <PeopleCircle key={c.node} info={c.node} />
+          ))}
+      </CandidatesWrapper>
     </TradTemplateWrapper>
   );
 };
