@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { FaGithub, FaFacebook } from 'react-icons/fa';
 import { openInNewTab } from '@/utils';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Footer() {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <div position="static" className={classes.root}>
@@ -40,13 +42,11 @@ export default function Footer() {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" className={classes.title}>
-              Vote4.hk 投票指南
+              {t('site.title')}
             </Typography>
             <div className={classes.text}>
-              <p>
-                敝網站與任何2020年立法會選舉候選人或其助選成員無關，刊載資料目的非為促使或阻礙任何候選人在選舉中當選。
-              </p>
-              <p>敝網站所刊載資訊全為公開資料，刊載前已盡力確保資料真確性。</p>
+              <p>{t('site.disclaimer1')}</p>
+              <p>{t('site.disclaimer2')}</p>
             </div>
             <Grid
               container
@@ -58,7 +58,8 @@ export default function Footer() {
               <Grid item>
                 <FaGithub
                   className="clickable"
-                  onClick={() => openInNewTab('https://github.com/vote4hk/legco2020')}
+                  onClick={() =>
+                    openInNewTab('https://github.com/vote4hk/legco2020')}
                 />
               </Grid>
               <Grid item>
@@ -71,7 +72,7 @@ export default function Footer() {
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="body1" className={classes.subtitle}>
-              其他網站
+              {t('footer.other_websites')}
             </Typography>
             <div className={classes.text}>
               <p>
@@ -81,7 +82,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  武漢肺炎民間資訊
+                  {t('footer.other_websites.warshk')}
                 </a>
               </p>
               <p>
@@ -91,7 +92,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  2019 區議會投票指南
+                  {t('footer.other_websites.vote4hk')}
                 </a>
               </p>
             </div>

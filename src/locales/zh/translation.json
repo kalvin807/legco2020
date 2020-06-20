@@ -1,4 +1,7 @@
 {
+  "site.title": "Vote4.hk 投票指南",
+  "site.disclaimer1": "敝網站與任何2020年立法會選舉候選人或其助選成員無關，刊載資料目的非為促使或阻礙任何候選人在選舉中當選。",
+  "site.disclaimer2": "敝網站所刊載資訊全為公開資料，刊載前已盡力確保資料真確性。",
   "alias.DEMO": "民主",
   "alias.BEIJING": "親中",
   "alias.OTHER": "其他",
@@ -12,7 +15,9 @@
   "geo_func_dc2": "直選",
   "trad_func": "傳統功能組別",
   "no_of_seats": "{{seats}}席",
+  "intended": "有意出選",
   "intented_list": "有意參選",
+  "intented_list_postscript": "* 表明不參加民主派初選",
   "direct_election_description": "9月6日立法會選舉，民主陣營劍指35席，地區直選主要受政黨協調及選民配票影響，實際變數不大，但功能組別選舉因選民人數增長，左右選舉大局。",
   "tag.fierce": "競爭激烈",
   "tag.probably_demo": "民主派有優勢",
@@ -36,5 +41,13 @@
   "platform.dotdotnews": "點新聞",
   "platform.orangenews": "橙新聞",
   "simulation_result": "推算形勢",
-  "dc2019_demo_beijing_ratio": "2019民主／親中得票比"
+  "dc2019_demo_beijing_ratio": "2019民主／親中得票比",
+  "coordination_method": "名單協調方法",
+  "vote_allocaton": "配票方法",
+  "current_legislator": "現任議員",
+  "vote_diff": "票差：",
+  "number_of_voters": "選民人數：",
+  "footer.other_websites": "其他網站",
+  "footer.other_websites.warshk": "武漢肺炎民間資訊",
+  "footer.other_websites.vote4hk": "2019 區議會投票指南"
 }

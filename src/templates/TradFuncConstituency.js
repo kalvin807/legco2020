@@ -64,13 +64,15 @@ const TradFuncConstituencyTemplate = ({
         </Grid>
         <Grid item>
           <Typography variant="body1">
-            {`選民人數：${constituency.electors_total_2020}（較16年${
+            {`${t('number_of_voters')} ${
+              constituency.electors_total_2020
+            }（較16年${
               Number(constituency.electors_total_2020) -
               Number(constituency.electors_total_2016)
             }）`}
           </Typography>
           <Typography variant="body1">
-            票差：
+            {t('vote_diff')}{' '}
             {constituency.last_election_vote_beijing_minus_demo}
           </Typography>
         </Grid>
@@ -83,13 +85,13 @@ const TradFuncConstituencyTemplate = ({
       <Typography className="block" variant="body2">
         {withLanguage(i18n, constituency, 'description')}
       </Typography>
-      <Typography variant="h5">現任議員</Typography>
+      <Typography variant="h5">{t('current_legislator')}</Typography>
       <Grid container>
         {councillors.map(c => (
           <PeopleCircle key={c.node} info={c.node} />
         ))}
       </Grid>
-      <Typography variant="h5">有意出選</Typography>
+      <Typography variant="h5">{t('intended')}</Typography>
       <CandidatesWrapper>
         {candidates
           .filter(c => c.node.is_2020_candidate === 'TRUE')
