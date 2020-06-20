@@ -111,14 +111,16 @@ const GeoFuncDc2ConstituencyTemplate = ({
               <span className="camp-text demo">{t('alias.DEMO')}</span>
             </div>
             <div className="list-number">{demoCandidates.length}</div>
-            <Typography variant="caption">有意出選名單</Typography>
+            <Typography variant="caption">{t('intented_list')}</Typography>
             <CandidatesWrapper>
               {demoCandidates.map(c => (
                 <PeopleCircle key={c.node} info={c.node} />
               ))}
             </CandidatesWrapper>
           </div>
-          <Typography variant="caption">* 表明不參加民主派初選</Typography>
+          <Typography variant="caption">
+            {t('intented_list_postscript')}
+          </Typography>
         </Grid>
         <Grid item xs={6}>
           <div className="right">
@@ -126,7 +128,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
               <span className="camp-text beijing">{t('alias.BEIJING')}</span>
             </div>
             <div className="list-number">{beijingCandidates.length}</div>
-            <Typography variant="caption">有意出選名單</Typography>
+            <Typography variant="caption">{t('intented_list')}</Typography>
             <CandidatesWrapper mt={2}>
               {beijingCandidates.map(c => (
                 <PeopleCircle key={c.node} info={c.node} />
@@ -138,7 +140,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
               <div>
                 <span className="camp-text other">{t('alias.OTHER')}</span>
               </div>
-              <Typography variant="caption">有意出選名單</Typography>
+              <Typography variant="caption">{t('intented_list')}</Typography>
               <CandidatesWrapper>
                 {otherCandidates.map(c => (
                   <PeopleCircle key={c.node} info={c.node} />
@@ -154,7 +156,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
         {['DEMO', 'BEIJING'].map(camp => {
           return (
             <Grid item xs={6} key={camp}>
-              <Typography variant="h6">名單協調方法</Typography>
+              <Typography variant="h6">{t('coordination_method')}</Typography>
 
               <Typography variant="body1">
                 {constituency[`stage_1_title_${camp.toLowerCase()}_zh`]}
@@ -171,7 +173,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
         {['DEMO', 'BEIJING'].map(camp => {
           return (
             <Grid item xs={6} key={camp}>
-              <Typography variant="h6">配票方法</Typography>
+              <Typography variant="h6">{t('vote_allocaton')}</Typography>
 
               <Typography variant="body1">
                 {constituency[`stage_2_title_${camp.toLowerCase()}_zh`]}

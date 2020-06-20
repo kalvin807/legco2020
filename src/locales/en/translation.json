@@ -1,4 +1,7 @@
 {
+    "site.title": "Vote4.hk 投票指南",
+    "site.disclaimer1": "敝網站與任何2020年立法會選舉候選人或其助選成員無關，刊載資料目的非為促使或阻礙任何候選人在選舉中當選。",
+    "site.disclaimer2": "敝網站所刊載資訊全為公開資料，刊載前已盡力確保資料真確性。",
     "alias.DEMO": "Pro-Democracy Camp",
     "alias.BEIJING": "Pro-Beijing Camp",
     "alias.OTHER": "Others",
@@ -12,7 +15,9 @@
     "geo_func_dc2": "Direct Election",
     "trad_func": "Traditional Functional Constituency",
     "no_of_seats": "{{seats}} seats",
-    "intented_list": "有意參選",
+    "intended": "有意出選",
+    "intented_list": "Intented",
+    "intented_list_postscript": "* 表明不參加民主派初選",
     "direct_election_description": "9月6日立法會選舉，民主陣營劍指35席，地區直選主要受政黨協調及選民配票影響，實際變數不大，但功能組別選舉因選民人數增長，成為左右選舉大局。",
     "tag.fierce": "競爭激烈",
     "tag.probably_demo": "民主派有優勢",
@@ -36,6 +41,14 @@
     "platform.dotdotnews": "Dot Dot News",
     "platform.orangenews": "Orange News",
     "simulation_result": "推算形勢",
-    "dc2019_demo_beijing_ratio": "2019民主／親中得票比"
+    "dc2019_demo_beijing_ratio": "2019民主／親中得票比",
+    "coordination_method": "名單協調方法",
+    "vote_allocaton": "Vote Allocation",
+    "current_legislator": "現任議員",
+    "vote_diff": "Difference:",
+    "number_of_voters": "Number of Voters:",
+    "footer.other_websites": "Other Websites",
+    "footer.other_websites.warshk": "Vote4hk - COVID-19 in HK",
+    "footer.other_websites.vote4hk": "Vote4hk - District Council Election 2019"
   }
   
