@@ -117,28 +117,6 @@ const createPublishedGoogleSpreadsheetNode = async (
 };
 
 
-const handlePeopleTags = person => {
-  const tags = [];
-
-  const pushIfTrue = key => {
-    if (person[key] === 'TRUE') {
-      tags.push({
-        i18nKey: key,
-      });
-    }
-  };
-
-  pushIfTrue('is_current_lc');
-  pushIfTrue('is_current_dc');
-
-  if (person.camp === 'DEMO') {
-    tags.push({
-      i18nKey: person.primary === 'FALSE' ? 'no_primary' : 'primary',
-    });
-  }
-  return tags;
-};
-
 const handleTradFCTags = constituency => {
   const tags = [
     {
@@ -344,6 +322,14 @@ exports.createPages = async function createPages({
             status
             name_zh
             description_zh
+            tags {
+              name_zh
+              name_en
+            }
+            political_affiliations {
+              alias_zh
+              alias_en
+            }
             keywords
             title_zh
             is_current_lc
@@ -481,7 +467,6 @@ exports.createPages = async function createPages({
           context: {
             person,
             socialPosts,
-            tags: handlePeopleTags(person),
             locale: lang,
           },
         });
