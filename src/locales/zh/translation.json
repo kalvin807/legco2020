@@ -45,5 +45,9 @@
   "number_of_voters": "選民人數：",
   "footer.other_websites": "其他網站",
   "footer.other_websites.warshk": "武漢肺炎民間資訊",
-  "footer.other_websites.vote4hk": "2019 區議會投票指南"
+  "footer.other_websites.vote4hk": "2019 區議會投票指南",
+  "list_count": "{{list_count}}張名單",
+  "demo_target": "民主派目標議席",
+  "demo_target_not_decide": "目標議席待定",
+  "primary_election_description": "立法會選舉將於9月舉行，民主陣營將於7月11至12日舉行初選。<br />日程<br />●6月27日至7月6日：四媒體合辦初選論壇<br />●7月11及12日：一連兩日朝9晚9投票<br />●7月13日：公布投票結果"
 }

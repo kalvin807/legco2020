@@ -39,7 +39,7 @@ export default function Header() {
           className={`${classes.title} clickable`}
           dangerouslySetInnerHTML={renderTitle()}
           onClick={() => {
-            navigate(getLocalizedPath(i18n, '/'));
+            navigate(getLocalizedPath(i18n, '/primary'));
           }}
         />
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">

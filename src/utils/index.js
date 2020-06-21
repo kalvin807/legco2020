@@ -23,6 +23,24 @@ export function calculateSeatBox(e) {
   ];
 }
 
+export function calculateSeatBoxForPrimary(e) {
+  const baseRow = [...Array(Number(e.seats)).keys()].map(() => ({
+    color: seatColorMapping.UNRESOLVED,
+  }));
+
+  if (!e.target) {
+    return baseRow;
+  }
+
+  return baseRow.map((row, i) => {
+    const newRow = row;
+    if (i < Number(e.target)) {
+      newRow.color = seatColorMapping.FC_EXPECTED_WIN_DEMO;
+    }
+    return newRow;
+  });
+}
+
 export const saveToLocalStorage = (key, value) => {
   if (typeof Storage !== 'undefined') {
     window.localStorage.setItem(key, value);

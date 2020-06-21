@@ -33,6 +33,7 @@ const theme = createMuiTheme({
     },
     warning: {
       main: amber[400],
+      light: amber[200],
     },
     success: {
       main: teal[400],
