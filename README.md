@@ -39,8 +39,15 @@ Need help? Check below links for simple tutorial about our tech stack!
 
     ```shell
     git clone https://github.com/cswbrian/legco2020.git
+
     cd legco2020
+
+    cp .env-sample .env
+
+    # Modify the content of .env, please ask administrator for the API_KEY
+
     yarn
+
     yarn develop
     ```
 
