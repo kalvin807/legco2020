@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const fetch = require('node-fetch');
 const path = require('path');
 const csv2json = require('csvtojson');
@@ -7,14 +8,76 @@ const { getPath } = require('./src/utils/urlHelper');
 const isDebug = process.env.DEBUG_MODE === 'false';
 const LANGUAGES = ['zh', 'en'];
 
+require('dotenv').config();
+
 // const PUBLISHED_SPREADSHEET_I18N_URL =
 //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
 const PUBLISHED_SPREADSHEET_GEOGRAPHICAL_CONSTITUENCIES_FC2_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSlXzn8tUEIgTAtQK4cey1JzunOctvquNQr-_76l98vdhD9Y4It5ZoNk06wEuBGoPIccFcjan0RXm7/pub?gid=1850485765';
 const PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTvOc7XgjVmjYxXfCS06AvA3l8_kpjljIh1phw7yhC9uUpj1IdKW_dtMyFC8W5gvPz7a1xGFrve8gZj/pub?gid=1850485765';
-const PUBLISHED_SPREADSHEET_PEOPLE_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0';
+const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091';
+const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
+
+
+const createAirtableNode = async (
+  { actions: { createNode }, createNodeId, createContentDigest },
+  airtableSheetId,
+  airtableSheetName,
+  type,
+  { subtype = null }
+) => {
+  const AirtableAPIKey = process.env.GATSBY_AIRTABLE_API_KEY;
+  if (!AirtableAPIKey) {
+    throw new Error('AirtableAPIKey not found. please ensure the environment varaible is set.');
+  }
+
+  let offset = '';
+  let records = [];
+  // max pagesize available = 100
+  const pageSize = 100;
+  let loadedSize = 0;
+  do {
+    let query = `pageSize=${pageSize}`;
+    if (offset) {
+      query += `&offset=${offset}`
+    }
+    const result = await fetch(
+      `https://api.airtable.com/v0/${airtableSheetId}/${airtableSheetName}?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${AirtableAPIKey}`
+        }
+      }
+    );
+    if (result.status === 429) {
+      // TODO: handle rate limit
+
+    }
+    const data = await result.json();
+    records = records.concat(data.records);
+
+    loadedSize = data.records.length;
+    offset = data.offset;
+  } while (loadedSize === pageSize);
+
+  records.forEach((p) => {
+    // create node for build time data example in the docs
+    const meta = {
+      // required fields
+      id: p.id,
+      parent: null,
+      children: [],
+      internal: {
+        type,
+        contentDigest: createContentDigest(p),
+      },
+    };
+    const node = { ...p.fields, subtype, ...meta };
+    createNode(node);
+  });
+}
 
 const createPublishedGoogleSpreadsheetNode = async (
   { actions: { createNode }, createNodeId, createContentDigest },
@@ -25,7 +88,7 @@ const createPublishedGoogleSpreadsheetNode = async (
   // All table has first row reserved
   const result = await fetch(
     `${publishedURL}&single=true&output=csv&headers=0${
-      skipFirstLine ? '&range=A2:ZZ' : ''
+    skipFirstLine ? '&range=A2:ZZ' : ''
     }&q=${Math.floor(new Date().getTime(), 1000)}`
   );
   const data = await result.text();
@@ -53,28 +116,6 @@ const createPublishedGoogleSpreadsheetNode = async (
     });
 };
 
-
-const handlePeopleTags = person => {
-  const tags = [];
-
-  const pushIfTrue = key => {
-    if (person[key] === 'TRUE') {
-      tags.push({
-        i18nKey: key,
-      });
-    }
-  };
-
-  pushIfTrue('is_current_lc');
-  pushIfTrue('is_current_dc');
-
-  if (person.camp === 'DEMO') {
-    tags.push({
-      i18nKey: person.primary === 'FALSE' ? 'no_primary' : 'primary',
-    });
-  }
-  return tags;
-};
 
 const handleTradFCTags = constituency => {
   const tags = [
@@ -160,12 +201,46 @@ exports.sourceNodes = async props => {
     ),
     createPublishedGoogleSpreadsheetNode(
       props,
-      PUBLISHED_SPREADSHEET_PEOPLE_URL,
-      'People',
-      { skipFirstLine: true }
+      PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL,
+      'FcOverview',
+      { skipFirstLine: false, alwaysEnabled: true }
     ),
-  ]);
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
+      'master',
+      'Candidates',
+      {}
+    ),
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
+      'tags',
+      'CandidateTag',
+      {}
+    ),
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
+      'political_affiliation',
+      'CandidatePoliticalAffilation',
+      {}
+    )]);
 };
+
+// https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes } = actions
+  const typeDefs = [
+    `type Candidates implements Node {
+      tags: [CandidateTag] @link(by: "id")
+    }`,
+    `type Candidates implements Node {
+      political_affiliations: [CandidatePoliticalAffilation] @link(by: "id")
+    }`,
+  ]
+  createTypes(typeDefs)
+}
 
 exports.createPages = async function createPages({
   graphql,
@@ -237,7 +312,7 @@ exports.createPages = async function createPages({
           }
         }
       }
-      allPeople {
+      allCandidates {
         edges {
           node {
             enabled
@@ -247,6 +322,14 @@ exports.createPages = async function createPages({
             status
             name_zh
             description_zh
+            tags {
+              name_zh
+              name_en
+            }
+            political_affiliations {
+              alias_zh
+              alias_en
+            }
             keywords
             title_zh
             is_current_lc
@@ -276,7 +359,7 @@ exports.createPages = async function createPages({
         component: GeoFuncDc2ConstituencyTemplate,
         context: {
           constituency: constituency.node,
-          candidates: result.data.allPeople.edges.filter(
+          candidates: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key
           ),
@@ -294,12 +377,12 @@ exports.createPages = async function createPages({
         component: TradFuncTemplate,
         context: {
           constituency: constituency.node,
-          councillors: result.data.allPeople.edges.filter(
+          councillors: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key &&
               p.node.is_current_lc === 'TRUE'
           ),
-          candidates: result.data.allPeople.edges.filter(
+          candidates: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key
           ),
@@ -310,7 +393,7 @@ exports.createPages = async function createPages({
     });
   });
 
-  const People = result.data.allPeople.edges;
+  const People = result.data.allCandidates.edges;
 
   const requests = People.map(person => {
     const query = `
@@ -362,7 +445,7 @@ exports.createPages = async function createPages({
     const variables = {
       regex: `(${person.node.name_zh}${
         person.nodekeywords ? `|${person.nodekeywords}` : ''
-      })`,
+        })`,
       timeframe: '1w',
     };
 
@@ -384,7 +467,6 @@ exports.createPages = async function createPages({
           context: {
             person,
             socialPosts,
-            tags: handlePeopleTags(person),
             locale: lang,
           },
         });
