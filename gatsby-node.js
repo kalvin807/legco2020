@@ -24,7 +24,7 @@ const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
 const createAirtableNode = async (
-  { actions: { createNode }, createNodeId, createContentDigest },
+  { actions: { createNode }, createContentDigest },
   airtableSheetId,
   airtableSheetName,
   type,
@@ -237,7 +237,7 @@ exports.sourceNodes = async props => {
 };
 
 // https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields
-exports.createSchemaCustomization = ({ actions, schema }) => {
+exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = [
     `type Candidates implements Node {
