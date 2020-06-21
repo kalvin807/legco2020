@@ -1,0 +1,312 @@
+import React from 'react';
+import SEO from '@/components/seo';
+import { graphql, navigate } from 'gatsby';
+import theme from '@/themes';
+import { Typography, useMediaQuery, Grid } from '@material-ui/core';
+import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
+
+const FullWidithWrapper = styled.div`
+  margin: 0 -${theme.spacing(2)}px;
+
+  .fullWidth-title {
+    font-weight: 700;
+    text-align: center;
+    padding: ${theme.spacing(1)}px 0;
+  }
+`;
+
+const Container = styled.div`
+  margin: 0 ${theme.spacing(2)}px;
+`;
+
+const DirectHeader = styled.div`
+  margin: ${theme.spacing(2)}px 0;
+`;
+
+const DirectWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: ${theme.spacing(1)}px;
+
+  .seat {
+    padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
+    border-radius: 2px;
+    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .sub-title {
+      font-size: 0.65rem;
+    }
+
+    .roundup-title {
+      margin-top: ${theme.spacing(0.5)}px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .roundup-title div {
+      line-height: 0.5;
+    }
+
+    .roundup-title div:last-child {
+      text-align: right;
+    }
+
+    .roundup {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+    }
+
+    .large-number {
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    .demo {
+      text-align: left;
+      color: ${theme.palette.warning.main};
+    }
+
+    .beijing {
+      text-align: right;
+      color: ${theme.palette.info.main};
+    }
+
+    .other {
+      color: ${theme.palette.success.main};
+    }
+  }
+`;
+
+const PrimaryPage = props => {
+  const {
+    data: { allPrimary, allCandidates },
+  } = props;
+  // const seats = [
+  //   ...Array.from(allGeoFuncDc2.nodes),
+  //   ...Array.from(allTradFunc.nodes),
+  // ];
+
+  const { t } = useTranslation();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  // group data for chart
+  // const seatCount = {
+  //   UNRESOLVED: 70,
+  // };
+
+  // seats.forEach(seat => {
+  //   Object.keys(seat)
+  //     .filter(k => k.includes('expected'))
+  //     .map(key => {
+  //       const seatType = `${seat.type}_${key}`.toUpperCase();
+  //       if (typeof seatCount[seatType] === 'undefined') {
+  //         seatCount[seatType] = Number(seat[key]);
+  //       } else {
+  //         seatCount[seatType] += Number(seat[key]);
+  //       }
+  //       seatCount.UNRESOLVED -= Number(seat[key]);
+  //     });
+  // });
+
+  // Build chart data
+  // const chartData = Object.keys(seatColorMapping).map(scm => ({
+  //   key: scm,
+  //   label: t(`stackedBar.${scm}`),
+  //   value: seatCount[scm],
+  //   color: seatColorMapping[scm],
+  // }));
+
+  // // Build chart data
+  // const summary = {
+  //   DEMO: {
+  //     name: t('alias.DEMO'),
+  //     pos: 'start',
+  //     total: 0,
+  //     background: theme.palette.warning.light,
+  //   },
+  //   BEIJING: {
+  //     name: t('alias.BEIJING'),
+  //     pos: 'end',
+  //     total: 0,
+  //     background: theme.palette.info.light,
+  //   },
+  // };
+
+  // chartData.forEach(c => {
+  //   if (c.key.includes('DEMO')) {
+  //     summary.DEMO.total += c.value;
+  //   }
+  //   if (c.key.includes('BEIJING')) {
+  //     summary.BEIJING.total += c.value;
+  //   }
+  // });
+
+  const { i18n } = useTranslation();
+
+  const renderConstituencies = edges => {
+    return (
+      <>
+        <DirectHeader>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{
+              __html: t('primary_election_description'),
+            }}
+          />
+        </DirectHeader>
+        <DirectWrapper>
+          {edges
+            .sort((a, b) => {
+              if (a.node.order > b.node.order) return 1;
+              if (a.node.order < b.node.order) return -1;
+              return 0;
+            })
+            .map(edge => {
+              const { node: e } = edge;
+              const candiDemo = allCandidates.edges.filter(
+                p =>
+                  p.node.constituency === e.key &&
+                  p.node.camp === 'DEMO' &&
+                  p.node.tags &&
+                  p.node.tags.findIndex(tag => tag.name_zh === '民主派初選') !==
+                    -1
+              );
+
+              return (
+                <div
+                  key={e.key}
+                  className="seat clickable"
+                  onClick={() => {
+                    navigate(getLocalizedPath(i18n, `/primary/${e.key}`));
+                  }}
+                >
+                  <div className="title">
+                    <Typography variant="caption" color="textSecondary">
+                      {t('no_of_seats', { seats: e.seats })}
+                    </Typography>
+                    <div className="sub-title">
+                      {withLanguage(i18n, e, 'primary_rule')}
+                    </div>
+                  </div>
+                  <div className="title">
+                    <div>
+                      <Typography variant="h5">
+                        {withLanguage(i18n, e, 'name')}
+                      </Typography>
+                    </div>
+                    <div>
+                      {/* <div style={{ width: '40px', height: '40px' }}>
+                        <SeatRowChart
+                          width={40}
+                          height={40}
+                          data={calculateSeatBox(e)}
+                        />
+                      </div> */}
+                    </div>
+                  </div>
+                  <div className="roundup-title">
+                    <div />
+                  </div>
+                  <div className="roundup">
+                    <div className="large-number demo">
+                      {candiDemo.length || '-'}
+                    </div>
+                    <Typography variant="body2" color="textSecondary">
+                      名單
+                    </Typography>
+                    {Number(e.target) > 0 && (
+                      <>
+                        <div className="large-number">{e.target || '-'}</div>
+                        <Typography variant="body2" color="textSecondary">
+                          出線
+                        </Typography>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+        </DirectWrapper>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <SEO title="Primary" />
+      <FullWidithWrapper>
+        {/* <SingleStackedBarChart
+          data={chartData}
+          summary={summary}
+          title={t('simulation_result')}
+        />
+        <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
+          {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ExpandButton>
+        <Collapse in={showSeatHistory} timeout={100}>
+          {PastElectionResult.map(r => (
+            <SingleStackedBarChart
+              key={r.year}
+              data={r.result}
+              summary={r.summary}
+              title={r.year}
+            />
+          ))}
+        </Collapse> */}
+        {isDesktop ? (
+          <Grid container spacing={3}>
+            <Container>{renderConstituencies(allPrimary.edges)}</Container>
+          </Grid>
+        ) : (
+          <Container>{renderConstituencies(allPrimary.edges)}</Container>
+        )}
+      </FullWidithWrapper>
+    </>
+  );
+};
+
+export default PrimaryPage;
+
+export const PrimaryPageQuery = graphql`
+  query {
+    allPrimary {
+      edges {
+        node {
+          key
+          type
+          name_zh
+          name_en
+          alias_zh
+          alias_en
+          target
+          seats
+          expected_win_demo
+          primary_rule_zh
+          primary_rule_en
+          primary_description_zh
+          primary_description_en
+        }
+      }
+    }
+    allCandidates {
+      edges {
+        node {
+          enabled
+          uuid
+          camp
+          constituency
+          tags {
+            name_zh
+          }
+        }
+      }
+    }
+  }
+`;
