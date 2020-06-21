@@ -26,6 +26,7 @@ const AIRTABLE_CANDIDATE_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 const createAirtableNode = async (
   { actions: { createNode }, createNodeId, createContentDigest },
   airtableSheetId,
+  airtableSheetName,
   type,
   { subtype = null }
 ) => {
@@ -45,7 +46,7 @@ const createAirtableNode = async (
       query += `&offset=${offset}`
     }
     const result = await fetch(
-      `https://api.airtable.com/v0/${airtableSheetId}/master?${query}`,
+      `https://api.airtable.com/v0/${airtableSheetId}/${airtableSheetName}?${query}`,
       {
         headers: {
           Authorization: `Bearer ${AirtableAPIKey}`
@@ -53,7 +54,8 @@ const createAirtableNode = async (
       }
     );
     if (result.status === 429) {
-      // TODO: handle rate limit      
+      // TODO: handle rate limit
+
     }
     const data = await result.json();
     records = records.concat(data.records);
@@ -66,7 +68,7 @@ const createAirtableNode = async (
     // create node for build time data example in the docs
     const meta = {
       // required fields
-      id: createNodeId(p.id),
+      id: p.id,
       parent: null,
       children: [],
       internal: {
@@ -76,7 +78,7 @@ const createAirtableNode = async (
     };
     const node = { ...p.fields, subtype, ...meta };
     createNode(node);
-  });  
+  });
 }
 
 const createPublishedGoogleSpreadsheetNode = async (
@@ -222,13 +224,6 @@ exports.sourceNodes = async props => {
       { skipFirstLine: true, alwaysEnabled: true }
     ),
     createPublishedGoogleSpreadsheetNode(
-      props,
-      PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL,
-      'FcOverview',
-      { skipFirstLine: false, alwaysEnabled: true }
-    ),
-    createPublishedGoogleSpreadsheetNode(
-      props,
       PUBLISHED_SPREADSHEET_PEOPLE_URL,
       'People',
       { skipFirstLine: true }
@@ -236,11 +231,39 @@ exports.sourceNodes = async props => {
     createAirtableNode(
       props,
       AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      'master',
       'Candidate',
       {}
-    )
-  ]);
+    ),
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      'tags',
+      'CandidateTag',
+      {}
+    ),
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      'political_affiliation',
+      'CandidatePoliticalAffilation',
+      {}
+    )]);
 };
+
+// https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes } = actions
+  const typeDefs = [
+    `type Candidate implements Node {
+      tags: [CandidateTag] @link(by: "id")
+    }`,
+    `type Candidate implements Node {
+      political_affiliations: [CandidatePoliticalAffilation] @link(by: "id")
+    }`,
+  ]
+  createTypes(typeDefs)
+}
 
 exports.createPages = async function createPages({
   graphql,
