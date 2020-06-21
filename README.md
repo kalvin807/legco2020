@@ -9,7 +9,7 @@ The data is updated automatically every 5 minutes. The information are all open 
 - [2019 District Councils Election results](https://bit.ly/vote4hkdata)
 - [2020 Legislative Election Functional Constituencies](https://docs.google.com/spreadsheets/d/13VRJl6urKSLsThswBzyuEERNI8xVTCCJwImYQF-jKz4/edit#gid=18504857655&range=A2:ZZ)
 - [2020 Legislative Election Geographical Constituencies](https://docs.google.com/spreadsheets/d/1F-M4kNSRmt36JwzDUERCtFWDWW7QIZLhnYCLIihp2QQ/edit#gid=1850485765&range=A2:ZZ)
-- [2020 Legislative Election Candidates](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0&range=B2:ZZ)
+- [2020 Legislative Election Candidates](https://airtable.com/shrhIQMh1lr4fHqp4)
 
 ## 🎓 Our stacks
 
