@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const fetch = require('node-fetch');
 const path = require('path');
 const csv2json = require('csvtojson');
@@ -6,6 +7,8 @@ const { getPath } = require('./src/utils/urlHelper');
 
 const isDebug = process.env.DEBUG_MODE === 'false';
 const LANGUAGES = ['zh', 'en'];
+
+require('dotenv').config();
 
 // const PUBLISHED_SPREADSHEET_I18N_URL =
 //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxZuhwUXNXiyFOyMZvBHcb0C1BUBGtOZ852dvx2sVhLVMN-hIXJUS6bDHnxgx7ho5U6J1P7sBWMNd4/pub?gid=0"
@@ -17,6 +20,64 @@ const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091';
 const PUBLISHED_SPREADSHEET_PEOPLE_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0';
+const AIRTABLE_CANDIDATE_SPREADSHEET_ID = 'appTst6klxEECAHOv';
+
+
+const createAirtableNode = async (
+  { actions: { createNode }, createNodeId, createContentDigest },
+  airtableSheetId,
+  type,
+  { subtype = null }
+) => {
+  const AirtableAPIKey = process.env.GATSBY_AIRTABLE_API_KEY;
+  if (!AirtableAPIKey) {
+    throw new Error('AirtableAPIKey not found. please ensure the environment varaible is set.');
+  }
+
+  let offset = '';
+  let records = [];
+  // max pagesize available = 100
+  const pageSize = 100;
+  let loadedSize = 0;
+  do {
+    let query = `pageSize=${pageSize}`;
+    if (offset) {
+      query += `&offset=${offset}`
+    }
+    const result = await fetch(
+      `https://api.airtable.com/v0/${airtableSheetId}/master?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${AirtableAPIKey}`
+        }
+      }
+    );
+    if (result.status === 429) {
+      // TODO: handle rate limit      
+    }
+    const data = await result.json();
+    records = records.concat(data.records);
+
+    loadedSize = data.records.length;
+    offset = data.offset;
+  } while (loadedSize === pageSize);
+
+  records.forEach((p) => {
+    // create node for build time data example in the docs
+    const meta = {
+      // required fields
+      id: createNodeId(p.id),
+      parent: null,
+      children: [],
+      internal: {
+        type,
+        contentDigest: createContentDigest(p),
+      },
+    };
+    const node = { ...p.fields, subtype, ...meta };
+    createNode(node);
+  });  
+}
 
 const createPublishedGoogleSpreadsheetNode = async (
   { actions: { createNode }, createNodeId, createContentDigest },
@@ -27,7 +88,7 @@ const createPublishedGoogleSpreadsheetNode = async (
   // All table has first row reserved
   const result = await fetch(
     `${publishedURL}&single=true&output=csv&headers=0${
-      skipFirstLine ? '&range=A2:ZZ' : ''
+    skipFirstLine ? '&range=A2:ZZ' : ''
     }&q=${Math.floor(new Date().getTime(), 1000)}`
   );
   const data = await result.text();
@@ -172,6 +233,12 @@ exports.sourceNodes = async props => {
       'People',
       { skipFirstLine: true }
     ),
+    createAirtableNode(
+      props,
+      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      'Candidate',
+      {}
+    )
   ]);
 };
 
@@ -370,7 +437,7 @@ exports.createPages = async function createPages({
     const variables = {
       regex: `(${person.node.name_zh}${
         person.nodekeywords ? `|${person.nodekeywords}` : ''
-      })`,
+        })`,
       timeframe: '1w',
     };
 
