@@ -49,8 +49,7 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = props => {
-  const { info } = props;
+export const PeopleCircle = ({ info, showName = true }) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
@@ -67,7 +66,9 @@ export const PeopleCircle = props => {
           alt={name}
           src={info.img_url}
         />
-        <span>{`${name}${info.primary === 'FALSE' ? '*' : ''}`}</span>
+        {showName && (
+          <span>{`${name}${info.primary === 'FALSE' ? '*' : ''}`}</span>
+        )}
       </div>
     </PeopleWrapper>
   );

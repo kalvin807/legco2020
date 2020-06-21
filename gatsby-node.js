@@ -18,6 +18,8 @@ const PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTvOc7XgjVmjYxXfCS06AvA3l8_kpjljIh1phw7yhC9uUpj1IdKW_dtMyFC8W5gvPz7a1xGFrve8gZj/pub?gid=1850485765';
 const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091';
+const PUBLISHED_SPREADSHEET_PRIMARY_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0W9CFUv5njblnxAS86FzcyBvluytvyvawluGPBWUIu2wiPZsvFHx3CqNUV8EhJsZCTiUigfoCJc4j/pub?gid=1850485765';
 const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
@@ -205,6 +207,12 @@ exports.sourceNodes = async props => {
       'FcOverview',
       { skipFirstLine: false, alwaysEnabled: true }
     ),
+    createPublishedGoogleSpreadsheetNode(
+      props,
+      PUBLISHED_SPREADSHEET_PRIMARY_URL,
+      'Primary',
+      { skipFirstLine: true, alwaysEnabled: true }
+    ),
     createAirtableNode(
       props,
       AIRTABLE_CANDIDATES_SPREADSHEET_ID,
@@ -254,7 +262,10 @@ exports.createPages = async function createPages({
   const TradFuncTemplate = path.resolve(
     './src/templates/TradFuncConstituency.js'
   );
+  
   const ProfileTemplate = path.resolve('./src/templates/Profile.js');
+
+  const PrimaryTemplate = path.resolve('./src/templates/Primary.js');
 
   const result = await graphql(`
     {
@@ -309,6 +320,25 @@ exports.createPages = async function createPages({
             expected_win_other
             candidates_demo
             candidates_beijing
+          }
+        }
+      }
+      allPrimary {
+        edges {
+          node {
+            key
+            type
+            name_zh
+            name_en
+            alias_zh
+            alias_en
+            target
+            seats
+            expected_win_demo
+            primary_rule_zh
+            primary_rule_en
+            primary_description_zh
+            primary_description_en
           }
         }
       }
@@ -393,6 +423,24 @@ exports.createPages = async function createPages({
     });
   });
 
+  result.data.allPrimary.edges.forEach(constituency => {
+    LANGUAGES.forEach(lang => {
+      createPage({
+        path: getPath(lang, `/primary/${constituency.node.key}`),
+        component: PrimaryTemplate,
+        context: {
+          constituency: constituency.node,
+          candidates: result.data.allCandidates.edges.filter(
+            p =>
+              p.node.constituency === constituency.node.key && 
+              p.node.camp === 'DEMO' && 
+              p.node.tags && p.node.tags.findIndex(tag => tag.name_zh === '民主派初選') !== -1
+          ),
+          locale: lang,
+        },
+      });
+    });
+  });
   const People = result.data.allCandidates.edges;
 
   const requests = People.map(person => {
