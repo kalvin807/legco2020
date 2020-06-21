@@ -18,9 +18,7 @@ const PUBLISHED_SPREADSHEET_TRADITIONAL_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTvOc7XgjVmjYxXfCS06AvA3l8_kpjljIh1phw7yhC9uUpj1IdKW_dtMyFC8W5gvPz7a1xGFrve8gZj/pub?gid=1850485765';
 const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091';
-const PUBLISHED_SPREADSHEET_PEOPLE_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ38fTxaPkEMpdrfPVFKcQdA4nYr7C3uQXkLteSuHYIxIUe2t-E7ECEX5anGdcWrFEuMMDRpasfw94s/pub?gid=0';
-const AIRTABLE_CANDIDATE_SPREADSHEET_ID = 'appTst6klxEECAHOv';
+const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
 const createAirtableNode = async (
@@ -229,29 +227,23 @@ exports.sourceNodes = async props => {
       'FcOverview',
       { skipFirstLine: false, alwaysEnabled: true }
     ),
-    createPublishedGoogleSpreadsheetNode(
-      props,
-      PUBLISHED_SPREADSHEET_PEOPLE_URL,
-      'People',
-      { skipFirstLine: true }
-    ),
     createAirtableNode(
       props,
-      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
       'master',
-      'Candidate',
+      'Candidates',
       {}
     ),
     createAirtableNode(
       props,
-      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
       'tags',
       'CandidateTag',
       {}
     ),
     createAirtableNode(
       props,
-      AIRTABLE_CANDIDATE_SPREADSHEET_ID,
+      AIRTABLE_CANDIDATES_SPREADSHEET_ID,
       'political_affiliation',
       'CandidatePoliticalAffilation',
       {}
@@ -262,10 +254,10 @@ exports.sourceNodes = async props => {
 exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
   const typeDefs = [
-    `type Candidate implements Node {
+    `type Candidates implements Node {
       tags: [CandidateTag] @link(by: "id")
     }`,
-    `type Candidate implements Node {
+    `type Candidates implements Node {
       political_affiliations: [CandidatePoliticalAffilation] @link(by: "id")
     }`,
   ]
@@ -342,7 +334,7 @@ exports.createPages = async function createPages({
           }
         }
       }
-      allPeople {
+      allCandidates {
         edges {
           node {
             enabled
@@ -381,7 +373,7 @@ exports.createPages = async function createPages({
         component: GeoFuncDc2ConstituencyTemplate,
         context: {
           constituency: constituency.node,
-          candidates: result.data.allPeople.edges.filter(
+          candidates: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key
           ),
@@ -399,12 +391,12 @@ exports.createPages = async function createPages({
         component: TradFuncTemplate,
         context: {
           constituency: constituency.node,
-          councillors: result.data.allPeople.edges.filter(
+          councillors: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key &&
               p.node.is_current_lc === 'TRUE'
           ),
-          candidates: result.data.allPeople.edges.filter(
+          candidates: result.data.allCandidates.edges.filter(
             p =>
               p.node.constituency === constituency.node.key
           ),
@@ -415,7 +407,7 @@ exports.createPages = async function createPages({
     });
   });
 
-  const People = result.data.allPeople.edges;
+  const People = result.data.allCandidates.edges;
 
   const requests = People.map(person => {
     const query = `
