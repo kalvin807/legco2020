@@ -224,6 +224,7 @@ exports.sourceNodes = async props => {
       { skipFirstLine: true, alwaysEnabled: true }
     ),
     createPublishedGoogleSpreadsheetNode(
+      props,
       PUBLISHED_SPREADSHEET_PEOPLE_URL,
       'People',
       { skipFirstLine: true }
