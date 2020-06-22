@@ -1,8 +1,10 @@
+require('dotenv').config()
+
+const SITE_URL = process.env.SITE_URL || 'https://legco2020.vote4.hk'
 module.exports = {
+  // must be here for sitemap plugin lol
   siteMetadata: {
-    title: 'vote4hk',
-    description: 'Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.',
-    author: 'vote4hk team',
+    siteUrl: SITE_URL,
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -49,6 +51,13 @@ module.exports = {
           '@components': 'src/components',
         },
         extensions: [],
+      },
+    },
+    'gatsby-transformer-json',
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/src/data`,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
