@@ -363,8 +363,6 @@ exports.createPages = async function createPages({
             keywords
             title_zh
             is_current_lc
-            is_current_dc
-            primary
             is_2020_candidate
             img_url
             facebook_id
