@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "legco2020.vote4.hk",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Static website for legco2020.vote4.hk",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "vote4hk (https://github.com/vote4hk)",
   "dependencies": {
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
