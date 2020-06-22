@@ -6,83 +6,138 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet';
 import { useStaticQuery, graphql } from 'gatsby';
+import ContextStore from '@/contextStore';
+import { useTranslation } from 'react-i18next';
+import _isEmpty from 'lodash.isempty';
 
-function SEO({ description, lang, meta, title }) {
-  const { site } = useStaticQuery(
+const SEO = ({ meta, uri, titleOveride }) => {
+  const { t, i18n } = useTranslation();
+
+  const {
+    route: {
+      state: { path, fullPath },
+    },
+  } = React.useContext(ContextStore);
+  const { site, configJson } = useStaticQuery(
     graphql`
       query {
         site {
           siteMetadata {
+            siteUrl
+          }
+        }
+        configJson {
+          languages
+          pages {
             title
-            description
-            author
+            to
+            icon
           }
         }
       }
     `
   );
+  const currentPage = configJson.pages.find(p => p.to === path) || {};
+  let title = '';
+  if (titleOveride) {
+    title = titleOveride;
+  } else {
+    title = _isEmpty(currentPage) ? t('index.title') : t(currentPage.title);
+    if (_isEmpty(currentPage) && !uri) {
+      console.error(
+        `cannot look up page title. check the settings for path: ${path}`
+      );
+    }
+  }
 
-  const metaDescription = description || site.siteMetadata.description;
+  const image = `${site.siteMetadata.siteUrl}/images/og_share${
+    i18n.language === 'zh' ? '' : `_${i18n.language}`
+  }.png`;
 
+  const localePath = i18n.language === 'zh' ? '' : `${i18n.language} /`;
+
+  const siteURL = uri
+    ? `${site.siteMetadata.siteUrl}/${localePath}${uri}`
+    : `${site.siteMetadata.siteUrl}${fullPath}`;
   return (
     <Helmet
       htmlAttributes={{
-        lang,
+        lang: i18n.language,
       }}
       title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
-      meta={[
+      titleTemplate={`%s | ${t('site.title')}`}
+      meta={(meta || []).concat([
         {
           name: 'description',
-          content: metaDescription,
+          content: t('site.description'),
+        },
+        {
+          name: 'keywords',
+          content: t('site.keywords'),
+        },
+        {
+          name: 'image',
+          content: image,
         },
         {
           property: 'og:title',
-          content: title,
+          content: `${title} | ${t('site.title')}`,
         },
         {
           property: 'og:description',
-          content: metaDescription,
+          content: t('site.description'),
         },
         {
           property: 'og:type',
           content: 'website',
         },
         {
+          property: 'og:url',
+          content: siteURL,
+        },
+        {
+          property: 'og:image',
+          content: image,
+        },
+        {
+          property: 'og:image:type',
+          content: 'image/png',
+        },
+        {
+          property: 'og:image:width',
+          content: '1200',
+        },
+        {
+          property: 'og:image:width',
+          content: '630',
+        },
+        {
           name: 'twitter:card',
           content: 'summary',
         },
         {
-          name: 'twitter:creator',
-          content: site.siteMetadata.author,
-        },
-        {
           name: 'twitter:title',
-          content: title,
+          content: `${t(title)} | ${t('site.title')}`,
         },
         {
           name: 'twitter:description',
-          content: metaDescription,
+          content: t('site.description'),
         },
-      ].concat(meta)}
-    />
+        {
+          name: 'apple-mobile-web-app-capable',
+          content: 'yes',
+        },
+        {
+          name: 'mobile-web-app-capable',
+          content: 'yes',
+        },
+      ])}
+    >
+      <script src="https://widget.rss.app/v1/list.js" type="text/javascript" />
+    </Helmet>
   );
-}
-
-SEO.defaultProps = {
-  lang: 'en',
-  meta: [],
-  description: '',
-};
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
 };
 
 export default SEO;

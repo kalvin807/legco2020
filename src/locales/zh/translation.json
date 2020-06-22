@@ -1,5 +1,7 @@
 {
   "site.title": "Vote4.hk 投票指南",
+  "site.description": "立法會選舉｜功能組別、地區直選",
+  "site.keywords": "立法會,立會選舉,功能組別,地區直選,超區,9月6日,初選,泛民,建制,素人,35+,legco election",
   "site.disclaimer1": "敝網站與任何2020年立法會選舉候選人或其助選成員無關，刊載資料目的非為促使或阻礙任何候選人在選舉中當選。",
   "site.disclaimer2": "敝網站所刊載資訊全為公開資料，刊載前已盡力確保資料真確性。",
   "alias.DEMO": "民主",
@@ -49,5 +51,7 @@
   "list_count": "{{list_count}}張名單",
   "demo_target": "民主派目標議席",
   "demo_target_not_decide": "目標議席待定",
-  "primary_election_description": "立法會選舉將於9月舉行，民主陣營將於7月11至12日舉行初選。<br />日程<br />●6月27日至7月6日：四媒體合辦初選論壇<br />●7月11及12日：一連兩日朝9晚9投票<br />●7月13日：公布投票結果"
+  "primary_election_description": "立法會選舉將於9月舉行，民主陣營將於7月11至12日舉行初選。<br />日程<br />●6月27日至7月6日：四媒體合辦初選論壇<br />●7月11及12日：一連兩日朝9晚9投票<br />●7月13日：公布≈投票結果",
+  "index.title": "選戰焦點",
+  "primary.title": "民主派初選名單"
 }
