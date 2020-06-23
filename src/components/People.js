@@ -83,7 +83,6 @@ export const PeopleCircle = ({ info, showName = true }) => {
 
 export const PeopleBox = ({ onClick, name, info, subText }) => {
   const Wrapper = styled.div`
-    margin-left: ${theme.spacing(1)}px;
     display: flex;
 
     .main {
@@ -91,6 +90,10 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+
+    .subText {
+      line-height: 0.8rem;
     }
   `;
   return (
@@ -104,7 +107,7 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
       />
       <div className="main">
         <Typography variant="h5">{name}</Typography>
-        <Typography variant="caption" color="textSecondary">
+        <Typography className="subText" variant="caption" color="textSecondary">
           {subText}
         </Typography>
       </div>

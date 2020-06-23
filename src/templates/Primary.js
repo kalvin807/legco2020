@@ -11,7 +11,7 @@ import { Link, navigate } from 'gatsby';
 import { PeopleBox } from '@/components/People';
 
 const Nav = styled.div`
-  margin-bottom: ${theme.spacing(1)}px;
+  padding-bottom: ${theme.spacing(1)}px;
   overflow-x: auto;
   white-space: nowrap;
 
@@ -20,13 +20,16 @@ const Nav = styled.div`
     text-decoration: none;
     font-size: 14px;
     padding: 0px;
-    margin-right: ${theme.spacing(2)}px;
+    margin-bottom: ${theme.spacing(1)}px;
+    margin-right: ${theme.spacing(1)}px;
+    padding: 2px 8px;
   }
 
   .active {
     font-weight: 700;
-    color: ${theme.palette.secondary.main};
-    border-bottom: 1px ${theme.palette.secondary.main} solid;
+    color: ${theme.palette.background.default};
+    background: ${theme.palette.secondary.main};
+}
   }
 `;
 const Header = styled(Grid)`
@@ -45,7 +48,8 @@ const Header = styled(Grid)`
 const CandidatesWrapper = styled.div`
   margin-top: ${theme.spacing(2)}px;
   display: grid;
-  grid-gap: ${theme.spacing(1)}px;
+  grid-row-gap: ${theme.spacing(1)}px;
+  grid-column-gap: ${theme.spacing(1.5)}px;
   grid-template-columns: repeat(2, 1fr);
 
   ${theme.breakpoints.up('sm')} {

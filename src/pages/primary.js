@@ -2,24 +2,10 @@ import React from 'react';
 import SEO from '@/components/seo';
 import { graphql, navigate } from 'gatsby';
 import theme from '@/themes';
-import { Typography, useMediaQuery, Grid } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
-
-const FullWidithWrapper = styled.div`
-  margin: 0 -${theme.spacing(2)}px;
-
-  .fullWidth-title {
-    font-weight: 700;
-    text-align: center;
-    padding: ${theme.spacing(1)}px 0;
-  }
-`;
-
-const Container = styled.div`
-  margin: 0 ${theme.spacing(2)}px;
-`;
 
 const DirectHeader = styled.div`
   margin: ${theme.spacing(2)}px 0;
@@ -29,6 +15,10 @@ const DirectWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: ${theme.spacing(1)}px;
+
+  ${theme.breakpoints.up('md')} {
+    grid-template-columns: repeat(4, 1fr);
+  }
 
   .seat {
     padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
@@ -60,8 +50,12 @@ const DirectWrapper = styled.div`
 
     .roundup {
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: baseline;
+    }
+
+    .center {
+      text-align: center;
     }
 
     .large-number {
@@ -70,17 +64,7 @@ const DirectWrapper = styled.div`
     }
 
     .demo {
-      text-align: left;
       color: ${theme.palette.warning.main};
-    }
-
-    .beijing {
-      text-align: right;
-      color: ${theme.palette.info.main};
-    }
-
-    .other {
-      color: ${theme.palette.success.main};
     }
   }
 `;
@@ -95,7 +79,6 @@ const PrimaryPage = props => {
   // ];
 
   const { t } = useTranslation();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // group data for chart
   // const seatCount = {
   //   UNRESOLVED: 70,
@@ -153,14 +136,6 @@ const PrimaryPage = props => {
   const renderConstituencies = edges => {
     return (
       <>
-        <DirectHeader>
-          <Typography
-            variant="body2"
-            dangerouslySetInnerHTML={{
-              __html: t('primary_election_description'),
-            }}
-          />
-        </DirectHeader>
         <DirectWrapper>
           {edges
             .sort((a, b) => {
@@ -215,19 +190,21 @@ const PrimaryPage = props => {
                     <div />
                   </div>
                   <div className="roundup">
-                    <div className="large-number demo">
-                      {candiDemo.length || '-'}
+                    <div className="center">
+                      <div className="large-number demo">
+                        {candiDemo.length || '-'}
+                      </div>
+                      <Typography variant="body2" color="textSecondary">
+                        名單
+                      </Typography>
                     </div>
-                    <Typography variant="body2" color="textSecondary">
-                      名單
-                    </Typography>
                     {Number(e.target) > 0 && (
-                      <>
+                      <div className="center">
                         <div className="large-number">{e.target || '-'}</div>
                         <Typography variant="body2" color="textSecondary">
                           出線
                         </Typography>
-                      </>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -241,33 +218,15 @@ const PrimaryPage = props => {
   return (
     <>
       <SEO title="Primary" />
-      <FullWidithWrapper>
-        {/* <SingleStackedBarChart
-          data={chartData}
-          summary={summary}
-          title={t('simulation_result')}
+      <DirectHeader>
+        <Typography
+          variant="body2"
+          dangerouslySetInnerHTML={{
+            __html: t('primary_election_description'),
+          }}
         />
-        <ExpandButton onClick={() => setShowSeatHistory(!showSeatHistory)}>
-          {showSeatHistory ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ExpandButton>
-        <Collapse in={showSeatHistory} timeout={100}>
-          {PastElectionResult.map(r => (
-            <SingleStackedBarChart
-              key={r.year}
-              data={r.result}
-              summary={r.summary}
-              title={r.year}
-            />
-          ))}
-        </Collapse> */}
-        {isDesktop ? (
-          <Grid container spacing={3}>
-            <Container>{renderConstituencies(allPrimary.edges)}</Container>
-          </Grid>
-        ) : (
-          <Container>{renderConstituencies(allPrimary.edges)}</Container>
-        )}
-      </FullWidithWrapper>
+      </DirectHeader>
+      <>{renderConstituencies(allPrimary.edges)}</>
     </>
   );
 };

@@ -45,10 +45,14 @@ const SocialPost = ({ ...props }) => {
       <Alert
         severity="warning"
         action={
-          <GoLinkExternal onClick={() => { window.open('https://www.facebook.com/FactcheckLabHK', '_blank'); }} />
+          <GoLinkExternal
+            onClick={() => {
+              window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
+            }}
+          />
         }
       >
-        以下帖子由 事實查核實驗室 Factcheck Lab 自動搜集，請多多支持。
+        以下帖子由事實查核實驗室技術團隊自動搜集，請多多支持。
       </Alert>
       {socialPosts.map(post => {
         return (

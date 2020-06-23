@@ -46,7 +46,6 @@ export default function Footer() {
             </Typography>
             <div className={classes.text}>
               <p>{t('site.disclaimer1')}</p>
-              <p>{t('site.disclaimer2')}</p>
             </div>
             <Grid
               container
@@ -59,7 +58,8 @@ export default function Footer() {
                 <FaGithub
                   className="clickable"
                   onClick={() =>
-                    openInNewTab('https://github.com/vote4hk/legco2020')}
+                    openInNewTab('https://github.com/vote4hk/legco2020')
+                  }
                 />
               </Grid>
               <Grid item>
@@ -70,7 +70,7 @@ export default function Footer() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3} md={2}>
             <Typography variant="body1" className={classes.subtitle}>
               {t('footer.other_websites')}
             </Typography>
@@ -93,6 +93,36 @@ export default function Footer() {
                   rel="noopener noreferrer"
                 >
                   {t('footer.other_websites.vote4hk')}
+                </a>
+              </p>
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="body1" className={classes.subtitle}>
+              {t('footer.source')}
+            </Typography>
+            <div className={classes.text}>
+              <p>{t('site.disclaimer2')}</p>
+            </div>
+            <div className={classes.text}>
+              <p>
+                <a
+                  className={classes.noStyle}
+                  href="https://www.factchecklab.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('footer.other_websites.factchecklab')}
+                </a>
+              </p>
+              <p>
+                <a
+                  className={classes.noStyle}
+                  href="https://legco2020.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('footer.other_websites.lecgo2020')}
                 </a>
               </p>
             </div>

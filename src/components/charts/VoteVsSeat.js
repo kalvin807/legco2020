@@ -89,6 +89,7 @@ function VoteVsSeat({ votes, seats, title }) {
       .text(title.seat);
 
     // stack rect for each data value
+    svg.selectAll('.seat-stacked').remove();
     svg
       .selectAll('seat')
       .data(seats)
