@@ -7,9 +7,28 @@ import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBoxForPrimary } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
-import { navigate } from 'gatsby';
-import { PeopleCircle } from '@/components/People';
+import { Link, navigate } from 'gatsby';
+import { PeopleBox } from '@/components/People';
 
+const Nav = styled.div`
+  margin-bottom: ${theme.spacing(1)}px;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  .nav-link {
+    color: ${theme.palette.primary.main};
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0px;
+    margin-right: ${theme.spacing(2)}px;
+  }
+
+  .active {
+    font-weight: 700;
+    color: ${theme.palette.secondary.main};
+    border-bottom: 1px ${theme.palette.secondary.main} solid;
+  }
+`;
 const Header = styled(Grid)`
   margin-bottom: ${theme.spacing(2)}px;
 
@@ -40,19 +59,27 @@ const CandidatesWrapper = styled.div`
   .candi-box {
     display: flex;
     align-items: center;
-
-    .candi-box-info {
-      margin-left: ${theme.spacing(1)}px;
-      display: flex;
-      flex-direction: column;
-    }
   }
 `;
 
-const PrimaryTemplate = ({ pageContext: { constituency, candidates } }) => {
+const PrimaryTemplate = ({
+  pageContext: { allConstituencies, constituency, candidates },
+}) => {
   const { t, i18n } = useTranslation();
   return (
     <>
+      <Nav>
+        {allConstituencies.map(c => (
+          <Link
+            className={`nav-link ${
+              c.node.key === constituency.key ? 'active' : ''
+            }`}
+            to={`/primary/${c.node.key}`}
+          >
+            {c.node.alias_zh}
+          </Link>
+        ))}
+      </Nav>
       <Header container>
         <Grid item>
           <Grid
@@ -61,15 +88,15 @@ const PrimaryTemplate = ({ pageContext: { constituency, candidates } }) => {
             justify="center"
             className="title-box"
           >
+            <div className="title">
+              {withLanguage(i18n, constituency, 'name')}
+            </div>
             <Typography variant="body2" color="textSecondary">
               {withLanguage(i18n, constituency, 'primary_rule')}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {t('list_count', { list_count: candidates.length })}
             </Typography>
-            <div className="title">
-              {withLanguage(i18n, constituency, 'name')}
-            </div>
           </Grid>
         </Grid>
         <Grid item>
@@ -99,31 +126,27 @@ const PrimaryTemplate = ({ pageContext: { constituency, candidates } }) => {
       )}
       <CandidatesWrapper>
         {candidates.map(c => (
-          <Grid
-            item
-            className="candi-box clickable"
-            key={c.node.name_zh}
-            onClick={() => {
-              navigate(
-                getLocalizedPath(
-                  i18n,
-                  `/profile/${c.node.uuid}/${c.node.name_zh}`
-                )
-              );
-            }}
-          >
-            <PeopleCircle key={c.node} info={c.node} showName={false} />
-            <div className="candi-box-info">
-              <Typography variant="h5">
-                {withLanguage(i18n, c.node, 'name')}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                {c.node.political_affiliations &&
-                  c.node.political_affiliations
-                    .map(pa => withLanguage(i18n, pa, 'alias'))
-                    .join('/')}
-              </Typography>
-            </div>
+          <Grid item>
+            <PeopleBox
+              item
+              key={c.node.name_zh}
+              info={c.node}
+              name={withLanguage(i18n, c.node, 'name')}
+              subText={
+                withLanguage(i18n, c.node, 'title') &&
+                withLanguage(i18n, c.node, 'title')
+                  .split(/[，、,]+/)
+                  .pop()
+              }
+              onClick={() => {
+                navigate(
+                  getLocalizedPath(
+                    i18n,
+                    `/profile/${c.node.uuid}/${c.node.name_zh}`
+                  )
+                );
+              }}
+            />
           </Grid>
         ))}
       </CandidatesWrapper>

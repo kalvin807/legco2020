@@ -427,6 +427,7 @@ exports.createPages = async function createPages({
         path: getPath(lang, `/primary/${constituency.node.key}`),
         component: PrimaryTemplate,
         context: {
+          allConstituencies: result.data.allPrimary.edges,
           constituency: constituency.node,
           candidates: result.data.allCandidates.edges.filter(
             p =>

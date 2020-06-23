@@ -1,10 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import { navigate } from 'gatsby';
 import theme from '@/themes';
+
+const campColorMapping = {
+  demo: theme.palette.warning.main,
+  beijing: theme.palette.info.main,
+  other: theme.palette.success.main,
+};
+
+const CampAvatar = styled(Avatar)`
+  width: ${props => props.xsDimenion || 48}px;
+  height: ${props => props.xsDimenion || 48}px;
+  border: ${props => props.border || 3}px
+    ${props => campColorMapping[props.camp]} solid;
+`;
 
 const PeopleWrapper = styled.div`
   .avatar-group {
@@ -12,13 +26,6 @@ const PeopleWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-end;
-  }
-
-  ${theme.breakpoints.up('sm')} {
-    .avatar {
-      width: 48px;
-      height: 48px;
-    }
   }
 
   ${theme.breakpoints.up('md')} {
@@ -61,15 +68,46 @@ export const PeopleCircle = ({ info, showName = true }) => {
       onKeyDown={() => {}}
     >
       <div className="center">
-        <Avatar
-          className={`avatar ${info.camp.toLowerCase()}`}
+        <CampAvatar
           alt={name}
           src={info.img_url}
+          camp={info.camp.toLowerCase()}
         />
         {showName && (
           <span>{`${name}${info.primary === 'FALSE' ? '*' : ''}`}</span>
         )}
       </div>
     </PeopleWrapper>
+  );
+};
+
+export const PeopleBox = ({ onClick, name, info, subText }) => {
+  const Wrapper = styled.div`
+    margin-left: ${theme.spacing(1)}px;
+    display: flex;
+
+    .main {
+      margin-left: ${theme.spacing(1)}px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  `;
+  return (
+    <Wrapper item onClick={onClick}>
+      <CampAvatar
+        alt={name}
+        src={info.img_url}
+        camp={info.camp.toLowerCase()}
+        xsDimenion={56}
+        border={5}
+      />
+      <div className="main">
+        <Typography variant="h5">{name}</Typography>
+        <Typography variant="caption" color="textSecondary">
+          {subText}
+        </Typography>
+      </div>
+    </Wrapper>
   );
 };

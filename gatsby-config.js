@@ -1,6 +1,6 @@
-require("dotenv").config()
+require('dotenv').config()
 
-const GOOGLE_TRACKING_ID = process.env.GOOGLE_TRACKING_ID || "UA-111111111-1"
+const GOOGLE_TRACKING_ID = process.env.GOOGLE_TRACKING_ID || 'UA-111111111-1'
 const SITE_URL = process.env.SITE_URL || 'https://legco2020.vote4.hk'
 module.exports = {
   // must be here for sitemap plugin lol
@@ -9,7 +9,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: 'gatsby-plugin-google-analytics',
       options: {
         // The property ID; the tracking code won't be generated without it
         trackingId: GOOGLE_TRACKING_ID,
