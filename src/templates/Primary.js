@@ -22,13 +22,14 @@ const Nav = styled.div`
     padding: 0px;
     margin-bottom: ${theme.spacing(1)}px;
     margin-right: ${theme.spacing(1)}px;
-    padding: 2px 8px;
+    padding: 3px 8px;
   }
 
   .active {
     font-weight: 700;
     color: ${theme.palette.background.default};
     background: ${theme.palette.secondary.main};
+     border-radius: 5px;
 }
   }
 `;
