@@ -46,17 +46,20 @@ const SocialPost = ({ ...props }) => {
         severity="warning"
         action={
           <GoLinkExternal
+            className="clickable"
             onClick={() => {
               window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
             }}
           />
         }
       >
-        以下帖子由事實查核實驗室技術團隊自動搜集，請多多支持。
+        {t('socialPost.discalimer')}
       </Alert>
       {socialPosts.map(post => {
         return (
           <Post
+            className="clickable"
+            key={post.title || post.content}
             onClick={() => {
               if (post.platformUrl) {
                 window.open(post.platformUrl, '_blank');

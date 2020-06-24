@@ -19,7 +19,6 @@ const Nav = styled.div`
     color: ${theme.palette.primary.main};
     text-decoration: none;
     font-size: 14px;
-    padding: 0px;
     margin-bottom: ${theme.spacing(1)}px;
     margin-right: ${theme.spacing(1)}px;
     padding: 3px 8px;
@@ -29,10 +28,10 @@ const Nav = styled.div`
     font-weight: 700;
     color: ${theme.palette.background.default};
     background: ${theme.palette.secondary.main};
-     border-radius: 5px;
-}
+    border-radius: 5px;
   }
 `;
+
 const Header = styled(Grid)`
   margin-bottom: ${theme.spacing(2)}px;
 
@@ -111,7 +110,7 @@ const PrimaryTemplate = ({
                 vote: t('dc2019_demo_beijing_ratio'),
                 seat:
                   Number(constituency.target) > 0
-                    ? t('demo_target')
+                    ? t('demo_target', { target: constituency.target })
                     : t('demo_target_not_decide'),
               }}
               votes={DC2019Result[constituency.key].votes}
@@ -131,7 +130,11 @@ const PrimaryTemplate = ({
       )}
       <CandidatesWrapper>
         {candidates.map(c => (
-          <Grid item>
+          <Grid
+            item
+            key={withLanguage(i18n, c.node, 'name')}
+            className="clickable"
+          >
             <PeopleBox
               item
               key={c.node.name_zh}
@@ -141,7 +144,7 @@ const PrimaryTemplate = ({
                 withLanguage(i18n, c.node, 'title') &&
                 withLanguage(i18n, c.node, 'title')
                   .split(/[，、,]+/)
-                  .pop()
+                  .shift()
               }
               onClick={() => {
                 navigate(
