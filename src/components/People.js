@@ -14,8 +14,8 @@ const campColorMapping = {
 };
 
 const CampAvatar = styled(Avatar)`
-  width: ${props => props.xsDimenion || 48}px;
-  height: ${props => props.xsDimenion || 48}px;
+  width: ${props => props.xsdimension || 48}px;
+  height: ${props => props.xsdimension || 48}px;
   border: ${props => props.border || 3}px
     ${props => campColorMapping[props.camp]} solid;
 `;
@@ -102,7 +102,7 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
         alt={name}
         src={info.img_url}
         camp={info.camp.toLowerCase()}
-        xsDimenion={56}
+        xsdimension={56}
         border={5}
       />
       <div className="main">

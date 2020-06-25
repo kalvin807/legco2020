@@ -75,6 +75,7 @@ const PrimaryTemplate = ({
       <Nav>
         {allConstituencies.map(c => (
           <Link
+            key={c.node.key}
             className={`nav-link ${
               c.node.key === constituency.key ? 'active' : ''
             }`}
