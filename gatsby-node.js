@@ -338,7 +338,7 @@ exports.createPages = async function createPages({
           }
         }
       }
-      allCandidates {
+      allCandidates(filter: {enabled: {eq: "Y"}}) {
         edges {
           node {
             enabled
