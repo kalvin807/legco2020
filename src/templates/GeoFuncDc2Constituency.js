@@ -114,7 +114,10 @@ const GeoFuncDc2ConstituencyTemplate = ({
             <Typography variant="caption">{t('intented_list')}</Typography>
             <CandidatesWrapper>
               {demoCandidates.map(c => (
-                <PeopleCircle key={c.node} info={c.node} />
+                <PeopleCircle
+                  key={withLanguage(i18n, c.node, 'name')}
+                  info={c.node}
+                />
               ))}
             </CandidatesWrapper>
           </div>
@@ -131,7 +134,10 @@ const GeoFuncDc2ConstituencyTemplate = ({
             <Typography variant="caption">{t('intented_list')}</Typography>
             <CandidatesWrapper mt={2}>
               {beijingCandidates.map(c => (
-                <PeopleCircle key={c.node} info={c.node} />
+                <PeopleCircle
+                  key={withLanguage(i18n, c.node, 'name')}
+                  info={c.node}
+                />
               ))}
             </CandidatesWrapper>
           </div>

@@ -151,7 +151,7 @@ const ExpandButton = styled.div`
 
 const IndexPage = props => {
   const {
-    data: { allGeoFuncDc2, allTradFunc },
+    data: { allGeoFuncDc2, allTradFunc, candidatesGroupByCamp },
   } = props;
   const [showSeatHistory, setShowSeatHistory] = useState(false);
   const seats = [
@@ -231,9 +231,19 @@ const IndexPage = props => {
               return 0;
             })
             .map(e => {
-              const candiBeijing = Number(e.candidates_beijing) || 0;
-              const candiModerate = Number(e.candidates_other) || 0;
-              const candiDemo = Number(e.candidates_demo) || 0;
+              const candiBeijing =
+                candidatesGroupByCamp.group
+                  .find(g => g.camp === 'BEIJING')
+                  .edges.filter(c => c.node.constituency === e.key).length || 0;
+              const candiOther =
+                candidatesGroupByCamp.group
+                  .find(g => g.camp === 'OTHER')
+                  .edges.filter(c => c.node.constituency === e.key).length || 0;
+              const candiDemo =
+                candidatesGroupByCamp.group
+                  .find(g => g.camp === 'DEMO')
+                  .edges.filter(c => c.node.constituency === e.key).length || 0;
+
               return (
                 <div
                   key={e.key}
@@ -285,10 +295,10 @@ const IndexPage = props => {
                         vs
                       </Typography>
                     </div>
-                    {candiModerate ? (
+                    {candiOther ? (
                       <>
                         <div className="large-number other">
-                          {candiModerate || '-'}
+                          {candiOther || '-'}
                         </div>
                         <div>
                           <Typography variant="body1" color="textSecondary">
@@ -516,9 +526,6 @@ export const IndexPageQuery = graphql`
         expected_win_demo
         expected_win_beijing
         expected_win_other
-        candidates_demo
-        candidates_beijing
-        candidates_other
       }
     }
     allTradFunc {
@@ -534,9 +541,6 @@ export const IndexPageQuery = graphql`
         last_election_voted_count
         situation
         situation_order
-        candidates_beijing
-        candidates_demo
-        candidates_other
         unresolved_seats
         expected_win_beijing
         expected_win_demo
@@ -545,6 +549,16 @@ export const IndexPageQuery = graphql`
         name_en
         alias_zh
         alias_en
+      }
+    }
+    candidatesGroupByCamp: allCandidates {
+      group(field: camp) {
+        camp: fieldValue
+        edges {
+          node {
+            constituency
+          }
+        }
       }
     }
   }

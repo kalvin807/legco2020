@@ -283,8 +283,6 @@ exports.createPages = async function createPages({
             expected_win_demo
             expected_win_beijing
             expected_win_other
-            candidates_demo
-            candidates_beijing
             stage_1_title_demo_zh
             stage_1_title_beijing_zh
             stage_1_description_demo_zh
@@ -318,8 +316,6 @@ exports.createPages = async function createPages({
             expected_win_demo
             expected_win_beijing
             expected_win_other
-            candidates_demo
-            candidates_beijing
           }
         }
       }
