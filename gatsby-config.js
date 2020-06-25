@@ -30,12 +30,12 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'gatsby-starter-default',
-        short_name: 'starter',
-        start_url: '/',
+        name: 'Vote4.hk',
+        short_name: 'Vote4.hk',
+        start_url: '/primary',
         background_color: '#483d8b',
         theme_color: '#483d8b',
-        display: 'minimal-ui',
+        display: "standalone",
         icon: 'src/images/site-icon.png', // This path is relative to the root of the site.
       },
     },
