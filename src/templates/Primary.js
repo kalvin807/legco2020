@@ -78,9 +78,9 @@ const PrimaryTemplate = ({
             className={`nav-link ${
               c.node.key === constituency.key ? 'active' : ''
             }`}
-            to={`/primary/${c.node.key}`}
+            to={getLocalizedPath(i18n, `/primary/${c.node.key}`)}
           >
-            {c.node.alias_zh}
+            {withLanguage(i18n, c.node, 'alias')}
           </Link>
         ))}
       </Nav>
