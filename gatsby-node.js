@@ -368,6 +368,7 @@ exports.createPages = async function createPages({
             twitter_id
             telegram_id
             youtube_id
+            hkfactcheck_id
           }
         }
       }

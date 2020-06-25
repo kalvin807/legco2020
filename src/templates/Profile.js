@@ -1,5 +1,12 @@
 import React from 'react';
-import { Avatar, Typography, Grid, Breadcrumbs } from '@material-ui/core';
+import {
+  Avatar,
+  Typography,
+  Grid,
+  Breadcrumbs,
+  Fab,
+  Container,
+} from '@material-ui/core';
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +24,7 @@ import {
 import { FaAngleRight } from 'react-icons/fa';
 import { openInNewTab } from '@/utils';
 import { withLanguage } from '@/utils/i18n';
+import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -115,7 +123,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
                   item
                   className="clickable"
                   onClick={() =>
-                    openInNewTab(`https://fb.me/${person.facebook_id}`)}
+                    openInNewTab(`https://fb.me/${person.facebook_id}`)
+                  }
                 >
                   <RiFacebookCircleLine />
                 </Grid>
@@ -127,7 +136,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
                   onClick={() =>
                     openInNewTab(
                       `https://www.instagram.com/${person.instagram_id}`
-                    )}
+                    )
+                  }
                 >
                   <RiInstagramLine />
                 </Grid>
@@ -136,7 +146,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
                 <Grid
                   className="clickable"
                   onClick={() =>
-                    openInNewTab(`https://twitter.com/${person.twitter_id}`)}
+                    openInNewTab(`https://twitter.com/${person.twitter_id}`)
+                  }
                 >
                   <RiTwitterLine />
                 </Grid>
@@ -145,7 +156,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
                 <Grid
                   className="clickable"
                   onClick={() =>
-                    openInNewTab(`https://t.me/${person.telegram_id}`)}
+                    openInNewTab(`https://t.me/${person.telegram_id}`)
+                  }
                 >
                   <RiTelegramLine />
                 </Grid>
@@ -156,7 +168,8 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
                   onClick={() =>
                     openInNewTab(
                       `https://youtube.com/channel/${person.youtube_id}`
-                    )}
+                    )
+                  }
                 >
                   <RiYoutubeLine />
                 </Grid>
@@ -227,6 +240,37 @@ const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
             // })
           }}
         />
+        {person.hkfactcheck_id && (
+          <Container maxWidth="lg">
+            <Fab
+              className="clickable"
+              onClick={() =>
+                openInNewTab(
+                  `https://legco2020.com/candidates/${person.hkfactcheck_id}/${person.name_zh}`
+                )
+              }
+              variant="extended"
+              size="medium"
+              aria-label="add"
+              style={{
+                position: 'fixed',
+                bottom: theme.spacing(2),
+                right: theme.spacing(2),
+                backgroundColor: '#00897b',
+                color: theme.palette.background.default,
+              }}
+            >
+              <HKFactcheckIcon
+                style={{
+                  width: 24,
+                  height: 24,
+                  marginRight: theme.spacing(1),
+                }}
+              />
+              {t('profile.hkfactcheck_link')}
+            </Fab>
+          </Container>
+        )}
       </ProfileTemplateWrapper>
     </>
   );
