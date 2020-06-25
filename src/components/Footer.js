@@ -47,6 +47,7 @@ export default function Footer() {
             <div className={classes.text}>
               <p>{t('site.disclaimer1')}</p>
             </div>
+
             <Grid
               container
               spacing={1}
@@ -54,18 +55,21 @@ export default function Footer() {
               justify="flex-start"
               alignItems="center"
             >
-              <Grid item>
-                <FaGithub
-                  className="clickable"
-                  onClick={() =>
-                    openInNewTab('https://github.com/vote4hk/legco2020')}
-                />
+              <Grid
+                item
+                className="clickable"
+                onClick={() =>
+                  openInNewTab('https://github.com/vote4hk/legco2020')
+                }
+              >
+                <FaGithub />
               </Grid>
-              <Grid item>
-                <FaFacebook
-                  className="clickable"
-                  onClick={() => openInNewTab('https://fb.me/vote4hongkong')}
-                />
+              <Grid
+                item
+                className="clickable"
+                onClick={() => openInNewTab('https://fb.me/vote4hongkong')}
+              >
+                <FaFacebook />
               </Grid>
             </Grid>
           </Grid>
@@ -104,6 +108,16 @@ export default function Footer() {
               <p>{t('site.disclaimer2')}</p>
             </div>
             <div className={classes.text}>
+              <p>
+                <a
+                  className={classes.noStyle}
+                  href="https://forms.gle/vUX2u94GD3wg46H87"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('footer.other_websites.google_form')}
+                </a>
+              </p>
               <p>
                 <a
                   className={classes.noStyle}
