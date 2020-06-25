@@ -391,12 +391,12 @@ const IndexPage = props => {
                       return (
                         <div
                           key={c.key}
-                          className={`seat clickable ${className}`}
-                          onClick={() => {
-                            navigate(
-                              getLocalizedPath(i18n, `/constituency/${c.key}`)
-                            );
-                          }}
+                          className={`seat ${className}`}
+                          // onClick={() => {
+                          //   navigate(
+                          //     getLocalizedPath(i18n, `/constituency/${c.key}`)
+                          //   );
+                          // }}
                         >
                           <Typography variant="caption" color="textSecondary">
                             {c.seats}席 -{' '}
@@ -407,7 +407,7 @@ const IndexPage = props => {
                           <Typography variant="h5">
                             {withLanguage(i18n, c, 'name')}
                           </Typography>
-                          {c.situation !== 'uncontested' ? (
+                          {/* {c.situation !== 'uncontested' ? (
                             <>
                               <Typography variant="body2">
                                 親中 - 民主 ={' '}
@@ -421,7 +421,7 @@ const IndexPage = props => {
                                   Number(c.last_election_voted_count)}
                               </Typography>
                             </>
-                          ) : null}
+                          ) : null} */}
 
                           {/* <FCStackedBarChart data={{
                             electors_total_2020: Number(c.electors_total_2020),

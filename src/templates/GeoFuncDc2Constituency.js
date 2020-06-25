@@ -158,7 +158,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
           )}
         </Grid>
       </CampWrapper>
-      <CampWrapper container spacing={3}>
+      {/* <CampWrapper container spacing={3}>
         {['DEMO', 'BEIJING'].map(camp => {
           return (
             <Grid item xs={6} key={camp}>
@@ -191,7 +191,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
             </Grid>
           );
         })}
-      </CampWrapper>
+      </CampWrapper> */}
     </>
   );
 };

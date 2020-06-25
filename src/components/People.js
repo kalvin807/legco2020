@@ -56,7 +56,7 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = ({ info, showName = true }) => {
+export const PeopleCircle = ({ info }) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
@@ -73,9 +73,12 @@ export const PeopleCircle = ({ info, showName = true }) => {
           src={info.img_url}
           camp={info.camp.toLowerCase()}
         />
-        {showName && (
-          <span>{`${name}${info.primary === 'FALSE' ? '*' : ''}`}</span>
-        )}
+        <span>{`${name}${
+          info.tags &&
+          info.tags.findIndex(tag => tag.name_zh === '不參加民主派初選') !== -1
+            ? '*'
+            : ''
+        }`}</span>
       </div>
     </PeopleWrapper>
   );
