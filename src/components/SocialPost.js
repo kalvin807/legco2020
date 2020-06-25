@@ -44,14 +44,14 @@ const SocialPost = ({ ...props }) => {
     <PostsWrapper>
       <Alert
         severity="warning"
-        action={
+        action={(
           <GoLinkExternal
             className="clickable"
             onClick={() => {
               window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
             }}
           />
-        }
+        )}
       >
         {t('socialPost.discalimer')}
       </Alert>
