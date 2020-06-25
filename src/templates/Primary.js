@@ -130,34 +130,50 @@ const PrimaryTemplate = ({
         />
       )}
       <CandidatesWrapper>
-        {candidates.map(c => (
-          <Grid
-            item
-            key={withLanguage(i18n, c.node, 'name')}
-            className="clickable"
-          >
-            <PeopleBox
-              item
-              key={c.node.name_zh}
-              info={c.node}
-              name={withLanguage(i18n, c.node, 'name')}
-              subText={
-                withLanguage(i18n, c.node, 'title') &&
-                withLanguage(i18n, c.node, 'title')
-                  .split(/[，、,]+/)
-                  .shift()
+        {candidates
+          .sort((a, b) => {
+            if (a.node.primary_list_no && b.node.primary_list_no) {
+              if (
+                Number(a.node.primary_list_no) > Number(b.node.primary_list_no)
+              ) {
+                return 1;
               }
-              onClick={() => {
-                navigate(
-                  getLocalizedPath(
-                    i18n,
-                    `/profile/${c.node.uuid}/${c.node.name_zh}`
-                  )
-                );
-              }}
-            />
-          </Grid>
-        ))}
+              return -1;
+            }
+
+            if (a.node.name_en > b.node.name_en) {
+              return 1;
+            }
+            return -1;
+          })
+          .map(c => (
+            <Grid
+              item
+              key={withLanguage(i18n, c.node, 'name')}
+              className="clickable"
+            >
+              <PeopleBox
+                item
+                key={c.node.name_zh}
+                info={c.node}
+                name={withLanguage(i18n, c.node, 'name')}
+                subText={
+                  withLanguage(i18n, c.node, 'title') &&
+                  withLanguage(i18n, c.node, 'title')
+                    .split(/[，、,]+/)
+                    .shift()
+                }
+                onClick={() => {
+                  navigate(
+                    getLocalizedPath(
+                      i18n,
+                      `/profile/${c.node.uuid}/${c.node.name_zh}`
+                    )
+                  );
+                }}
+              />
+            </Grid>
+          ))}
       </CandidatesWrapper>
     </>
   );

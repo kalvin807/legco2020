@@ -347,6 +347,8 @@ exports.createPages = async function createPages({
             camp
             status
             name_zh
+            name_en
+            primary_list_no
             description_zh
             tags {
               name_zh
