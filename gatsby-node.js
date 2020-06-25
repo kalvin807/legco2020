@@ -20,6 +20,8 @@ const PUBLISHED_SPREADSHEET_FUNCTIONAL_CONSTITUENCIES_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6djWwtsckPWh3PfOmiG9BAYdUNLpAsQdD53GcUQlUhfEPC6e2dQqZxECh8M0qoO74bdS3rW1ouP5/pub?gid=1867647091';
 const PUBLISHED_SPREADSHEET_PRIMARY_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0W9CFUv5njblnxAS86FzcyBvluytvyvawluGPBWUIu2wiPZsvFHx3CqNUV8EhJsZCTiUigfoCJc4j/pub?gid=1850485765';
+const PUBLISHED_SPREADSHEET_ASSETS_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vS7_dGGNTfAibQIGEyjz8V7sG2wXAfoLQPKIDUHeyZ5e58GDb9qVe9RrUxIzOPsU2ZKiSVyBLE088zH/pub?gid=0';
 const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
@@ -213,6 +215,12 @@ exports.sourceNodes = async props => {
       'Primary',
       { skipFirstLine: true, alwaysEnabled: true }
     ),
+    createPublishedGoogleSpreadsheetNode(
+      props,
+      PUBLISHED_SPREADSHEET_ASSETS_URL,
+      'Assets',
+      { skipFirstLine: true, alwaysEnabled: true }
+    ),
     createAirtableNode(
       props,
       AIRTABLE_CANDIDATES_SPREADSHEET_ID,
@@ -338,6 +346,19 @@ exports.createPages = async function createPages({
           }
         }
       }
+      allAssets {
+        edges {
+          node {
+            id
+            constituency
+            type
+            asset_id
+            title
+            language
+            order
+          }
+        }
+      }
       allCandidates(filter: {enabled: {eq: "Y"}}) {
         edges {
           node {
@@ -378,6 +399,9 @@ exports.createPages = async function createPages({
     reporter.panicOnBuild('Error while running GraphQL query.');
     return Promise.resolve(false);
   }
+  const Assets = result.data.allAssets.edges;
+
+
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges;
   GeoFuncDc2Constituencies.forEach(constituency => {
     LANGUAGES.forEach(lang => {
@@ -435,6 +459,7 @@ exports.createPages = async function createPages({
               p.node.tags && p.node.tags.findIndex(tag => tag.name_zh === '民主派初選') !== -1
           ),
           locale: lang,
+          assets: Assets.filter(a => a.node.constituency === constituency.node.key).map(a => a.node)
         },
       });
     });

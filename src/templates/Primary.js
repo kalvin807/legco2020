@@ -9,6 +9,8 @@ import { calculateSeatBoxForPrimary } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import { Link, navigate } from 'gatsby';
 import { PeopleBox } from '@/components/People';
+import SimpleTabs from '@/components/SimpleTabs';
+import ElectionForum from '@/components/ElectionForum';
 
 const Nav = styled.div`
   padding-bottom: ${theme.spacing(1)}px;
@@ -67,7 +69,7 @@ const CandidatesWrapper = styled.div`
 `;
 
 const PrimaryTemplate = ({
-  pageContext: { allConstituencies, constituency, candidates },
+  pageContext: { allConstituencies, constituency, candidates, assets },
 }) => {
   const { t, i18n } = useTranslation();
   return (
@@ -175,6 +177,25 @@ const PrimaryTemplate = ({
             </Grid>
           ))}
       </CandidatesWrapper>
+
+      {assets.length > 0 && (
+        <SimpleTabs
+          tabs={[
+            {
+              name: 'election_forum',
+              title: t('election_forum'),
+              content: <ElectionForum assets={assets} />,
+            },
+          ]}
+          onTabChange={() => {
+            // trackCustomEvent({
+            //   category: "news",
+            //   action: "tab_select",
+            //   label: name,
+            // })
+          }}
+        />
+      )}
     </>
   );
 };
