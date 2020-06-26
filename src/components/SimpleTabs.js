@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
+import theme from '@/themes';
 
 const UnstyledAppBar = styled(AppBar)`
   background: transparent;
@@ -70,7 +71,13 @@ export default function SimpleTabs(props) {
       </UnstyledAppBar>
       {tabs.map((tab, i) => (
         <TabPanel key={tab.title} value={value} index={i}>
-          {tab.content}
+          <div
+            style={{
+              marginTop: theme.spacing(2),
+            }}
+          >
+            {tab.content}
+          </div>
         </TabPanel>
       ))}
     </>

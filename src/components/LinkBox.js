@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import theme from '@/themes';
 
 const List = styled(Grid)`
-  margin: ${theme.spacing(2)}px 0;
   box-shadow: 0 1px 6px 0 ${theme.palette.divider};
   line-height: 0;
 

@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
-import SimpleTabs from '@/components/SimpleTabs';
+import ResponsiveSections from '@/components/ResponsiveSections';
 import SocialPost from '@/components/SocialPost';
 import Chip from '@/components/Chip';
 import { Link } from 'gatsby';
@@ -35,6 +35,10 @@ import { GoLinkExternal } from 'react-icons/go';
 const ProfileTemplateWrapper = styled.div`
   .top-row {
     margin-bottom: ${theme.spacing(1)}px;
+  }
+
+  .base-margin {
+    margin: ${theme.spacing(2)}px 0;
   }
 
   .block {
@@ -98,10 +102,10 @@ const ProfileTemplate = ({
 }) => {
   const { t, i18n } = useTranslation();
 
-  const sessions = [];
+  const sections = [];
 
   if (links.filter(link => link.type === 'interview').length) {
-    sessions.push({
+    sections.push({
       name: 'interviews',
       title: t('interviews'),
       content: (
@@ -124,33 +128,33 @@ const ProfileTemplate = ({
     });
   }
 
-  sessions.push({
+  sections.push({
     name: 'social_posts',
     title: t('social_posts'),
     content: (
       <>
+        <Alert
+          severity="warning"
+          action={
+            <GoLinkExternal
+              className="clickable"
+              onClick={() => {
+                trackCustomEvent({
+                  category: 'social_post',
+                  action: 'click',
+                  label: 'factchecklab',
+                });
+                window.open(
+                  'https://www.facebook.com/FactcheckLabHK',
+                  '_blank'
+                );
+              }}
+            />
+          }
+        >
+          {t('socialPost.discalimer')}
+        </Alert>
         <List>
-          <Alert
-            severity="warning"
-            action={
-              <GoLinkExternal
-                className="clickable"
-                onClick={() => {
-                  trackCustomEvent({
-                    category: 'social_post',
-                    action: 'click',
-                    label: 'factchecklab',
-                  });
-                  window.open(
-                    'https://www.facebook.com/FactcheckLabHK',
-                    '_blank'
-                  );
-                }}
-              />
-            }
-          >
-            {t('socialPost.discalimer')}
-          </Alert>
           {socialPosts.map(post => (
             <SocialPost
               key={post.title || post.content}
@@ -337,15 +341,9 @@ const ProfileTemplate = ({
               />
             ))}
         </Grid>
-        <SimpleTabs
-          tabs={sessions}
-          onTabChange={() => {
-            // trackCustomEvent({
-            //   category: "news",
-            //   action: "tab_select",
-            //   label: name,
-            // })
-          }}
+        <ResponsiveSections
+          sections={sections}
+          pageName={`profile_${person.name_zh}`}
         />
         {person.hkfactcheck_id && (
           <Container maxWidth="lg">

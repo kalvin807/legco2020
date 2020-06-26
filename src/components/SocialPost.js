@@ -21,7 +21,6 @@ const MetricsWrapper = styled(Grid)`
 `;
 
 const Post = styled.div`
-  margin: ${theme.spacing(2)}px 0;
   padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
   box-shadow: 0 1px 6px 0 ${theme.palette.divider};
 

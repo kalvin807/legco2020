@@ -1,12 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import theme from '@/themes';
+import Grid from '@material-ui/core/Grid';
 
-const ListWrapper = styled.div`
-  margin: ${theme.spacing(2)}px 0;
-`;
 const List = ({ children }) => {
-  return <ListWrapper>{children}</ListWrapper>;
+  return (
+    <Grid container spacing={2}>
+      {children.map(child => (
+        <Grid item xs={12} sm={6} md={4}>
+          {child}
+        </Grid>
+      ))}
+    </Grid>
+  );
 };
 
 export default List;
