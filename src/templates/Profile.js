@@ -135,7 +135,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={
+          action={(
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -150,7 +150,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          }
+          )}
         >
           {t('socialPost.discalimer')}
         </Alert>
