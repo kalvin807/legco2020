@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
-import SimpleTabs from '@/components/SimpleTabs';
+import ResponsiveSections from '@/components/ResponsiveSections';
 import SocialPost from '@/components/SocialPost';
 import Chip from '@/components/Chip';
 import { Link } from 'gatsby';
@@ -27,10 +27,18 @@ import { withLanguage } from '@/utils/i18n';
 import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
 import SEO from '@/components/seo';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
+import List from '@/components/List';
+import { CompactImageLinkBox } from '@/components/LinkBox';
+import Alert from '@/components/Alert';
+import { GoLinkExternal } from 'react-icons/go';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
     margin-bottom: ${theme.spacing(1)}px;
+  }
+
+  .base-margin {
+    margin: ${theme.spacing(2)}px 0;
   }
 
   .block {
@@ -89,8 +97,75 @@ const ProfileHeader = styled(Grid)`
   }
 `;
 
-const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
+const ProfileTemplate = ({
+  pageContext: { uri, person, socialPosts, links },
+}) => {
   const { t, i18n } = useTranslation();
+
+  const sections = [];
+
+  if (links.filter(link => link.type === 'interview').length) {
+    sections.push({
+      name: 'interviews',
+      title: t('interviews'),
+      content: (
+        <List>
+          {links
+            .filter(link => link.type === 'interview')
+            .map(link => (
+              <CompactImageLinkBox
+                key={link.id}
+                onClick={() => {
+                  window.open(link.url, '_blank');
+                }}
+                image={<img src={link.thumbnail_url} alt={link.title} />}
+                title={link.title}
+                subTitle={link.media}
+              />
+            ))}
+        </List>
+      ),
+    });
+  }
+
+  sections.push({
+    name: 'social_posts',
+    title: t('social_posts'),
+    content: (
+      <>
+        <Alert
+          severity="warning"
+          action={(
+            <GoLinkExternal
+              className="clickable"
+              onClick={() => {
+                trackCustomEvent({
+                  category: 'social_post',
+                  action: 'click',
+                  label: 'factchecklab',
+                });
+                window.open(
+                  'https://www.facebook.com/FactcheckLabHK',
+                  '_blank'
+                );
+              }}
+            />
+          )}
+        >
+          {t('socialPost.discalimer')}
+        </Alert>
+        <List>
+          {socialPosts.map(post => (
+            <SocialPost
+              key={post.title || post.content}
+              post={post}
+              candiName={person.name_zh}
+            />
+          ))}
+        </List>
+      </>
+    ),
+  });
 
   return (
     <>
@@ -266,26 +341,9 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
               />
             ))}
         </Grid>
-        <SimpleTabs
-          tabs={[
-            {
-              name: 'social_posts',
-              title: t('social_posts'),
-              content: (
-                <SocialPost
-                  candiName={person.name_zh}
-                  socialPosts={socialPosts}
-                />
-              ),
-            },
-          ]}
-          onTabChange={() => {
-            // trackCustomEvent({
-            //   category: "news",
-            //   action: "tab_select",
-            //   label: name,
-            // })
-          }}
+        <ResponsiveSections
+          sections={sections}
+          pageName={`profile_${person.name_zh}`}
         />
         {person.hkfactcheck_id && (
           <Container maxWidth="lg">

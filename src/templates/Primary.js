@@ -9,9 +9,10 @@ import { calculateSeatBoxForPrimary } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import { Link, navigate } from 'gatsby';
 import { PeopleBox } from '@/components/People';
-import SimpleTabs from '@/components/SimpleTabs';
-import ElectionForum from '@/components/ElectionForum';
+import ResponsiveSections from '@/components/ResponsiveSections';
+import List from '@/components/List';
 import SEO from '@/components/seo';
+import { CompactImageLinkBox } from '@/components/LinkBox';
 
 const Nav = styled.div`
   padding-bottom: ${theme.spacing(1)}px;
@@ -73,6 +74,38 @@ const PrimaryTemplate = ({
   pageContext: { uri, allConstituencies, constituency, candidates, assets },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const sections = [];
+
+  if (assets && assets.filter(asset => asset.type === 'youtube').length) {
+    sections.push({
+      name: 'election_forum',
+      title: t('election_forum'),
+      content: (
+        <List>
+          {assets.map(asset => (
+            <CompactImageLinkBox
+              key={asset.id}
+              onClick={() => {
+                window.open(
+                  `https://www.youtube.com/watch?v=${asset.asset_id}`,
+                  '_blank'
+                );
+              }}
+              image={(
+                <img
+                  src={`https://i.ytimg.com/vi/${asset.asset_id}/hqdefault.jpg`}
+                  alt={asset.title}
+                />
+              )}
+              title={asset.title}
+              subTitle={asset.channel}
+            />
+          ))}
+        </List>
+      ),
+    });
+  }
   return (
     <>
       <SEO
@@ -201,25 +234,10 @@ const PrimaryTemplate = ({
             </Grid>
           ))}
       </CandidatesWrapper>
-
-      {assets.length > 0 && (
-        <SimpleTabs
-          tabs={[
-            {
-              name: 'election_forum',
-              title: t('election_forum'),
-              content: <ElectionForum assets={assets} />,
-            },
-          ]}
-          onTabChange={() => {
-            // trackCustomEvent({
-            //   category: "news",
-            //   action: "tab_select",
-            //   label: name,
-            // })
-          }}
-        />
-      )}
+      <ResponsiveSections
+        sections={sections}
+        pageName={`primary_${constituency.name_zh}`}
+      />
     </>
   );
 };
