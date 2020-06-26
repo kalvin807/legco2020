@@ -22,6 +22,8 @@ const PUBLISHED_SPREADSHEET_PRIMARY_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0W9CFUv5njblnxAS86FzcyBvluytvyvawluGPBWUIu2wiPZsvFHx3CqNUV8EhJsZCTiUigfoCJc4j/pub?gid=1850485765';
 const PUBLISHED_SPREADSHEET_ASSETS_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vS7_dGGNTfAibQIGEyjz8V7sG2wXAfoLQPKIDUHeyZ5e58GDb9qVe9RrUxIzOPsU2ZKiSVyBLE088zH/pub?gid=0';
+const PUBLISHED_SPREADSHEET_CANDIDATES_LINKS_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQYjjA02OsY9_3mbNGbNd7LBv2GO6jnwRGxwinG_vtwOt09P1uPt0r32S8RZKZEMTizDh4GmSGPMboM/pub?gid=0';
 const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
@@ -221,6 +223,12 @@ exports.sourceNodes = async props => {
       'Assets',
       { skipFirstLine: true, alwaysEnabled: true }
     ),
+    createPublishedGoogleSpreadsheetNode(
+      props,
+      PUBLISHED_SPREADSHEET_CANDIDATES_LINKS_URL,
+      'CandidatesLinks',
+      { skipFirstLine: true }
+    ),
     createAirtableNode(
       props,
       AIRTABLE_CANDIDATES_SPREADSHEET_ID,
@@ -354,8 +362,21 @@ exports.createPages = async function createPages({
             type
             asset_id
             title
+            channel
             language
-            order
+          }
+        }
+      }
+      allCandidatesLinks(filter: {enabled: {eq: "Y"}}) {
+        edges {
+          node {
+            name_zh
+            type
+            url
+            thumbnail_url
+            media
+            title
+            language
           }
         }
       }
@@ -400,6 +421,7 @@ exports.createPages = async function createPages({
     return Promise.resolve(false);
   }
   const Assets = result.data.allAssets.edges;
+  const CandidatesLinks = result.data.allCandidatesLinks.edges;
 
 
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges;
@@ -546,6 +568,7 @@ exports.createPages = async function createPages({
             uri,
             person,
             socialPosts,
+            links: CandidatesLinks.filter(l => l.node.name_zh === person.name_zh).map(l => l.node),
             locale: lang,
           },
         });

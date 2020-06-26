@@ -12,6 +12,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/jsx-one-expression-per-line': 0,
     'react/prop-types': 0,
+    'react/jsx-closing-tag-location': 0,
     quotes: ['error', 'single'],
   },
   settings: {

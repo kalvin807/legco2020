@@ -254,10 +254,9 @@ export const PrimaryPageQuery = graphql`
         }
       }
     }
-    allCandidates {
+    allCandidates(filter: { enabled: { eq: "Y" } }) {
       edges {
         node {
-          enabled
           uuid
           camp
           constituency

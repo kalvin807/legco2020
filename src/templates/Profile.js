@@ -27,6 +27,8 @@ import { withLanguage } from '@/utils/i18n';
 import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
 import SEO from '@/components/seo';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
+import List from '@/components/List';
+import { CompactImageLinkBox } from '@/components/LinkBox';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -89,8 +91,44 @@ const ProfileHeader = styled(Grid)`
   }
 `;
 
-const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
+const ProfileTemplate = ({
+  pageContext: { uri, person, socialPosts, links },
+}) => {
   const { t, i18n } = useTranslation();
+
+  const sessions = [];
+
+  if (links.filter(link => link.type === 'interview').length) {
+    sessions.push({
+      name: 'interviews',
+      title: t('interviews'),
+      content: (
+        <List>
+          {links
+            .filter(link => link.type === 'interview')
+            .map(link => (
+              <CompactImageLinkBox
+                key={link.id}
+                onClick={() => {
+                  window.open(link.url, '_blank');
+                }}
+                image={<img src={link.thumbnail_url} alt={link.title} />}
+                title={link.title}
+                subTitle={link.media}
+              />
+            ))}
+        </List>
+      ),
+    });
+  }
+
+  sessions.push({
+    name: 'social_posts',
+    title: t('social_posts'),
+    content: (
+      <SocialPost candiName={person.name_zh} socialPosts={socialPosts} />
+    ),
+  });
 
   return (
     <>
@@ -267,18 +305,7 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
             ))}
         </Grid>
         <SimpleTabs
-          tabs={[
-            {
-              name: 'social_posts',
-              title: t('social_posts'),
-              content: (
-                <SocialPost
-                  candiName={person.name_zh}
-                  socialPosts={socialPosts}
-                />
-              ),
-            },
-          ]}
+          tabs={sessions}
           onTabChange={() => {
             // trackCustomEvent({
             //   category: "news",
