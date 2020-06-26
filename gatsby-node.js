@@ -405,10 +405,12 @@ exports.createPages = async function createPages({
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges;
   GeoFuncDc2Constituencies.forEach(constituency => {
     LANGUAGES.forEach(lang => {
+      const uri = getPath(lang, `/constituency/${constituency.node.key}`);
       createPage({
-        path: getPath(lang, `/constituency/${constituency.node.key}`),
+        path: uri,
         component: GeoFuncDc2ConstituencyTemplate,
         context: {
+          uri,
           constituency: constituency.node,
           candidates: result.data.allCandidates.edges.filter(
             p =>
@@ -423,10 +425,12 @@ exports.createPages = async function createPages({
   const TradFuncConstituencies = result.data.allTradFunc.edges;
   TradFuncConstituencies.forEach(constituency => {
     LANGUAGES.forEach(lang => {
+      const uri = getPath(lang, `/constituency/${constituency.node.key}`);
       createPage({
-        path: getPath(lang, `/constituency/${constituency.node.key}`),
+        path: uri,
         component: TradFuncTemplate,
         context: {
+          uri,
           constituency: constituency.node,
           councillors: result.data.allCandidates.edges.filter(
             p =>
@@ -446,10 +450,12 @@ exports.createPages = async function createPages({
 
   result.data.allPrimary.edges.forEach(constituency => {
     LANGUAGES.forEach(lang => {
+      const uri = getPath(lang, `/primary/${constituency.node.key}`);
       createPage({
-        path: getPath(lang, `/primary/${constituency.node.key}`),
+        path: uri,
         component: PrimaryTemplate,
         context: {
+          uri,
           allConstituencies: result.data.allPrimary.edges,
           constituency: constituency.node,
           candidates: result.data.allCandidates.edges.filter(
@@ -532,10 +538,12 @@ exports.createPages = async function createPages({
     responses.forEach(response => {
       const { person, socialPosts } = response;
       LANGUAGES.forEach(lang => {
+        const uri = getPath(lang, `/profile/${person.uuid}/${person.name_zh}`);
         createPage({
-          path: getPath(lang, `/profile/${person.uuid}/${person.name_zh}`),
+          path: uri,
           component: ProfileTemplate,
           context: {
+            uri,
             person,
             socialPosts,
             locale: lang,

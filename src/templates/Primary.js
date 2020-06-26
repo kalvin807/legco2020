@@ -11,6 +11,7 @@ import { Link, navigate } from 'gatsby';
 import { PeopleBox } from '@/components/People';
 import SimpleTabs from '@/components/SimpleTabs';
 import ElectionForum from '@/components/ElectionForum';
+import SEO from '@/components/seo';
 
 const Nav = styled.div`
   padding-bottom: ${theme.spacing(1)}px;
@@ -69,11 +70,26 @@ const CandidatesWrapper = styled.div`
 `;
 
 const PrimaryTemplate = ({
-  pageContext: { allConstituencies, constituency, candidates, assets },
+  pageContext: { uri, allConstituencies, constituency, candidates, assets },
 }) => {
   const { t, i18n } = useTranslation();
   return (
     <>
+      <SEO
+        uri={uri}
+        titleOveride={`${t("primary.title")} | ${withLanguage(i18n, constituency, 'name')}`}
+        // TODO: duplicated entries, filter out in SEO later?
+        meta={[
+          {
+            property: `og:title`,
+            content: `${t("primary.title")} | ${withLanguage(i18n, constituency, 'name')}`,
+          },
+          {
+            property: `og:description`,
+            content: withLanguage(i18n, constituency, "primary_description"),
+          },
+        ]}
+      />
       <Nav>
         {allConstituencies.map(c => (
           <Link

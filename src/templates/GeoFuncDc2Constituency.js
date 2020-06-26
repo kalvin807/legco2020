@@ -8,6 +8,7 @@ import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBox } from '@/utils';
 import { withLanguage } from '@/utils/i18n';
 import { PeopleCircle } from '@/components/People';
+import SEO from '@/components/seo';
 
 const GeoHeader = styled(Grid)`
 
@@ -64,7 +65,7 @@ const CandidatesWrapper = styled.div`
 `;
 
 const GeoFuncDc2ConstituencyTemplate = ({
-  pageContext: { constituency, candidates },
+  pageContext: { uri, constituency, candidates },
 }) => {
   const { t, i18n } = useTranslation();
 
@@ -74,6 +75,21 @@ const GeoFuncDc2ConstituencyTemplate = ({
 
   return (
     <>
+      <SEO
+        uri={uri}
+        titleOveride={withLanguage(i18n, constituency, 'name')}
+        // TODO: duplicated entries, filter out in SEO later?
+        meta={[
+          {
+            property: `og:title`,
+            content: withLanguage(i18n, constituency, 'name'),
+          },
+          {
+            property: `og:description`,
+            content: withLanguage(i18n, constituency, 'description'),
+          },
+        ]}
+      />
       <GeoHeader container>
         <Grid item>
           <Grid

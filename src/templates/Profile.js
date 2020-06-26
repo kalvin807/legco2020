@@ -25,6 +25,7 @@ import { FaAngleRight } from 'react-icons/fa';
 import { openInNewTab } from '@/utils';
 import { withLanguage } from '@/utils/i18n';
 import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
+import SEO from '@/components/seo';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -87,11 +88,26 @@ const ProfileHeader = styled(Grid)`
   }
 `;
 
-const ProfileTemplate = ({ pageContext: { person, socialPosts } }) => {
+const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
   const { t, i18n } = useTranslation();
 
   return (
     <>
+      <SEO
+        uri={uri}
+        titleOveride={withLanguage(i18n, person, 'name')}
+        // TODO: duplicated entries, filter out in SEO later?
+        meta={[
+          {
+            property: `og:title`,
+            content: withLanguage(i18n, person, 'name'),
+          },
+          {
+            property: `og:description`,
+            content: withLanguage(i18n, person, 'description'),
+          },
+        ]}
+      />
       <ProfileTemplateWrapper>
         <Grid
           className="top-row"
