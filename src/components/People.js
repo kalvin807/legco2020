@@ -73,12 +73,15 @@ export const PeopleCircle = ({ info }) => {
           src={info.img_url}
           camp={info.camp.toLowerCase()}
         />
-        <span>{`${name}${
-          info.tags &&
-          info.tags.findIndex(tag => tag.name_zh === '不參加民主派初選') !== -1
-            ? '*'
-            : ''
-        }`}</span>
+        <span>
+          {`${name}${
+            info.tags &&
+            info.tags.findIndex(tag => tag.name_zh === '不參加民主派初選') !==
+              -1
+              ? '*'
+              : ''
+          }`}
+        </span>
       </div>
     </PeopleWrapper>
   );

@@ -35,7 +35,7 @@ module.exports = {
         start_url: '/primary',
         background_color: '#483d8b',
         theme_color: '#483d8b',
-        display: "standalone",
+        display: 'standalone',
         icon: 'src/images/site-icon.png', // This path is relative to the root of the site.
       },
     },
