@@ -81,11 +81,11 @@ const GeoFuncDc2ConstituencyTemplate = ({
         // TODO: duplicated entries, filter out in SEO later?
         meta={[
           {
-            property: `og:title`,
+            property: 'og:title',
             content: withLanguage(i18n, constituency, 'name'),
           },
           {
-            property: `og:description`,
+            property: 'og:description',
             content: withLanguage(i18n, constituency, 'description'),
           },
         ]}

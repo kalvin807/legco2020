@@ -48,20 +48,20 @@ const TradFuncConstituencyTemplate = ({
   return (
     <>
       <SEO
-          uri={uri}
-          titleOveride={withLanguage(i18n, constituency, 'name')}
-          // TODO: duplicated entries, filter out in SEO later?
-          meta={[
-            {
-              property: `og:title`,
-              content: withLanguage(i18n, constituency, 'name'),
-            },
-            {
-              property: `og:description`,
-              content: withLanguage(i18n, constituency, 'description'),
-            },
-          ]}
-        />
+        uri={uri}
+        titleOveride={withLanguage(i18n, constituency, 'name')}
+        // TODO: duplicated entries, filter out in SEO later?
+        meta={[
+          {
+            property: 'og:title',
+            content: withLanguage(i18n, constituency, 'name'),
+          },
+          {
+            property: 'og:description',
+            content: withLanguage(i18n, constituency, 'description'),
+          },
+        ]}
+      />
       <TradTemplateWrapper>
         <TradHeader container>
           <Grid item>

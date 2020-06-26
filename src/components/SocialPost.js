@@ -9,6 +9,7 @@ import { GoLinkExternal } from 'react-icons/go';
 import { FcLike } from 'react-icons/fc';
 import { IoMdHeartDislike, IoMdTrendingUp } from 'react-icons/io';
 import { MdModeComment } from 'react-icons/md';
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 
 const PostsWrapper = styled.div`
   margin: ${theme.spacing(2)}px 0;
@@ -39,19 +40,24 @@ const Post = styled.div`
 
 const SocialPost = ({ ...props }) => {
   const { t } = useTranslation();
-  const { socialPosts } = props;
+  const { socialPosts, candiName } = props;
   return (
     <PostsWrapper>
       <Alert
         severity="warning"
-        action={(
+        action={
           <GoLinkExternal
             className="clickable"
             onClick={() => {
+              trackCustomEvent({
+                category: 'social_post',
+                action: 'click',
+                label: 'factchecklab',
+              });
               window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
             }}
           />
-        )}
+        }
       >
         {t('socialPost.discalimer')}
       </Alert>
@@ -62,11 +68,21 @@ const SocialPost = ({ ...props }) => {
             key={post.title || post.content}
             onClick={() => {
               if (post.platformUrl) {
+                trackCustomEvent({
+                  category: 'social_post',
+                  action: 'click',
+                  label: `${candiName}_${post.platformUrl}`,
+                });
                 window.open(post.platformUrl, '_blank');
               } else if (
                 post.poster.platform.name === 'facebook' &&
                 post.platformId
               ) {
+                trackCustomEvent({
+                  category: 'social_post',
+                  action: 'click',
+                  label: `${candiName}_https://www.facebook.com/${post.platformId}`,
+                });
                 window.open(
                   `https://www.facebook.com/${post.platformId}`,
                   '_blank'

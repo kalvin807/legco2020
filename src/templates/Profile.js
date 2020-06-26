@@ -26,6 +26,7 @@ import { openInNewTab } from '@/utils';
 import { withLanguage } from '@/utils/i18n';
 import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
 import SEO from '@/components/seo';
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -99,11 +100,11 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
         // TODO: duplicated entries, filter out in SEO later?
         meta={[
           {
-            property: `og:title`,
+            property: 'og:title',
             content: withLanguage(i18n, person, 'name'),
           },
           {
-            property: `og:description`,
+            property: 'og:description',
             content: withLanguage(i18n, person, 'description'),
           },
         ]}
@@ -138,8 +139,14 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
                 <Grid
                   item
                   className="clickable"
-                  onClick={() =>
-                    openInNewTab(`https://fb.me/${person.facebook_id}`)}
+                  onClick={() => {
+                    trackCustomEvent({
+                      category: 'profile',
+                      action: 'click_facebook',
+                      label: person.name_zh,
+                    });
+                    openInNewTab(`https://fb.me/${person.facebook_id}`);
+                  }}
                 >
                   <RiFacebookCircleLine />
                 </Grid>
@@ -148,10 +155,16 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
                 <Grid
                   item
                   className="clickable"
-                  onClick={() =>
+                  onClick={() => {
+                    trackCustomEvent({
+                      category: 'profile',
+                      action: 'click_instagram',
+                      label: person.name_zh,
+                    });
                     openInNewTab(
                       `https://www.instagram.com/${person.instagram_id}`
-                    )}
+                    );
+                  }}
                 >
                   <RiInstagramLine />
                 </Grid>
@@ -159,8 +172,14 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
               {person.twitter_id && (
                 <Grid
                   className="clickable"
-                  onClick={() =>
-                    openInNewTab(`https://twitter.com/${person.twitter_id}`)}
+                  onClick={() => {
+                    trackCustomEvent({
+                      category: 'profile',
+                      action: 'click_twitter',
+                      label: person.name_zh,
+                    });
+                    openInNewTab(`https://twitter.com/${person.twitter_id}`);
+                  }}
                 >
                   <RiTwitterLine />
                 </Grid>
@@ -168,8 +187,14 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
               {person.telegram_id && (
                 <Grid
                   className="clickable"
-                  onClick={() =>
-                    openInNewTab(`https://t.me/${person.telegram_id}`)}
+                  onClick={() => {
+                    trackCustomEvent({
+                      category: 'profile',
+                      action: 'click_telegram',
+                      label: person.name_zh,
+                    });
+                    openInNewTab(`https://t.me/${person.telegram_id}`);
+                  }}
                 >
                   <RiTelegramLine />
                 </Grid>
@@ -177,10 +202,16 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
               {person.youtube_id && (
                 <Grid
                   className="clickable"
-                  onClick={() =>
+                  onClick={() => {
+                    trackCustomEvent({
+                      category: 'profile',
+                      action: 'click_youtube',
+                      label: person.name_zh,
+                    });
                     openInNewTab(
                       `https://youtube.com/channel/${person.youtube_id}`
-                    )}
+                    );
+                  }}
                 >
                   <RiYoutubeLine />
                 </Grid>
@@ -240,7 +271,12 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
             {
               name: 'social_posts',
               title: t('social_posts'),
-              content: <SocialPost socialPosts={socialPosts} />,
+              content: (
+                <SocialPost
+                  candiName={person.name_zh}
+                  socialPosts={socialPosts}
+                />
+              ),
             },
           ]}
           onTabChange={() => {
@@ -255,10 +291,16 @@ const ProfileTemplate = ({ pageContext: { uri, person, socialPosts } }) => {
           <Container maxWidth="lg">
             <Fab
               className="clickable"
-              onClick={() =>
+              onClick={() => {
+                trackCustomEvent({
+                  category: 'profile',
+                  action: 'click_hkfactcheck',
+                  label: person.name_zh,
+                });
                 openInNewTab(
                   `https://legco2020.com/candidates/${person.hkfactcheck_id}/${person.name_zh}`
-                )}
+                );
+              }}
               variant="extended"
               size="medium"
               aria-label="add"

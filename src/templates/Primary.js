@@ -77,16 +77,24 @@ const PrimaryTemplate = ({
     <>
       <SEO
         uri={uri}
-        titleOveride={`${t("primary.title")} | ${withLanguage(i18n, constituency, 'name')}`}
+        titleOveride={`${t('primary.title')} | ${withLanguage(
+          i18n,
+          constituency,
+          'name'
+        )}`}
         // TODO: duplicated entries, filter out in SEO later?
         meta={[
           {
-            property: `og:title`,
-            content: `${t("primary.title")} | ${withLanguage(i18n, constituency, 'name')}`,
+            property: 'og:title',
+            content: `${t('primary.title')} | ${withLanguage(
+              i18n,
+              constituency,
+              'name'
+            )}`,
           },
           {
-            property: `og:description`,
-            content: withLanguage(i18n, constituency, "primary_description"),
+            property: 'og:description',
+            content: withLanguage(i18n, constituency, 'primary_description'),
           },
         ]}
       />
