@@ -551,7 +551,7 @@ export const IndexPageQuery = graphql`
         alias_en
       }
     }
-    candidatesGroupByCamp: allCandidates {
+    candidatesGroupByCamp: allCandidates(filter: { enabled: { eq: "Y" } }) {
       group(field: camp) {
         camp: fieldValue
         edges {
