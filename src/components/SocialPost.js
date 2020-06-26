@@ -3,17 +3,11 @@ import { Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
-import Alert from '@/components/Alert';
 import moment from 'moment';
-import { GoLinkExternal } from 'react-icons/go';
 import { FcLike } from 'react-icons/fc';
 import { IoMdHeartDislike, IoMdTrendingUp } from 'react-icons/io';
 import { MdModeComment } from 'react-icons/md';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
-
-const PostsWrapper = styled.div`
-  margin: ${theme.spacing(2)}px 0;
-`;
 
 const MetricsWrapper = styled(Grid)`
   margin-top: ${theme.spacing(1)}px;
@@ -38,90 +32,62 @@ const Post = styled.div`
   }
 `;
 
-const SocialPost = ({ ...props }) => {
+const SocialPost = ({ post, candiName }) => {
   const { t } = useTranslation();
-  const { socialPosts, candiName } = props;
+
   return (
-    <PostsWrapper>
-      <Alert
-        severity="warning"
-        action={
-          <GoLinkExternal
-            className="clickable"
-            onClick={() => {
-              trackCustomEvent({
-                category: 'social_post',
-                action: 'click',
-                label: 'factchecklab',
-              });
-              window.open('https://www.facebook.com/FactcheckLabHK', '_blank');
-            }}
-          />
+    <Post
+      className="clickable"
+      onClick={() => {
+        if (post.platformUrl) {
+          trackCustomEvent({
+            category: 'social_post',
+            action: 'click',
+            label: `${candiName}_${post.platformUrl}`,
+          });
+          window.open(post.platformUrl, '_blank');
+        } else if (
+          post.poster.platform.name === 'facebook' &&
+          post.platformId
+        ) {
+          trackCustomEvent({
+            category: 'social_post',
+            action: 'click',
+            label: `${candiName}_https://www.facebook.com/${post.platformId}`,
+          });
+          window.open(`https://www.facebook.com/${post.platformId}`, '_blank');
         }
-      >
-        {t('socialPost.discalimer')}
-      </Alert>
-      {socialPosts.map(post => {
-        return (
-          <Post
-            className="clickable"
-            key={post.title || post.content}
-            onClick={() => {
-              if (post.platformUrl) {
-                trackCustomEvent({
-                  category: 'social_post',
-                  action: 'click',
-                  label: `${candiName}_${post.platformUrl}`,
-                });
-                window.open(post.platformUrl, '_blank');
-              } else if (
-                post.poster.platform.name === 'facebook' &&
-                post.platformId
-              ) {
-                trackCustomEvent({
-                  category: 'social_post',
-                  action: 'click',
-                  label: `${candiName}_https://www.facebook.com/${post.platformId}`,
-                });
-                window.open(
-                  `https://www.facebook.com/${post.platformId}`,
-                  '_blank'
-                );
-              }
-            }}
-          >
-            <div className="sub-title">
-              {post.group && (
-                <Typography variant="caption">
-                  {t(`platform.${post.group.platform.name}`)} {post.group.name}
-                </Typography>
-              )}
-              <Typography variant="caption">
-                {moment(post.createdAt).fromNow()}
-              </Typography>
-            </div>
+      }}
+    >
+      <div className="sub-title">
+        {post.group && (
+          <Typography variant="caption">
+            {t(`platform.${post.group.platform.name}`)} {post.group.name}
+          </Typography>
+        )}
+        <Typography variant="caption">
+          {moment(post.createdAt).fromNow()}
+        </Typography>
+      </div>
 
-            <Typography variant="h5">{post.title || post.content}</Typography>
+      <Typography variant="h5">{post.title || post.content}</Typography>
 
-            <Grid container spacing={3}>
-              <MetricsWrapper item>
-                <IoMdTrendingUp />
-                {post.performance ? `${post.performance.toFixed(2)}x` : '-'}
-              </MetricsWrapper>
-              <MetricsWrapper item>
-                <FcLike /> {post.likeCount || '-'}
-              </MetricsWrapper>
-              <MetricsWrapper item>
-                <IoMdHeartDislike /> {post.dislikeCount || '-'}
-              </MetricsWrapper>
-              <MetricsWrapper item>
-                <MdModeComment /> {post.replyCount || '-'}
-              </MetricsWrapper>
-            </Grid>
-          </Post>
-        );
-      })}
-    </PostsWrapper>
+      <Grid container spacing={3}>
+        <MetricsWrapper item>
+          <IoMdTrendingUp />
+          {post.performance ? `${post.performance.toFixed(2)}x` : '-'}
+        </MetricsWrapper>
+        <MetricsWrapper item>
+          <FcLike /> {post.likeCount || '-'}
+        </MetricsWrapper>
+        <MetricsWrapper item>
+          <IoMdHeartDislike /> {post.dislikeCount || '-'}
+        </MetricsWrapper>
+        <MetricsWrapper item>
+          <MdModeComment /> {post.replyCount || '-'}
+        </MetricsWrapper>
+      </Grid>
+    </Post>
   );
 };
 

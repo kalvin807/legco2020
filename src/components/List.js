@@ -5,8 +5,8 @@ import theme from '@/themes';
 const ListWrapper = styled.div`
   margin: ${theme.spacing(2)}px 0;
 `;
-const ElectionForum = ({ children }) => {
+const List = ({ children }) => {
   return <ListWrapper>{children}</ListWrapper>;
 };
 
-export default ElectionForum;
+export default List;

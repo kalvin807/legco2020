@@ -370,6 +370,7 @@ exports.createPages = async function createPages({
       allCandidatesLinks(filter: {enabled: {eq: "Y"}}) {
         edges {
           node {
+            id
             name_zh
             type
             url

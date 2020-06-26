@@ -29,6 +29,8 @@ import SEO from '@/components/seo';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import List from '@/components/List';
 import { CompactImageLinkBox } from '@/components/LinkBox';
+import Alert from '@/components/Alert';
+import { GoLinkExternal } from 'react-icons/go';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -126,7 +128,38 @@ const ProfileTemplate = ({
     name: 'social_posts',
     title: t('social_posts'),
     content: (
-      <SocialPost candiName={person.name_zh} socialPosts={socialPosts} />
+      <>
+        <List>
+          <Alert
+            severity="warning"
+            action={
+              <GoLinkExternal
+                className="clickable"
+                onClick={() => {
+                  trackCustomEvent({
+                    category: 'social_post',
+                    action: 'click',
+                    label: 'factchecklab',
+                  });
+                  window.open(
+                    'https://www.facebook.com/FactcheckLabHK',
+                    '_blank'
+                  );
+                }}
+              />
+            }
+          >
+            {t('socialPost.discalimer')}
+          </Alert>
+          {socialPosts.map(post => (
+            <SocialPost
+              key={post.title || post.content}
+              post={post}
+              candiName={person.name_zh}
+            />
+          ))}
+        </List>
+      </>
     ),
   });
 
