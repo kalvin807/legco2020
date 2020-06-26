@@ -1,6 +1,6 @@
 {
   "site.title": "Vote4.hk 投票指南",
-  "site.description": "立法會選舉｜功能組別、地區直選",
+  "site.description": "2020立法會選舉指南，候選人名單丶地區直選丶功能組別、超級區議會選情概覽。",
   "site.keywords": "立法會,立會選舉,功能組別,地區直選,超區,9月6日,初選,泛民,建制,素人,35+,legco election",
   "site.disclaimer1": "敝網站與任何2020年立法會選舉候選人或其助選成員無關，刊載資料目的非為促使或阻礙任何候選人在選舉中當選。",
   "site.disclaimer2": "敝網站所刊載資訊全為公開資料，刊載前已盡力確保資料真確性，如有建議或錯漏請指正，我們會盡快處理。",
@@ -56,7 +56,7 @@
   "list_count": "{{list_count}}張名單",
   "demo_target": "民主派目標議席（{{target}}）",
   "demo_target_not_decide": "目標議席待定",
-  "primary_election_description": "立法會選舉將於9月舉行，民主陣營將於7月11至12日舉行初選，13日公布結果。",
+  "primary_election_description": "立法會選舉將於9月6日舉行，民主陣營能否取得35+過半議席成焦點，民主派將於7月11及12日舉行初選，以決定參選名單。",
   "index.title": "選戰焦點",
   "primary.title": "民主派初選名單",
   "constituencies.alias_NTW": "新界西",
