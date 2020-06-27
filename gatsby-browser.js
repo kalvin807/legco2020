@@ -37,10 +37,12 @@ export const wrapPageElement = ({
   },
 }) => {
   return (
-    <Layout>
-      <Router path={uri} />
-      <I18nWrapper locale={locale}>{element}</I18nWrapper>
-    </Layout>
+    <I18nWrapper locale={locale}>
+      <Layout>
+        <Router path={uri} />
+        {element}
+      </Layout>
+    </I18nWrapper>
   );
 };
 
