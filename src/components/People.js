@@ -70,9 +70,21 @@ export const PeopleCircle = ({ info }) => {
       <div className="center">
         <CampAvatar
           alt={name}
-          src={info.img_url}
+          src={`/images/avatars/${info.uuid}.png`}
           camp={info.camp.toLowerCase()}
-        />
+        >
+          <img
+            alt={name}
+            src={info.img_url}
+            style={{
+              display: 'block',
+              maxWidth: 100,
+              maxHeight: 100,
+              width: 'auto',
+              height: 'auto',
+            }}
+          />
+        </CampAvatar>
         <span>
           {`${name}${
             info.tags &&
@@ -106,11 +118,23 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
     <Wrapper item onClick={onClick}>
       <CampAvatar
         alt={name}
-        src={info.img_url}
+        // src={info.img_url}
         camp={info.camp.toLowerCase()}
         xsdimension={56}
         border={5}
-      />
+      >
+        <img
+          alt={name}
+          src={info.img_url}
+          style={{
+            display: 'block',
+            maxWidth: 100,
+            maxHeight: 100,
+            width: 'auto',
+            height: 'auto',
+          }}
+        />
+      </CampAvatar>
       <div className="main">
         <Typography variant="h5">{name}</Typography>
         <Typography className="subText" variant="caption" color="textSecondary">

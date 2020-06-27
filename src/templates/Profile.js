@@ -98,12 +98,11 @@ const ProfileHeader = styled(Grid)`
 `;
 
 const ProfileTemplate = ({
-  pageContext: { uri, person, socialPosts, links },
+  pageContext: { uri, person, socialPosts, links, siteUrl },
 }) => {
   const { t, i18n } = useTranslation();
 
   const sections = [];
-
   if (links.filter(link => link.type === 'interview').length) {
     sections.push({
       name: 'interviews',
@@ -135,7 +134,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -150,7 +149,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -300,8 +299,17 @@ const ProfileTemplate = ({
             <Avatar
               className={`avatar-main ${person.camp}`}
               alt={withLanguage(i18n, person, 'alias')}
-              src={person.img_url}
-            />
+              src={`${siteUrl}/images/avatars/${person.uuid}.png`}
+            >
+              <img
+                alt={withLanguage(i18n, person, 'alias')}
+                src={person.img_url}
+                style={{
+                  width: 100,
+                  height: 100,
+                }}
+              />
+            </Avatar>
           </Grid>
 
           <Grid item xs={8}>

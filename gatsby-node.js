@@ -7,6 +7,7 @@ const { getPath } = require('./src/utils/urlHelper');
 
 const isDebug = process.env.DEBUG_MODE === 'false';
 const LANGUAGES = ['zh', 'en'];
+const SITE_URL = process.env.SITE_URL || 'https://legco2020.vote4.hk'
 
 require('dotenv').config();
 
@@ -488,7 +489,8 @@ exports.createPages = async function createPages({
               p.node.tags && p.node.tags.findIndex(tag => tag.name_zh === '民主派初選') !== -1
           ),
           locale: lang,
-          assets: Assets.filter(a => a.node.constituency === constituency.node.key).map(a => a.node)
+          assets: Assets.filter(a => a.node.constituency === constituency.node.key).map(a => a.node),
+          siteUrl: SITE_URL,
         },
       });
     });
@@ -571,6 +573,7 @@ exports.createPages = async function createPages({
             socialPosts,
             links: CandidatesLinks.filter(l => l.node.name_zh === person.name_zh).map(l => l.node),
             locale: lang,
+            siteUrl: SITE_URL,
           },
         });
       });
