@@ -100,7 +100,7 @@ function SingleStackedBar({ data, summary, title }) {
             : dimensions.width - theme.spacing(2) - bg.xMargin
         )
         .attr('y', 16)
-        .style('fill', theme.palette.text.primary)
+        .style('fill', '#000000')
         .style('font-size', 12)
         .style('font-weight', 500);
 
@@ -150,6 +150,7 @@ function SingleStackedBar({ data, summary, title }) {
       .attr('text-anchor', 'middle')
       .attr('x', xScale(total / 2))
       .attr('y', barPostition - 6)
+      .style('fill', theme.palette.text.primary)
       .style('font-size', 12)
       .text('▾');
 
@@ -160,6 +161,7 @@ function SingleStackedBar({ data, summary, title }) {
       .attr('text-anchor', 'middle')
       .attr('x', xScale(total / 2))
       .attr('y', barPostition - 16)
+      .style('fill', theme.palette.text.primary)
       .style('font-size', 12)
       .text(total / 2);
 

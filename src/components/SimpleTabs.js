@@ -56,8 +56,6 @@ export default function SimpleTabs(props) {
           onChange={handleChange}
           aria-label="simple tabs example"
           variant="fullWidth"
-          indicatorColor="primary"
-          textColor="primary"
         >
           {tabs.map(tab => (
             <Tab

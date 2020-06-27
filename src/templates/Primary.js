@@ -20,7 +20,7 @@ const Nav = styled.div`
   white-space: nowrap;
 
   .nav-link {
-    color: ${theme.palette.primary.main};
+    color: ${theme.palette.text.primary};
     text-decoration: none;
     font-size: 14px;
     margin-bottom: ${theme.spacing(1)}px;
@@ -30,7 +30,7 @@ const Nav = styled.div`
 
   .active {
     font-weight: 700;
-    color: ${theme.palette.background.default};
+    color: #FFFFFF;
     background: ${theme.palette.secondary.main};
     border-radius: 5px;
   }
@@ -92,7 +92,7 @@ const PrimaryTemplate = ({
                   '_blank'
                 );
               }}
-              image={
+              image={(
                 <img
                   style={{
                     height: '100%',
@@ -100,7 +100,7 @@ const PrimaryTemplate = ({
                   src={`https://i.ytimg.com/vi/${asset.asset_id}/hqdefault.jpg`}
                   alt={asset.title}
                 />
-              }
+              )}
               title={asset.title}
               subTitle={asset.channel}
             />
