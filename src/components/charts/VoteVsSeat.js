@@ -114,7 +114,7 @@ function VoteVsSeat({ votes, seats, title }) {
       .attr('text-anchor', 'middle')
       .attr('x', d => xScale(d.cumulative) + xScale(d.value) / 2)
       .attr('y', labelFontSize + textMargin + barHeight / 2 + 5)
-      .style('fill', '#000000')
+      .style('fill', theme.palette.text.primary)
       .style('font-size', 16)
       .style('font-weight', 700)
       .text(d => `${d.percentage.toFixed(0)}%`);

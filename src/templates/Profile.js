@@ -46,14 +46,14 @@ const ProfileTemplateWrapper = styled.div`
   }
 
   .nav-link {
-    color: ${theme.palette.text.primary};
+    color: ${theme.palette.primary.main};
     text-decoration: none;
     font-size: 14px;
     margin-bottom: ${theme.spacing(1)}px;
   }
 
   .nav-link:hover {
-    color: ${theme.palette.text.primary};
+    color: ${theme.palette.secondary.main};
     font-weight: 700;
   }
 
@@ -166,7 +166,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={(
+                image={
                   <img
                     style={{
                       height: '100%',
@@ -174,7 +174,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                )}
+                }
                 title={link.title}
                 subTitle={link.media}
               />
@@ -191,7 +191,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -206,7 +206,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -431,7 +431,7 @@ const ProfileTemplate = ({
                 bottom: theme.spacing(2),
                 right: theme.spacing(2),
                 backgroundColor: '#00897b',
-                color: theme.palette.text.primary,
+                color: theme.palette.background.default,
               }}
             >
               <HKFactcheckIcon
