@@ -103,5 +103,7 @@
   "profile.reportedPoliticalAffiliation_title": "報稱政治聯繫",
   "profile.occupation_title": "報稱職業",
   "seperator.and": "、",
-  "no": "無"
+  "no": "無",
+  "lang.en": "English",
+  "lang.zh": "中文"
 }
