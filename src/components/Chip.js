@@ -11,14 +11,23 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(0.5),
     },
   },
+  chip: {
+    borderColor: theme.palette.text.primary,
+    color: theme.palette.text.primary,
+  },
 }));
 
-export default function OutlinedChips({ label, variant }) {
+export default function OutlinedChips({ label, variant, size = 'medium' }) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Chip label={label} variant={variant} />
+      <Chip
+        className={classes.chip}
+        label={label}
+        variant={variant}
+        size={size}
+      />
     </div>
   );
 }

@@ -166,7 +166,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={(
+                image={
                   <img
                     style={{
                       height: '100%',
@@ -174,7 +174,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                )}
+                }
                 title={link.title}
                 subTitle={link.media}
               />
@@ -191,7 +191,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -206,7 +206,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -402,6 +402,7 @@ const ProfileTemplate = ({
                 key={withLanguage(i18n, tag, 'name')}
                 label={withLanguage(i18n, tag, 'name')}
                 variant="outlined"
+                size="small"
               />
             ))}
         </Grid>
@@ -431,7 +432,7 @@ const ProfileTemplate = ({
                 bottom: theme.spacing(2),
                 right: theme.spacing(2),
                 backgroundColor: '#00897b',
-                color: theme.palette.text.primary,
+                color: '#FFFFFF',
               }}
             >
               <HKFactcheckIcon
