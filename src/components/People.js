@@ -56,7 +56,7 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = ({ info }) => {
+export const PeopleCircle = ({ info, imgUrl }) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
@@ -70,18 +70,14 @@ export const PeopleCircle = ({ info }) => {
       <div className="center">
         <CampAvatar
           alt={name}
-          src={`/images/avatars/${info.uuid}.png`}
+          src={imgUrl}
           camp={info.camp.toLowerCase()}
         >
           <img
             alt={name}
             src={info.img_url}
             style={{
-              display: 'block',
-              maxWidth: 100,
-              maxHeight: 100,
-              width: 'auto',
-              height: 'auto',
+              maxWidth: '100%',
             }}
           />
         </CampAvatar>
@@ -99,7 +95,7 @@ export const PeopleCircle = ({ info }) => {
   );
 };
 
-export const PeopleBox = ({ onClick, name, info, subText }) => {
+export const PeopleBox = ({ onClick, name, info, subText, imgUrl }) => {
   const Wrapper = styled.div`
     display: flex;
 
@@ -118,7 +114,7 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
     <Wrapper item onClick={onClick}>
       <CampAvatar
         alt={name}
-        // src={info.img_url}
+        src={imgUrl}
         camp={info.camp.toLowerCase()}
         xsdimension={56}
         border={5}
@@ -127,11 +123,7 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
           alt={name}
           src={info.img_url}
           style={{
-            display: 'block',
-            maxWidth: 100,
-            maxHeight: 100,
-            width: 'auto',
-            height: 'auto',
+            maxWidth: '100%',
           }}
         />
       </CampAvatar>

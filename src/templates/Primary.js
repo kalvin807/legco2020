@@ -7,7 +7,7 @@ import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBoxForPrimary } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
-import { Link, navigate } from 'gatsby';
+import { Link, navigate, useStaticQuery, graphql } from 'gatsby';
 import { PeopleBox } from '@/components/People';
 import ResponsiveSections from '@/components/ResponsiveSections';
 import List from '@/components/List';
@@ -74,6 +74,18 @@ const PrimaryTemplate = ({
   pageContext: { uri, allConstituencies, constituency, candidates, assets },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            siteUrl
+          }
+        }
+      }
+    `
+  );
 
   const sections = [];
 
@@ -213,6 +225,7 @@ const PrimaryTemplate = ({
             >
               <PeopleBox
                 item
+                imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.node.uuid}.png`}
                 key={c.node.name_zh}
                 info={c.node}
                 name={withLanguage(i18n, c.node, 'name')}

@@ -9,6 +9,7 @@ import { calculateSeatBox } from '@/utils';
 import { withLanguage } from '@/utils/i18n';
 import { PeopleCircle } from '@/components/People';
 import SEO from '@/components/seo';
+import { useStaticQuery, graphql } from 'gatsby';
 
 const GeoHeader = styled(Grid)`
 
@@ -68,6 +69,18 @@ const GeoFuncDc2ConstituencyTemplate = ({
   pageContext: { uri, constituency, candidates },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            siteUrl
+          }
+        }
+      }
+    `
+  );
 
   const demoCandidates = candidates.filter(c => c.node.camp === 'DEMO');
   const beijingCandidates = candidates.filter(c => c.node.camp === 'BEIJING');
@@ -131,6 +144,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
             <CandidatesWrapper>
               {demoCandidates.map(c => (
                 <PeopleCircle
+                  imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.node.uuid}.png`}
                   key={withLanguage(i18n, c.node, 'name')}
                   info={c.node}
                 />

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import ResponsiveSections from '@/components/ResponsiveSections';
 import SocialPost from '@/components/SocialPost';
 import Chip from '@/components/Chip';
-import { Link } from 'gatsby';
+import { Link, useStaticQuery, graphql } from 'gatsby';
 import {
   RiFacebookCircleLine,
   RiInstagramLine,
@@ -98,9 +98,21 @@ const ProfileHeader = styled(Grid)`
 `;
 
 const ProfileTemplate = ({
-  pageContext: { uri, person, socialPosts, links, siteUrl },
+  pageContext: { uri, person, socialPosts, links },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            siteUrl
+          }
+        }
+      }
+    `
+  );
 
   const sections = [];
   if (links.filter(link => link.type === 'interview').length) {
@@ -134,7 +146,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={
+          action={(
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -149,7 +161,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          }
+          )}
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -299,14 +311,13 @@ const ProfileTemplate = ({
             <Avatar
               className={`avatar-main ${person.camp}`}
               alt={withLanguage(i18n, person, 'alias')}
-              src={`${siteUrl}/images/avatars/${person.uuid}.png`}
+              src={`${site.siteMetadata.siteUrl}/images/avatars/${person.uuid}.png`}
             >
               <img
                 alt={withLanguage(i18n, person, 'alias')}
                 src={person.img_url}
                 style={{
-                  width: 100,
-                  height: 100,
+                  maxWidth: '100%',
                 }}
               />
             </Avatar>
