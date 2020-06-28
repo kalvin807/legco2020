@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import ResponsiveSections from '@/components/ResponsiveSections';
 import SocialPost from '@/components/SocialPost';
 import Chip from '@/components/Chip';
-import { Link } from 'gatsby';
+import { Link, useStaticQuery, graphql } from 'gatsby';
 import {
   RiFacebookCircleLine,
   RiInstagramLine,
@@ -120,6 +120,18 @@ const ProfileTemplate = ({
   pageContext: { uri, person, socialPosts, links },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            siteUrl
+          }
+        }
+      }
+    `
+  );
 
   const personHighlights = [
     {
@@ -363,8 +375,16 @@ const ProfileTemplate = ({
             <Avatar
               className={`avatar-main ${person.camp}`}
               alt={withLanguage(i18n, person, 'alias')}
-              src={person.img_url}
-            />
+              src={`${site.siteMetadata.siteUrl}/images/avatars/${person.uuid}.png`}
+            >
+              <img
+                alt={withLanguage(i18n, person, 'alias')}
+                src={person.img_url}
+                style={{
+                  maxWidth: '100%',
+                }}
+              />
+            </Avatar>
           </Grid>
 
           <Grid item xs={8}>

@@ -491,7 +491,7 @@ exports.createPages = async function createPages({
               p.node.tags && p.node.tags.findIndex(tag => tag.name_zh === '民主派初選') !== -1
           ),
           locale: lang,
-          assets: Assets.filter(a => a.node.constituency === constituency.node.key).map(a => a.node)
+          assets: Assets.filter(a => a.node.constituency === constituency.node.key).map(a => a.node),
         },
       });
     });

@@ -29,7 +29,7 @@ const typography = {
   body1: {
     fontSize: '1rem',
   },
-}
+};
 
 const palette = {
   primary: {

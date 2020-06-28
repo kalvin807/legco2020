@@ -7,7 +7,7 @@ import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBoxForPrimary } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
-import { Link, navigate } from 'gatsby';
+import { Link, navigate, useStaticQuery, graphql } from 'gatsby';
 import { PeopleBox } from '@/components/People';
 import ResponsiveSections from '@/components/ResponsiveSections';
 import List from '@/components/List';
@@ -30,7 +30,7 @@ const Nav = styled.div`
 
   .active {
     font-weight: 700;
-    color: #FFFFFF;
+    color: #ffffff;
     background: ${theme.palette.secondary.main};
     border-radius: 5px;
   }
@@ -75,6 +75,18 @@ const PrimaryTemplate = ({
 }) => {
   const { t, i18n } = useTranslation();
 
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            siteUrl
+          }
+        }
+      }
+    `
+  );
+
   const sections = [];
 
   if (assets && assets.filter(asset => asset.type === 'youtube').length) {
@@ -92,7 +104,7 @@ const PrimaryTemplate = ({
                   '_blank'
                 );
               }}
-              image={(
+              image={
                 <img
                   style={{
                     height: '100%',
@@ -100,7 +112,7 @@ const PrimaryTemplate = ({
                   src={`https://i.ytimg.com/vi/${asset.asset_id}/hqdefault.jpg`}
                   alt={asset.title}
                 />
-              )}
+              }
               title={asset.title}
               subTitle={asset.channel}
             />
@@ -216,6 +228,7 @@ const PrimaryTemplate = ({
             >
               <PeopleBox
                 item
+                imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.node.uuid}.png`}
                 key={c.node.name_zh}
                 info={c.node}
                 name={withLanguage(i18n, c.node, 'name')}

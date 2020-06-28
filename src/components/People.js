@@ -56,7 +56,7 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = ({ info }) => {
+export const PeopleCircle = ({ info, imgUrl }) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
@@ -70,9 +70,17 @@ export const PeopleCircle = ({ info }) => {
       <div className="center">
         <CampAvatar
           alt={name}
-          src={info.img_url}
+          src={imgUrl}
           camp={info.camp.toLowerCase()}
-        />
+        >
+          <img
+            alt={name}
+            src={info.img_url}
+            style={{
+              maxWidth: '100%',
+            }}
+          />
+        </CampAvatar>
         <span>
           {`${name}${
             info.tags &&
@@ -87,7 +95,7 @@ export const PeopleCircle = ({ info }) => {
   );
 };
 
-export const PeopleBox = ({ onClick, name, info, subText }) => {
+export const PeopleBox = ({ onClick, name, info, subText, imgUrl }) => {
   const Wrapper = styled.div`
     display: flex;
 
@@ -106,11 +114,19 @@ export const PeopleBox = ({ onClick, name, info, subText }) => {
     <Wrapper item onClick={onClick}>
       <CampAvatar
         alt={name}
-        src={info.img_url}
+        src={imgUrl}
         camp={info.camp.toLowerCase()}
         xsdimension={56}
         border={5}
-      />
+      >
+        <img
+          alt={name}
+          src={info.img_url}
+          style={{
+            maxWidth: '100%',
+          }}
+        />
+      </CampAvatar>
       <div className="main">
         <Typography variant="h5">{name}</Typography>
         <Typography className="subText" variant="caption" color="textSecondary">
