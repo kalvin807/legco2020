@@ -152,21 +152,28 @@ const ProfileTemplate = ({
 
   const sections = [];
 
-  if (links.filter(link => link.type === 'interview').length) {
+  if (
+    links.filter(
+      link => link.type === 'interview' && link.language === i18n.language
+    ).length
+  ) {
     sections.push({
       name: 'interviews',
       title: t('interviews'),
       content: (
         <List>
           {links
-            .filter(link => link.type === 'interview')
+            .filter(
+              link =>
+                link.type === 'interview' && link.language === i18n.language
+            )
             .map(link => (
               <CompactImageLinkBox
                 key={link.id}
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={(
+                image={
                   <img
                     style={{
                       height: '100%',
@@ -174,7 +181,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                )}
+                }
                 title={link.title}
                 subTitle={link.media}
               />
@@ -191,7 +198,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -206,7 +213,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
