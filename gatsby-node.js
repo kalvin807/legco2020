@@ -401,6 +401,9 @@ exports.createPages = async function createPages({
               alias_zh
               alias_en
             }
+            estimated_yob
+            occupation_zh
+            occupation_en
             keywords
             title_zh
             is_current_lc
