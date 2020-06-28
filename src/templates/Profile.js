@@ -166,7 +166,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={
+                image={(
                   <img
                     style={{
                       height: '100%',
@@ -174,7 +174,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                }
+                )}
                 title={link.title}
                 subTitle={link.media}
               />
@@ -191,7 +191,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={
+          action={(
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -206,7 +206,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          }
+          )}
         >
           {t('socialPost.discalimer')}
         </Alert>

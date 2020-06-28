@@ -92,7 +92,7 @@ const PrimaryTemplate = ({
                   '_blank'
                 );
               }}
-              image={
+              image={(
                 <img
                   style={{
                     height: '100%',
@@ -100,7 +100,7 @@ const PrimaryTemplate = ({
                   src={`https://i.ytimg.com/vi/${asset.asset_id}/hqdefault.jpg`}
                   alt={asset.title}
                 />
-              }
+              )}
               title={asset.title}
               subTitle={asset.channel}
             />
