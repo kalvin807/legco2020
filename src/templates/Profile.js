@@ -46,14 +46,14 @@ const ProfileTemplateWrapper = styled.div`
   }
 
   .nav-link {
-    color: ${theme.palette.primary.main};
+    color: ${theme.palette.text.primary};
     text-decoration: none;
     font-size: 14px;
     margin-bottom: ${theme.spacing(1)}px;
   }
 
   .nav-link:hover {
-    color: ${theme.palette.secondary.main};
+    color: ${theme.palette.text.primary};
     font-weight: 700;
   }
 
@@ -431,7 +431,7 @@ const ProfileTemplate = ({
                 bottom: theme.spacing(2),
                 right: theme.spacing(2),
                 backgroundColor: '#00897b',
-                color: theme.palette.background.default,
+                color: theme.palette.text.primary,
               }}
             >
               <HKFactcheckIcon
