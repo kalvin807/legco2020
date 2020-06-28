@@ -94,8 +94,16 @@
   "constituencies.alias_CAT": "飲食",
   "constituencies.alias_DC1": "區議會一",
   "primary.short_title": "初選名單",
-  "socialPost.discalimer": "以下帖子由事實查核實驗室技術團隊自動搜集，請多多支持。",
+  "socialPost.discalimer": "以下帖子由事實查核實驗室技術團隊自動搜集，準確度未臻完善，請多多支持。",
   "profile.hkfactcheck_link": "更多資訊",
   "election_forum": "選舉論壇",
-  "interviews": "專訪"
+  "interviews": "專訪",
+  "profile.age_value": "{{n}}歲",
+  "profile.age_title": "年齡",
+  "profile.reportedPoliticalAffiliation_title": "報稱政治聯繫",
+  "profile.occupation_title": "報稱職業",
+  "seperator.and": "、",
+  "no": "無",
+  "lang.en": "English",
+  "lang.zh": "中文"
 }

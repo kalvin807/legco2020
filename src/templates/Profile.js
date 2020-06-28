@@ -46,14 +46,14 @@ const ProfileTemplateWrapper = styled.div`
   }
 
   .nav-link {
-    color: ${theme.palette.primary.main};
+    color: ${theme.palette.text.primary};
     text-decoration: none;
     font-size: 14px;
     margin-bottom: ${theme.spacing(1)}px;
   }
 
   .nav-link:hover {
-    color: ${theme.palette.secondary.main};
+    color: ${theme.palette.text.primary};
     font-weight: 700;
   }
 
@@ -63,6 +63,25 @@ const ProfileTemplateWrapper = styled.div`
 
   .social svg {
     margin-left: ${theme.spacing(1)}px;
+  }
+
+  .highlights {
+    max-width: 600px;
+  }
+
+  .highlight-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .value {
+      font-weight: 500;
+    }
+
+    .title {
+      font-size: 0.75rem;
+      color: ${theme.palette.text.secondary};
+    }
   }
 `;
 
@@ -114,7 +133,37 @@ const ProfileTemplate = ({
     `
   );
 
+  const personHighlights = [
+    {
+      value: person.estimated_yob
+        ? t('profile.age_value', {
+            n: 2020 - person.estimated_yob,
+          })
+        : '-',
+      title: t('profile.age_title'),
+      span: 2,
+    },
+    {
+      value: person.political_affiliations
+        ? person.political_affiliations
+            .map(pa => withLanguage(i18n, pa, 'alias'))
+            .join(t('seperator.and'))
+        : t('no'),
+      title: t('profile.reportedPoliticalAffiliation_title'),
+      span: 5,
+    },
+  ];
+
+  if (withLanguage(i18n, person, 'occupation')) {
+    personHighlights.push({
+      value: withLanguage(i18n, person, 'occupation'),
+      title: t('profile.occupation_title'),
+      span: 5,
+    });
+  }
+
   const sections = [];
+
   if (links.filter(link => link.type === 'interview').length) {
     sections.push({
       name: 'interviews',
@@ -129,7 +178,15 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={<img src={link.thumbnail_url} alt={link.title} />}
+                image={
+                  <img
+                    style={{
+                      height: '100%',
+                    }}
+                    src={link.thumbnail_url}
+                    alt={link.title}
+                  />
+                }
                 title={link.title}
                 subTitle={link.media}
               />
@@ -146,7 +203,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -161,7 +218,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -350,6 +407,14 @@ const ProfileTemplate = ({
         <Typography className="block" variant="body2">
           {withLanguage(i18n, person, 'description')}
         </Typography>
+        <Grid container className="highlights">
+          {personHighlights.map(ph => (
+            <Grid className="highlight-items" item xs={ph.span} sm={ph.span}>
+              <div className="value">{ph.value}</div>
+              <div className="title">{ph.title}</div>
+            </Grid>
+          ))}
+        </Grid>
         <Grid className="block" container>
           {person.tags &&
             person.tags.map(tag => (
@@ -386,7 +451,7 @@ const ProfileTemplate = ({
                 bottom: theme.spacing(2),
                 right: theme.spacing(2),
                 backgroundColor: '#00897b',
-                color: theme.palette.background.default,
+                color: theme.palette.text.primary,
               }}
             >
               <HKFactcheckIcon
