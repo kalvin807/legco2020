@@ -1,14 +1,17 @@
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { ThemeProvider, makeStyles , createMuiTheme } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  makeStyles,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ContextStoreProvider } from '@/contextStore';
+import theme from '@/themes';
 import Header from './header';
 import Footer from './Footer';
 import './layout.css';
-import theme from '../themes';
-
 
 const useStyles = makeStyles(t => ({
   root: {
@@ -34,9 +37,8 @@ const ThemeProviderWrapper = ({ children }) => {
           type: prefersDarkMode ? 'dark' : 'light',
         },
       }),
-    [prefersDarkMode],
+    [prefersDarkMode]
   );
-
 
   const classes = useStyles();
   return (

@@ -14,6 +14,10 @@ const UnstyledAppBar = styled(AppBar)`
   button {
     text-transform: inherit;
   }
+
+  .tab {
+    color: ${theme.palette.text.primary};
+  }
 `;
 
 function TabPanel(props) {
@@ -59,6 +63,7 @@ export default function SimpleTabs(props) {
         >
           {tabs.map(tab => (
             <Tab
+              className="tab"
               onClick={() => onTabChange(tab.name)}
               key={tab.title}
               label={tab.title}

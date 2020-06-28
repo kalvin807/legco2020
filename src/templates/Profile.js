@@ -409,6 +409,7 @@ const ProfileTemplate = ({
                 key={withLanguage(i18n, tag, 'name')}
                 label={withLanguage(i18n, tag, 'name')}
                 variant="outlined"
+                size="small"
               />
             ))}
         </Grid>
@@ -438,7 +439,7 @@ const ProfileTemplate = ({
                 bottom: theme.spacing(2),
                 right: theme.spacing(2),
                 backgroundColor: '#00897b',
-                color: theme.palette.text.primary,
+                color: '#FFFFFF',
               }}
             >
               <HKFactcheckIcon

@@ -29,6 +29,11 @@ const Post = styled.div`
     justify-content: space-between;
     margin-bottom: ${theme.spacing(1)}px;
   }
+
+  .title {
+    font-weight: 500;
+    word-wrap: break-word;
+  }
 `;
 
 const SocialPost = ({ post, candiName }) => {
@@ -69,7 +74,7 @@ const SocialPost = ({ post, candiName }) => {
         </Typography>
       </div>
 
-      <Typography variant="h5">{post.title || post.content}</Typography>
+      <div className="title">{post.title || post.content}</div>
 
       <Grid container spacing={3}>
         <MetricsWrapper item>
