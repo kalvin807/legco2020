@@ -15,10 +15,10 @@ export const wrapPageElement = ({
   },
 }) => {
   return (
-    <Layout>
-      <I18nWrapper locale={locale} ssr>
+    <I18nWrapper locale={locale} ssr>
+      <Layout>
         {element}
-      </I18nWrapper>
-    </Layout>
+      </Layout>
+    </I18nWrapper>
   );
 };
