@@ -31,6 +31,7 @@ import List from '@/components/List';
 import { CompactImageLinkBox } from '@/components/LinkBox';
 import Alert from '@/components/Alert';
 import { GoLinkExternal } from 'react-icons/go';
+import { PeopleCircle } from '@/components/People';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -63,6 +64,10 @@ const ProfileTemplateWrapper = styled.div`
 
   .social svg {
     margin-left: ${theme.spacing(1)}px;
+  }
+
+  .list-member {
+    display: flex;
   }
 
   .highlights {
@@ -104,23 +109,12 @@ const ProfileHeader = styled(Grid)`
     font-size: 24px;
     font-weight: 600;
   }
-
-  .list-members {
-    display: flex;
-
-    .avatar-others {
-      width: 32px;
-      height: 32px;
-      margin-right: ${theme.spacing(1)}px;
-    }
-  }
 `;
 
 const ProfileTemplate = ({
-  pageContext: { uri, person, socialPosts, links },
+  pageContext: { uri, person, socialPosts, links, listMember },
 }) => {
   const { t, i18n } = useTranslation();
-
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -185,7 +179,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={
+                image={(
                   <img
                     style={{
                       height: '100%',
@@ -193,7 +187,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                }
+                )}
                 title={link.title}
                 subTitle={link.media}
               />
@@ -210,7 +204,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={
+          action={(
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -225,7 +219,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          }
+          )}
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -401,22 +395,39 @@ const ProfileTemplate = ({
               </Typography>
             </Grid>
           </Grid>
-          {/* <div className="list-members">
-            {
-              [1, 1, 1, 1, 1, 1, 1, 1].map(c => {
-                return (
-                  <Avatar className={`avatar-others`} alt={person.alias_zh} src={person.image_url} />
-                )
-              })
-            }
-          </div> */}
         </ProfileHeader>
+        {listMember.length && (
+          <Grid container spacing={1} className="list-member">
+            {
+              listMember.sort((a, b) => {
+                if (a.order > b.order) return 1
+                if (a.order < b.order) return -1
+                return 0
+              }).map(c => (
+                <Grid
+                  item
+                  key={withLanguage(i18n, c, 'name')}
+                >
+                  <PeopleCircle
+                    info={c}
+                    imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.uuid}.png`}
+                    onClick={() => {
+                        
+                    }}
+                    xsdimension={32}
+                    showName={false}
+                  />
+                </Grid>
+              ))
+            }
+          </Grid>
+        )}
         <Typography className="block" variant="body2">
           {withLanguage(i18n, person, 'description')}
         </Typography>
         <Grid container className="highlights">
           {personHighlights.map(ph => (
-            <Grid className="highlight-items" item xs={ph.span} sm={ph.span}>
+            <Grid key={ph.title} className="highlight-items" item xs={ph.span} sm={ph.span}>
               <div className="value">{ph.value}</div>
               <div className="title">{ph.title}</div>
             </Grid>

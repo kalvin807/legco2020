@@ -24,6 +24,8 @@ const PUBLISHED_SPREADSHEET_ASSETS_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vS7_dGGNTfAibQIGEyjz8V7sG2wXAfoLQPKIDUHeyZ5e58GDb9qVe9RrUxIzOPsU2ZKiSVyBLE088zH/pub?gid=0';
 const PUBLISHED_SPREADSHEET_CANDIDATES_LINKS_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQYjjA02OsY9_3mbNGbNd7LBv2GO6jnwRGxwinG_vtwOt09P1uPt0r32S8RZKZEMTizDh4GmSGPMboM/pub?gid=0';
+const PUBLISHED_SPREADSHEET_LIST_MEMBER_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAeIndC4MRj2C0uz-NSRI75bz2FPaAK4zCpUWfDh18WI8duAFmlqWbBHZHCbXu-iGqnsvOa6S5G8fP/pub?gid=0';
 const AIRTABLE_CANDIDATES_SPREADSHEET_ID = 'appTst6klxEECAHOv';
 
 
@@ -229,6 +231,12 @@ exports.sourceNodes = async props => {
       'CandidatesLinks',
       { skipFirstLine: true }
     ),
+    createPublishedGoogleSpreadsheetNode(
+      props,
+      PUBLISHED_SPREADSHEET_LIST_MEMBER_URL,
+      'ListMember',
+      { skipFirstLine: true }
+    ),
     createAirtableNode(
       props,
       AIRTABLE_CANDIDATES_SPREADSHEET_ID,
@@ -367,6 +375,22 @@ exports.createPages = async function createPages({
           }
         }
       }
+      allListMember(filter: {enabled: {eq: "Y"}}) {
+        edges {
+          node {
+            main
+            order
+            name_zh
+            name_en
+            estimated_yob
+            occupation_zh
+            occupation_en
+            political_affiliation_zh
+            political_affiliation_en
+            uuid
+          }
+        }
+      }
       allCandidatesLinks(filter: {enabled: {eq: "Y"}}) {
         edges {
           node {
@@ -426,6 +450,7 @@ exports.createPages = async function createPages({
   }
   const Assets = result.data.allAssets.edges;
   const CandidatesLinks = result.data.allCandidatesLinks.edges;
+  const ListMember = result.data.allListMember.edges;
 
 
   const GeoFuncDc2Constituencies = result.data.allGeoFuncDc2.edges;
@@ -571,6 +596,7 @@ exports.createPages = async function createPages({
           context: {
             uri,
             person,
+            listMember: ListMember.filter(l => l.node.main === person.name_zh).map(l => l.node),
             socialPosts,
             links: CandidatesLinks.filter(l => l.node.name_zh === person.name_zh).map(l => l.node),
             locale: lang,

@@ -6,10 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
 import { calculateSeatBox } from '@/utils';
-import { withLanguage } from '@/utils/i18n';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import { PeopleCircle } from '@/components/People';
 import SEO from '@/components/seo';
-import { useStaticQuery, graphql } from 'gatsby';
+import { useStaticQuery, graphql, navigate } from 'gatsby';
+
 
 const GeoHeader = styled(Grid)`
 
@@ -144,6 +145,9 @@ const GeoFuncDc2ConstituencyTemplate = ({
             <CandidatesWrapper>
               {demoCandidates.map(c => (
                 <PeopleCircle
+                  onClick={() => {
+                    navigate(getLocalizedPath(i18n, `/profile/${c.node.uuid}/${c.node_zh}`));
+                  }}
                   imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.node.uuid}.png`}
                   key={withLanguage(i18n, c.node, 'name')}
                   info={c.node}

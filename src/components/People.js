@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
-import { withLanguage, getLocalizedPath } from '@/utils/i18n';
-import { navigate } from 'gatsby';
+import { withLanguage } from '@/utils/i18n';
 import theme from '@/themes';
 
 const campColorMapping = {
@@ -16,7 +15,7 @@ const campColorMapping = {
 const CampAvatar = styled(Avatar)`
   width: ${props => props.xsdimension || 48}px;
   height: ${props => props.xsdimension || 48}px;
-  border: ${props => props.border || 3}px
+  border: ${props => props.camp && (props.border || 3)}px
     ${props => campColorMapping[props.camp]} solid;
 `;
 
@@ -56,22 +55,21 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = ({ info, imgUrl }) => {
+export const PeopleCircle = ({ info, imgUrl, onClick, xsdimension, showName = true }) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
     <PeopleWrapper
       className="avatar-group clickable"
-      onClick={() => {
-        navigate(getLocalizedPath(i18n, `/profile/${info.uuid}/${name}`));
-      }}
+      onClick={onClick}
       onKeyDown={() => {}}
     >
       <div className="center">
         <CampAvatar
           alt={name}
           src={imgUrl}
-          camp={info.camp.toLowerCase()}
+          camp={info.camp && info.camp.toLowerCase()}
+          xsdimension={xsdimension}
         >
           <img
             alt={name}
@@ -81,6 +79,7 @@ export const PeopleCircle = ({ info, imgUrl }) => {
             }}
           />
         </CampAvatar>
+        {showName && (
         <span>
           {`${name}${
             info.tags &&
@@ -90,6 +89,7 @@ export const PeopleCircle = ({ info, imgUrl }) => {
               : ''
           }`}
         </span>
+)}
       </div>
     </PeopleWrapper>
   );
