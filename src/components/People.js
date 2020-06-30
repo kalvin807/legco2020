@@ -15,7 +15,7 @@ const campColorMapping = {
 const CampAvatar = styled(Avatar)`
   width: ${props => props.xsdimension || 48}px;
   height: ${props => props.xsdimension || 48}px;
-  border: ${props => props.camp && (props.border || 3)}px
+  border: ${props => (props.camp ? props.border || 3 : 0)}px
     ${props => campColorMapping[props.camp]} solid;
 `;
 
@@ -55,7 +55,14 @@ const PeopleWrapper = styled.div`
   }
 `;
 
-export const PeopleCircle = ({ info, imgUrl, onClick, xsdimension, showName = true }) => {
+export const PeopleCircle = ({
+  info,
+  imgUrl,
+  onClick,
+  xsdimension,
+  showName = true,
+  ...props
+}) => {
   const { i18n } = useTranslation();
   const name = withLanguage(i18n, info, 'name');
   return (
@@ -64,7 +71,7 @@ export const PeopleCircle = ({ info, imgUrl, onClick, xsdimension, showName = tr
       onClick={onClick}
       onKeyDown={() => {}}
     >
-      <div className="center">
+      <div className="center" {...props}>
         <CampAvatar
           alt={name}
           src={imgUrl}
@@ -80,16 +87,16 @@ export const PeopleCircle = ({ info, imgUrl, onClick, xsdimension, showName = tr
           />
         </CampAvatar>
         {showName && (
-        <span>
-          {`${name}${
-            info.tags &&
-            info.tags.findIndex(tag => tag.name_zh === '不參加民主派初選') !==
-              -1
-              ? '*'
-              : ''
-          }`}
-        </span>
-)}
+          <span>
+            {`${name}${
+              info.tags &&
+              info.tags.findIndex(tag => tag.name_zh === '不參加民主派初選') !==
+                -1
+                ? '*'
+                : ''
+            }`}
+          </span>
+        )}
       </div>
     </PeopleWrapper>
   );
