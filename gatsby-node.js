@@ -406,6 +406,7 @@ exports.createPages = async function createPages({
             occupation_en
             keywords
             title_zh
+            title_en
             is_current_lc
             is_2020_candidate
             img_url
