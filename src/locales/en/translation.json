@@ -54,7 +54,7 @@
     "footer.other_websites.lecgo2020": "legco2020.com",
     "footer.other_websites.google_form": "Report issues / Help wanted",
     "list_count": "{{list_count}} lists",
-    "demo_target": "Target seats for Democratic",
+    "demo_target": "Target seats for Democratic ({{target}})",
     "demo_target_not_decide": "No target seats for Democratic",
     "primary_election_description": "",
     "index.title": "Election Highlights",

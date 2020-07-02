@@ -23,7 +23,7 @@ import {
 } from 'react-icons/ri';
 import { FaAngleRight } from 'react-icons/fa';
 import { openInNewTab } from '@/utils';
-import { withLanguage } from '@/utils/i18n';
+import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import HKFactcheckIcon from '@/components/icons/hkfactcheck.svg';
 import SEO from '@/components/seo';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
@@ -269,10 +269,16 @@ const ProfileTemplate = ({
         >
           <Grid item>
             <Breadcrumbs separator={<FaAngleRight />} aria-label="breadcrumb">
-              <Link className="nav-link" to="/primary">
+              <Link
+                className="nav-link"
+                to={getLocalizedPath(i18n, '/primary')}
+              >
                 {t('primary.short_title')}
               </Link>
-              <Link className="nav-link" to={`/primary/${person.constituency}`}>
+              <Link
+                className="nav-link"
+                to={getLocalizedPath(i18n, `/primary/${person.constituency}`)}
+              >
                 {t(`constituencies.alias_${person.constituency}`)}
               </Link>
             </Breadcrumbs>
