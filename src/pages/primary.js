@@ -195,14 +195,14 @@ const PrimaryPage = props => {
                         {candiDemo.length || '-'}
                       </div>
                       <Typography variant="body2" color="textSecondary">
-                        名單
+                        {t('lists')}
                       </Typography>
                     </div>
                     {Number(e.target) > 0 && (
                       <div className="center">
                         <div className="large-number">{e.target || '-'}</div>
                         <Typography variant="body2" color="textSecondary">
-                          出線
+                          {t('threshold')}
                         </Typography>
                       </div>
                     )}

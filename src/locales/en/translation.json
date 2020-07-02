@@ -40,7 +40,7 @@
     "platform.orangenews": "Orange News",
     "platform.facebook": "Facebook",
     "simulation_result": "推算形勢",
-    "dc2019_demo_beijing_ratio": "2019 Democratic / Pro-beijing votes ratio",
+    "dc2019_demo_beijing_ratio": "2019 Demo / Pro-beijing votes ratio",
     "coordination_method": "名單協調方法",
     "vote_allocaton": "Vote Allocation",
     "current_legislator": "Current legislator",
@@ -53,6 +53,7 @@
     "footer.other_websites.factchecklab": "Factcheck Lab",
     "footer.other_websites.lecgo2020": "legco2020.com",
     "footer.other_websites.google_form": "Report issues / Help wanted",
+    "list_count": "{{list_count}} lists",
     "demo_target": "Target seats for Democratic",
     "demo_target_not_decide": "No target seats for Democratic",
     "primary_election_description": "",
@@ -104,6 +105,8 @@
     "seperator.and": "、",
     "no": "Nil",
     "lang.en": "English",
-    "lang.zh": "中文"
+    "lang.zh": "中文",
+    "lists": "Lists",
+    "threshold": "Threshold"
   }
   
