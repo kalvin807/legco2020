@@ -31,6 +31,8 @@ import List from '@/components/List';
 import { CompactImageLinkBox } from '@/components/LinkBox';
 import Alert from '@/components/Alert';
 import { GoLinkExternal } from 'react-icons/go';
+import { PeopleCircle } from '@/components/People';
+import { DefaultTooltip } from '@/components/Tooltip';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
@@ -63,6 +65,10 @@ const ProfileTemplateWrapper = styled.div`
 
   .social svg {
     margin-left: ${theme.spacing(1)}px;
+  }
+
+  .list-member {
+    display: flex;
   }
 
   .highlights {
@@ -104,23 +110,23 @@ const ProfileHeader = styled(Grid)`
     font-size: 24px;
     font-weight: 600;
   }
+`;
 
-  .list-members {
-    display: flex;
+const TooltipContent = styled.div`
+  .name {
+    font-weight: 700;
+    margin-bottom: ${theme.spacing(0.5)}px;
+  }
 
-    .avatar-others {
-      width: 32px;
-      height: 32px;
-      margin-right: ${theme.spacing(1)}px;
-    }
+  .detail {
+    margin-bottom: ${theme.spacing(0.5)}px;
   }
 `;
 
 const ProfileTemplate = ({
-  pageContext: { uri, person, socialPosts, links },
+  pageContext: { uri, person, socialPosts, links, listMember },
 }) => {
   const { t, i18n } = useTranslation();
-
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -407,22 +413,86 @@ const ProfileTemplate = ({
               </Typography>
             </Grid>
           </Grid>
-          {/* <div className="list-members">
-            {
-              [1, 1, 1, 1, 1, 1, 1, 1].map(c => {
-                return (
-                  <Avatar className={`avatar-others`} alt={person.alias_zh} src={person.image_url} />
-                )
-              })
-            }
-          </div> */}
         </ProfileHeader>
+        {!!listMember.length && (
+          <Grid container spacing={1} className="list-member">
+            {listMember
+              .sort((a, b) => {
+                if (a.order > b.order) return 1;
+                if (a.order < b.order) return -1;
+                return 0;
+              })
+              .map(c => {
+                const details = [
+                  {
+                    value: c.estimated_yob
+                      ? t('profile.age_value', {
+                          n: 2020 - c.estimated_yob,
+                        })
+                      : '-',
+                    title: t('profile.age_title'),
+                  },
+                  {
+                    value: withLanguage(i18n, c, 'occupation') || '-',
+                    title: t('profile.occupation_title'),
+                  },
+                  {
+                    value:
+                      withLanguage(i18n, c, 'political_affiliation') || '-',
+                    title: t('profile.reportedPoliticalAffiliation_title'),
+                  },
+                ];
+                return (
+                  <Grid item key={withLanguage(i18n, c, 'name')}>
+                    <DefaultTooltip
+                      title={
+                        <TooltipContent>
+                          <Typography className="name" variant="h5">
+                            {withLanguage(i18n, c, 'name')}
+                          </Typography>
+                          {details.map(d => (
+                            <div className="detail">
+                              <Typography variant="body2">{d.value}</Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                              >
+                                {d.title}
+                              </Typography>
+                            </div>
+                          ))}
+                        </TooltipContent>
+                      }
+                      enterTouchDelay={10}
+                      leaveTouchDelay={5000}
+                      interactive
+                    >
+                      <div>
+                        <PeopleCircle
+                          info={c}
+                          imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.uuid}.png`}
+                          xsdimension={32}
+                          showName={false}
+                        />
+                      </div>
+                    </DefaultTooltip>
+                  </Grid>
+                );
+              })}
+          </Grid>
+        )}
         <Typography className="block" variant="body2">
           {withLanguage(i18n, person, 'description')}
         </Typography>
         <Grid container className="highlights">
           {personHighlights.map(ph => (
-            <Grid className="highlight-items" item xs={ph.span} sm={ph.span}>
+            <Grid
+              key={ph.title}
+              className="highlight-items"
+              item
+              xs={ph.span}
+              sm={ph.span}
+            >
               <div className="value">{ph.value}</div>
               <div className="title">{ph.title}</div>
             </Grid>
