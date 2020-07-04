@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { getLocalizedPath } from '@/utils/i18n';
-// import LanguageSwitcher from "@components/LanguageSwitcher"
+import LanguageSwitcher from '@components/LanguageSwitcher';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,12 +43,7 @@ export default function Header() {
             navigate(getLocalizedPath(i18n, '/primary'));
           }}
         />
-        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
-        {/* ========== Temproraily disbale LanguageSwitcher ========== */}
-        {/* <LanguageSwitcher/> */}
-        {/* ========== Temproraily disbale LanguageSwitcher ========== */}
+        <LanguageSwitcher />
       </Toolbar>
     </AppBar>
   );
