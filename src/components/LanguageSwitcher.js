@@ -12,6 +12,7 @@ import { removePathTrailingSlash } from '@/utils/urlHelper';
 const RightIconButton = styled(IconButton)`
   && {
     position: absolute;
+    padding-right: 0;
     right: 0;
   }
 `;
