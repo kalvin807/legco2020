@@ -1,15 +1,15 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 
 const List = styled(Grid)`
-  box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+  box-shadow: 0 1px 6px 0 ${props => props.theme.palette.divider};
   line-height: 0;
 
   .details {
-    padding-left: ${theme.spacing(1.5)}px;
-    padding-right: ${theme.spacing(1.5)}px;
+    padding-left: ${props => props.theme.spacing(1.5)}px;
+    padding-right: ${props => props.theme.spacing(1.5)}px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,8 +21,9 @@ const List = styled(Grid)`
 `;
 
 export const CompactImageLinkBox = ({ onClick, image, title, subTitle }) => {
+  const theme = useTheme();
   return (
-    <List container className="clickable" key={title} onClick={onClick}>
+    <List container className="clickable" key={title} onClick={onClick} theme={theme}>
       <Grid item xs={4}>
         {image}
       </Grid>

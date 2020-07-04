@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { select, scaleLinear } from 'd3';
 import useResizeObserver from '@/utils/ResizeObserver';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 
 function FCStackedBar({ data }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
+  const theme = useTheme();
   // will be called initially and on every data change
   useEffect(() => {
     const svg = select(svgRef.current);

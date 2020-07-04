@@ -8,7 +8,7 @@ import {
   Container,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import ResponsiveSections from '@/components/ResponsiveSections';
 import SocialPost from '@/components/SocialPost';
@@ -36,26 +36,26 @@ import { DefaultTooltip } from '@/components/Tooltip';
 
 const ProfileTemplateWrapper = styled.div`
   .top-row {
-    margin-bottom: ${theme.spacing(1)}px;
+    margin-bottom: ${props => props.theme.spacing(1)}px;
   }
 
   .base-margin {
-    margin: ${theme.spacing(2)}px 0;
+    margin: ${props => props.theme.spacing(2)}px 0;
   }
 
   .block {
-    margin: ${theme.spacing(1)}px 0;
+    margin: ${props => props.theme.spacing(1)}px 0;
   }
 
   .nav-link {
-    color: ${theme.palette.text.primary};
+    color: ${props => props.theme.palette.text.primary};
     text-decoration: none;
     font-size: 14px;
-    margin-bottom: ${theme.spacing(1)}px;
+    margin-bottom: ${props => props.theme.spacing(1)}px;
   }
 
   .nav-link:hover {
-    color: ${theme.palette.text.primary};
+    color: ${props => props.theme.palette.text.primary};
     font-weight: 700;
   }
 
@@ -64,7 +64,7 @@ const ProfileTemplateWrapper = styled.div`
   }
 
   .social svg {
-    margin-left: ${theme.spacing(1)}px;
+    margin-left: ${props => props.theme.spacing(1)}px;
   }
 
   .list-member {
@@ -86,24 +86,24 @@ const ProfileTemplateWrapper = styled.div`
 
     .title {
       font-size: 0.75rem;
-      color: ${theme.palette.text.secondary};
+      color: ${props => props.theme.palette.text.secondary};
     }
   }
 `;
 
 const ProfileHeader = styled(Grid)`
-  margin-bottom: ${theme.spacing(0.5)}px;
+  margin-bottom: ${props => props.theme.spacing(0.5)}px;
 
   .avatar-main {
     width: 80px;
     height: 80px;
   }
   .avatar-main.DEMO {
-    border: 5px ${theme.palette.warning.main} solid;
+    border: 5px ${props => props.theme.palette.warning.main} solid;
   }
 
   .avatar-main.BEIJING {
-    border: 5px ${theme.palette.info.main} solid;
+    border: 5px ${props => props.theme.palette.info.main} solid;
   }
 
   .name {
@@ -115,11 +115,11 @@ const ProfileHeader = styled(Grid)`
 const TooltipContent = styled.div`
   .name {
     font-weight: 700;
-    margin-bottom: ${theme.spacing(0.5)}px;
+    margin-bottom: ${props => props.theme.spacing(0.5)}px;
   }
 
   .detail {
-    margin-bottom: ${theme.spacing(0.5)}px;
+    margin-bottom: ${props => props.theme.spacing(0.5)}px;
   }
 `;
 
@@ -138,6 +138,8 @@ const ProfileTemplate = ({
       }
     `
   );
+
+  const theme = useTheme();
 
   const personHighlights = [
     {
@@ -191,7 +193,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={
+                image={(
                   <img
                     style={{
                       height: '100%',
@@ -199,7 +201,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                }
+                )}
                 title={link.title}
                 subTitle={link.media}
               />
@@ -216,7 +218,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={
+          action={(
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -231,7 +233,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          }
+          )}
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -265,7 +267,7 @@ const ProfileTemplate = ({
           },
         ]}
       />
-      <ProfileTemplateWrapper>
+      <ProfileTemplateWrapper theme={theme}>
         <Grid
           className="top-row"
           container
@@ -382,7 +384,7 @@ const ProfileTemplate = ({
           </Grid>
         </Grid>
 
-        <ProfileHeader container spacing={3}>
+        <ProfileHeader container spacing={3} theme={theme}>
           <Grid item>
             <Avatar
               className={`avatar-main ${person.camp}`}
@@ -445,8 +447,9 @@ const ProfileTemplate = ({
                 return (
                   <Grid item key={withLanguage(i18n, c, 'name')}>
                     <DefaultTooltip
-                      title={
-                        <TooltipContent>
+                      theme={theme}
+                      title={(
+                        <TooltipContent theme={theme}>
                           <Typography className="name" variant="h5">
                             {withLanguage(i18n, c, 'name')}
                           </Typography>
@@ -462,7 +465,7 @@ const ProfileTemplate = ({
                             </div>
                           ))}
                         </TooltipContent>
-                      }
+                      )}
                       enterTouchDelay={10}
                       leaveTouchDelay={5000}
                       interactive
@@ -539,6 +542,7 @@ const ProfileTemplate = ({
               }}
             >
               <HKFactcheckIcon
+                theme={theme}
                 style={{
                   width: 24,
                   height: 24,

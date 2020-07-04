@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import useResizeObserver from '@/utils/ResizeObserver';
 import { select, scaleLinear } from 'd3';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { seatColorMapping } from '@/config';
 
 const config = {
@@ -17,6 +17,8 @@ function VoteVsSeat({ votes, seats, title }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
+  const theme = useTheme();
+  
   // will be called initially and on every votes change
   useEffect(() => {
     const svg = select(svgRef.current);

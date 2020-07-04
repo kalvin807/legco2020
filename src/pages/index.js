@@ -3,7 +3,7 @@ import SEO from '@/components/seo';
 import { graphql, navigate } from 'gatsby';
 import SingleStackedBarChart from '@/components/charts/SingleStackedBar';
 import SeatRowChart from '@/components/charts/SeatRow';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { Typography, Collapse, useMediaQuery, Grid } from '@material-ui/core';
 import SimpleTabs from '@/components/SimpleTabs';
 import styled from 'styled-components';
@@ -16,32 +16,32 @@ import { calculateSeatBox } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 
 const FullWidithWrapper = styled.div`
-  margin: 0 -${theme.spacing(2)}px;
+  margin: 0 -${props => props.theme.spacing(2)}px;
 
   .fullWidth-title {
     font-weight: 700;
     text-align: center;
-    padding: ${theme.spacing(1)}px 0;
+    padding: ${props => props.theme.spacing(1)}px 0;
   }
 `;
 
 const Container = styled.div`
-  margin: 0 ${theme.spacing(2)}px;
+  margin: 0 ${props => props.theme.spacing(2)}px;
 `;
 
 const DirectHeader = styled.div`
-  margin: ${theme.spacing(2)}px 0;
+  margin: ${props => props.theme.spacing(2)}px 0;
 `;
 
 const DirectWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: ${theme.spacing(1)}px;
+  grid-gap: ${props => props.theme.spacing(1)}px;
 
   .seat {
-    padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
+    padding: ${props => props.theme.spacing(1)}px ${props => props.theme.spacing(1.5)}px;
     border-radius: 2px;
-    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    box-shadow: 0 1px 6px 0 ${props => props.theme.palette.divider};
 
     .title {
       display: flex;
@@ -53,7 +53,7 @@ const DirectWrapper = styled.div`
     }
 
     .roundup-title {
-      margin-top: ${theme.spacing(0.5)}px;
+      margin-top: ${props => props.theme.spacing(0.5)}px;
       display: flex;
       justify-content: space-between;
     }
@@ -79,41 +79,41 @@ const DirectWrapper = styled.div`
 
     .demo {
       text-align: left;
-      color: ${theme.palette.warning.main};
+      color: ${props => props.theme.palette.warning.main};
     }
 
     .beijing {
       text-align: right;
-      color: ${theme.palette.info.main};
+      color: ${props => props.theme.palette.info.main};
     }
 
     .other {
-      color: ${theme.palette.success.main};
+      color: ${props => props.theme.palette.success.main};
     }
   }
 `;
 
 const TradFCWrapper = styled.div`
   .situation-group {
-    margin-bottom: ${theme.spacing(3)}px;
+    margin-bottom: ${props => props.theme.spacing(3)}px;
   }
 
   .seat-group {
-    margin-top: ${theme.spacing(1.5)}px;
+    margin-top: ${props => props.theme.spacing(1.5)}px;
     display: grid;
-    grid-gap: ${theme.spacing(1)}px;
+    grid-gap: ${props => props.theme.spacing(1)}px;
   }
 
   .group-title {
     font-weight: 500;
-    margin: ${theme.spacing(2)}px 0;
+    margin: ${props => props.theme.spacing(2)}px 0;
   }
 
   .fierce {
     grid-template-columns: repeat(1, 1fr);
   }
 
-  ${theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     .fierce {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -125,9 +125,9 @@ const TradFCWrapper = styled.div`
   }
 
   .seat {
-    padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
+    padding: ${props => props.theme.spacing(1)}px ${props => props.theme.spacing(1.5)}px;
     border-radius: 2px;
-    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    box-shadow: 0 1px 6px 0 ${props => props.theme.palette.divider};
 
     .title {
       display: flex;
@@ -137,11 +137,11 @@ const TradFCWrapper = styled.div`
   }
 
   .seat.demo {
-    border-top: 3px ${theme.palette.warning.main} solid;
+    border-top: 3px ${props => props.theme.palette.warning.main} solid;
   }
 
   .seat.beijing {
-    border-top: 3px ${theme.palette.info.main} solid;
+    border-top: 3px ${props => props.theme.palette.info.main} solid;
   }
 `;
 
@@ -160,6 +160,7 @@ const IndexPage = props => {
   ];
 
   const { t } = useTranslation();
+  const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // group data for chart
   const seatCount = {
@@ -218,12 +219,12 @@ const IndexPage = props => {
   const renderDirect = edges => {
     return (
       <>
-        <DirectHeader>
+        <DirectHeader theme={theme}>
           <Typography variant="body2">
             {t('direct_election_description')}
           </Typography>
         </DirectHeader>
-        <DirectWrapper>
+        <DirectWrapper theme={theme}>
           {edges
             .sort((a, b) => {
               if (a.order > b.order) return 1;
@@ -344,7 +345,7 @@ const IndexPage = props => {
     }, []);
 
     return (
-      <TradFCWrapper>
+      <TradFCWrapper theme={theme}>
         {grouppedFc
           .sort((a, b) => {
             if (a.order > b.order) return 1;
@@ -443,7 +444,7 @@ const IndexPage = props => {
   return (
     <>
       <SEO title="Home" />
-      <FullWidithWrapper>
+      <FullWidithWrapper theme={theme}>
         <SingleStackedBarChart
           data={chartData}
           summary={summary}
@@ -480,14 +481,14 @@ const IndexPage = props => {
                 name: 'geo_func_dc2',
                 title: t('geo_func_dc2'),
                 content: (
-                  <Container>{renderDirect(allGeoFuncDc2.nodes)}</Container>
+                  <Container theme={theme}>{renderDirect(allGeoFuncDc2.nodes)}</Container>
                 ),
               },
               {
                 name: 'trad_func',
                 title: t('trad_func'),
                 content: (
-                  <Container>{renderTradFC(allTradFunc.nodes)}</Container>
+                  <Container theme={theme}>{renderTradFC(allTradFunc.nodes)}</Container>
                 ),
               },
             ]}

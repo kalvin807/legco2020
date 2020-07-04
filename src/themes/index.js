@@ -50,6 +50,21 @@ const palette = {
   },
 };
 
+
+export const createDynamicTheme = ({ prefersDarkMode }) => createMuiTheme({
+  typography,
+  palette: {
+    ...palette,
+    secondary: {
+      main: prefersDarkMode ? '#7b68ee' : '#483d8b',
+    },
+    type: prefersDarkMode ? 'dark' : 'light',
+  },
+  status: {
+    danger: 'orange',
+  },
+});
+
 const theme = createMuiTheme({
   typography,
   palette,

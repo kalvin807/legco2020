@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import theme from '@/themes';
 import { useTranslation } from 'react-i18next';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
@@ -13,34 +12,35 @@ import ResponsiveSections from '@/components/ResponsiveSections';
 import List from '@/components/List';
 import SEO from '@/components/seo';
 import { CompactImageLinkBox } from '@/components/LinkBox';
+import { useTheme } from '@material-ui/core/styles';
 
 const Nav = styled.div`
-  padding-bottom: ${theme.spacing(1)}px;
+  padding-bottom: ${props => props.theme.spacing(1)}px;
   overflow-x: auto;
   white-space: nowrap;
 
   .nav-link {
-    color: ${theme.palette.text.primary};
+    color: ${props => props.theme.palette.text.primary};
     text-decoration: none;
     font-size: 14px;
-    margin-bottom: ${theme.spacing(1)}px;
-    margin-right: ${theme.spacing(1)}px;
+    margin-bottom: ${props => props.theme.spacing(1)}px;
+    margin-right: ${props => props.theme.spacing(1)}px;
     padding: 3px 8px;
   }
 
   .active {
     font-weight: 700;
     color: #ffffff;
-    background: ${theme.palette.secondary.main};
+    background: ${props => props.theme.palette.secondary.main};
     border-radius: 5px;
   }
 `;
 
 const Header = styled(Grid)`
-  margin-bottom: ${theme.spacing(2)}px;
+  margin-bottom: ${props => props.theme.spacing(2)}px;
 
   .title-box {
-    margin-right: ${theme.spacing(3)}px;
+    margin-right: ${props => props.theme.spacing(3)}px;
   }
   }
   .title {
@@ -50,17 +50,17 @@ const Header = styled(Grid)`
 `;
 
 const CandidatesWrapper = styled.div`
-  margin-top: ${theme.spacing(2)}px;
+  margin-top: ${props => props.theme.spacing(2)}px;
   display: grid;
-  grid-row-gap: ${theme.spacing(1)}px;
-  grid-column-gap: ${theme.spacing(1.5)}px;
+  grid-row-gap: ${props => props.theme.spacing(1)}px;
+  grid-column-gap: ${props => props.theme.spacing(1.5)}px;
   grid-template-columns: repeat(2, 1fr);
 
-  ${theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  ${theme.breakpoints.up('md')} {
+  ${props => props.theme.breakpoints.up('md')} {
     grid-template-columns: repeat(6, 1fr);
   }
 
@@ -86,6 +86,8 @@ const PrimaryTemplate = ({
       }
     `
   );
+
+  const theme = useTheme();
 
   const sections = [];
 
@@ -146,7 +148,7 @@ const PrimaryTemplate = ({
           },
         ]}
       />
-      <Nav>
+      <Nav theme={theme}>
         {allConstituencies.map(c => (
           <Link
             key={c.node.key}
@@ -159,7 +161,7 @@ const PrimaryTemplate = ({
           </Link>
         ))}
       </Nav>
-      <Header container>
+      <Header container theme={theme}>
         <Grid item>
           <Grid
             container
@@ -203,7 +205,7 @@ const PrimaryTemplate = ({
           }}
         />
       )}
-      <CandidatesWrapper>
+      <CandidatesWrapper theme={theme}>
         {candidates
           .sort((a, b) => {
             if (a.node.primary_list_no && b.node.primary_list_no) {

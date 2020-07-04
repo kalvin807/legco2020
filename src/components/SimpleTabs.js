@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 
 const UnstyledAppBar = styled(AppBar)`
   background: transparent;
@@ -16,7 +16,7 @@ const UnstyledAppBar = styled(AppBar)`
   }
 
   .tab {
-    color: ${theme.palette.text.primary};
+    color: ${props => props.theme.palette.text.primary};
   }
 `;
 
@@ -46,6 +46,7 @@ function a11yProps(index) {
 
 export default function SimpleTabs(props) {
   const { tabs, onTabChange } = props;
+  const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -54,7 +55,7 @@ export default function SimpleTabs(props) {
 
   return (
     <>
-      <UnstyledAppBar position="static">
+      <UnstyledAppBar position="static" theme={theme}>
         <Tabs
           value={value}
           onChange={handleChange}

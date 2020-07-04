@@ -1,29 +1,29 @@
 import React from 'react';
 import SEO from '@/components/seo';
 import { graphql, navigate } from 'gatsby';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 
 const DirectHeader = styled.div`
-  margin: ${theme.spacing(2)}px 0;
+  margin: ${props => props.theme.spacing(2)}px 0;
 `;
 
 const DirectWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: ${theme.spacing(1)}px;
+  grid-gap: ${props => props.theme.spacing(1)}px;
 
-  ${theme.breakpoints.up('md')} {
+  ${props => props.theme.breakpoints.up('md')} {
     grid-template-columns: repeat(4, 1fr);
   }
 
   .seat {
-    padding: ${theme.spacing(1)}px ${theme.spacing(1.5)}px;
+    padding: ${props => props.theme.spacing(1)}px ${props => props.theme.spacing(1.5)}px;
     border-radius: 2px;
-    box-shadow: 0 1px 6px 0 ${theme.palette.divider};
+    box-shadow: 0 1px 6px 0 ${props => props.theme.palette.divider};
 
     .title {
       display: flex;
@@ -35,7 +35,7 @@ const DirectWrapper = styled.div`
     }
 
     .roundup-title {
-      margin-top: ${theme.spacing(0.5)}px;
+      margin-top: ${props => props.theme.spacing(0.5)}px;
       display: flex;
       justify-content: space-between;
     }
@@ -64,7 +64,7 @@ const DirectWrapper = styled.div`
     }
 
     .demo {
-      color: ${theme.palette.warning.main};
+      color: ${props => props.theme.palette.warning.main};
     }
   }
 `;
@@ -79,6 +79,7 @@ const PrimaryPage = props => {
   // ];
 
   const { t } = useTranslation();
+  const theme = useTheme();
   // group data for chart
   // const seatCount = {
   //   UNRESOLVED: 70,
@@ -136,7 +137,7 @@ const PrimaryPage = props => {
   const renderConstituencies = edges => {
     return (
       <>
-        <DirectWrapper>
+        <DirectWrapper theme={theme}>
           {edges
             .sort((a, b) => {
               if (a.node.order > b.node.order) return 1;
@@ -218,7 +219,7 @@ const PrimaryPage = props => {
   return (
     <>
       <SEO title="Primary" />
-      <DirectHeader>
+      <DirectHeader theme={theme}>
         <Typography
           variant="body2"
           dangerouslySetInnerHTML={{

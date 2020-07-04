@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import Chip from '@/components/Chip';
 import styled from 'styled-components';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { withLanguage } from '@/utils/i18n';
 import { PeopleCircle } from '@/components/People';
@@ -10,7 +10,7 @@ import SEO from '@/components/seo';
 
 const TradTemplateWrapper = styled.div`
   .block {
-    margin: ${theme.spacing(1)}px 0;
+    margin: ${props => props.theme.spacing(1)}px 0;
   }
 
   .social {
@@ -18,14 +18,14 @@ const TradTemplateWrapper = styled.div`
   }
 
   .social svg {
-    margin-left: ${theme.spacing(1)}px;
+    margin-left: ${props => props.theme.spacing(1)}px;
   }
 `;
 
 const TradHeader = styled(Grid)`
 
   .title-box {
-    margin-right: ${theme.spacing(3)}px;
+    margin-right: ${props => props.theme.spacing(3)}px;
   }
   }
   .title {
@@ -36,7 +36,7 @@ const TradHeader = styled(Grid)`
 
 const CandidatesWrapper = styled.div`
   display: grid;
-  grid-gap: ${theme.spacing(1)}px;
+  grid-gap: ${props => props.theme.spacing(1)}px;
   grid-template-columns: repeat(4, 1fr);
 `;
 
@@ -44,6 +44,8 @@ const TradFuncConstituencyTemplate = ({
   pageContext: { uri, constituency, councillors, candidates, tags },
 }) => {
   const { t, i18n } = useTranslation();
+
+  const theme = useTheme();
 
   return (
     <>
@@ -62,8 +64,8 @@ const TradFuncConstituencyTemplate = ({
           },
         ]}
       />
-      <TradTemplateWrapper>
-        <TradHeader container>
+      <TradTemplateWrapper theme={theme}>
+        <TradHeader container theme={theme}>
           <Grid item>
             <Grid
               container
@@ -109,7 +111,7 @@ const TradFuncConstituencyTemplate = ({
           ))}
         </Grid>
         <Typography variant="h5">{t('intended')}</Typography>
-        <CandidatesWrapper>
+        <CandidatesWrapper theme={theme}>
           {candidates
             .filter(c => c.node.is_2020_candidate === 'TRUE')
             .map(c => (

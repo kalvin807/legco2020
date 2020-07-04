@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import theme from '@/themes';
+import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
@@ -15,7 +15,7 @@ import { useStaticQuery, graphql, navigate } from 'gatsby';
 const GeoHeader = styled(Grid)`
 
   .title-box {
-    margin-right: ${theme.spacing(3)}px;
+    margin-right: ${props => props.theme.spacing(3)}px;
   }
   }
   .title {
@@ -35,33 +35,34 @@ const CampWrapper = styled(Grid)`
   }
 
   .camp-text {
+    color: #000000;
     padding: 3px 5px;
     font-weight: 700;
   }
 
   .camp-text.demo {
-    background: ${theme.palette.warning.light};
+    background: ${props => props.theme.palette.warning.light};
   }
 
   .camp-text.beijing {
-    background: ${theme.palette.info.light};
+    background: ${props => props.theme.palette.info.light};
   }
 
   .camp-text.other {
-    background: ${theme.palette.success.light};
+    background: ${props => props.theme.palette.success.light};
   }
 `;
 
 const CandidatesWrapper = styled.div`
   display: grid;
-  grid-gap: ${theme.spacing(1)}px;
+  grid-gap: ${props => props.theme.spacing(1)}px;
   grid-template-columns: repeat(3, 1fr);
 
-  ${theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  ${theme.breakpoints.up('md')} {
+  ${props => props.theme.breakpoints.up('md')} {
     grid-template-columns: repeat(6, 1fr);
   }
 `;
@@ -82,6 +83,8 @@ const GeoFuncDc2ConstituencyTemplate = ({
       }
     `
   );
+
+  const theme = useTheme();
 
   const demoCandidates = candidates.filter(c => c.node.camp === 'DEMO');
   const beijingCandidates = candidates.filter(c => c.node.camp === 'BEIJING');
@@ -104,7 +107,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
           },
         ]}
       />
-      <GeoHeader container>
+      <GeoHeader container theme={theme}>
         <Grid item>
           <Grid
             container
@@ -134,7 +137,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
       <Typography className="block" variant="body2">
         {withLanguage(i18n, constituency, 'description')}
       </Typography>
-      <CampWrapper container spacing={3}>
+      <CampWrapper container spacing={3} theme={theme}>
         <Grid item xs={6}>
           <div>
             <div>
@@ -142,11 +145,11 @@ const GeoFuncDc2ConstituencyTemplate = ({
             </div>
             <div className="list-number">{demoCandidates.length}</div>
             <Typography variant="caption">{t('intented_list')}</Typography>
-            <CandidatesWrapper>
+            <CandidatesWrapper theme={theme}>
               {demoCandidates.map(c => (
                 <PeopleCircle
                   onClick={() => {
-                    navigate(getLocalizedPath(i18n, `/profile/${c.node.uuid}/${c.node_zh}`));
+                    navigate(getLocalizedPath(i18n, `/profile/${c.node.uuid}/${c.node.name_zh}`));
                   }}
                   imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.node.uuid}.png`}
                   key={withLanguage(i18n, c.node, 'name')}
@@ -166,7 +169,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
             </div>
             <div className="list-number">{beijingCandidates.length}</div>
             <Typography variant="caption">{t('intented_list')}</Typography>
-            <CandidatesWrapper mt={2}>
+            <CandidatesWrapper mt={2} theme={theme}>
               {beijingCandidates.map(c => (
                 <PeopleCircle
                   key={withLanguage(i18n, c.node, 'name')}
@@ -181,7 +184,7 @@ const GeoFuncDc2ConstituencyTemplate = ({
                 <span className="camp-text other">{t('alias.OTHER')}</span>
               </div>
               <Typography variant="caption">{t('intented_list')}</Typography>
-              <CandidatesWrapper>
+              <CandidatesWrapper theme={theme}>
                 {otherCandidates.map(c => (
                   <PeopleCircle key={c.node} info={c.node} />
                 ))}
