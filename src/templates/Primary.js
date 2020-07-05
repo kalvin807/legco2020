@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { DC2019Result } from '@/data/ElectionResults';
 import VoteVsSeatChart from '@/components/charts/VoteVsSeat';
-import { calculateSeatBoxForPrimary } from '@/utils';
+import { calculateSeatBoxForPrimary, handleVideoUrl } from '@/utils';
 import { withLanguage, getLocalizedPath } from '@/utils/i18n';
 import { Link, navigate, useStaticQuery, graphql } from 'gatsby';
 import { PeopleBox } from '@/components/People';
@@ -91,7 +91,7 @@ const PrimaryTemplate = ({
 
   const sections = [];
 
-  if (assets && assets.filter(asset => asset.type === 'youtube').length) {
+  if (assets.length) {
     sections.push({
       name: 'election_forum',
       title: t('election_forum'),
@@ -102,19 +102,28 @@ const PrimaryTemplate = ({
               key={asset.id}
               onClick={() => {
                 window.open(
-                  `https://www.youtube.com/watch?v=${asset.asset_id}`,
+                  handleVideoUrl({
+                    assetId: asset.asset_id,
+                    type: asset.type,
+                  }).videoUrl,
                   '_blank'
                 );
               }}
-              image={(
+              image={
                 <img
                   style={{
                     height: '100%',
                   }}
-                  src={`https://i.ytimg.com/vi/${asset.asset_id}/hqdefault.jpg`}
+                  src={
+                    handleVideoUrl({
+                      assetId: asset.asset_id,
+                      type: asset.type,
+                      thumbnailUrl: asset.thumbnail_url,
+                    }).imgUrl
+                  }
                   alt={asset.title}
                 />
-              )}
+              }
               title={asset.title}
               subTitle={asset.channel}
             />

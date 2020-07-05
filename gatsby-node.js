@@ -369,6 +369,7 @@ exports.createPages = async function createPages({
             constituency
             type
             asset_id
+            thumbnail_url
             title
             channel
             language

@@ -59,3 +59,23 @@ export const get = (obj, path, defaultValue = undefined) => {
   const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
   return result === undefined || result === obj ? defaultValue : result;
 };
+
+export const handleVideoUrl = ({ assetId, type, thumbnailUrl }) => {
+  let videoUrl;
+  let imgUrl;
+  switch (type) {
+    case 'facebook':
+      videoUrl = `https://www.facebook.com/watch/?v=${assetId}`;
+      imgUrl = thumbnailUrl;
+      break;
+    case 'youtube':
+    default:
+      videoUrl = `https://www.youtube.com/watch?v=${assetId}`;
+      imgUrl = `https://i.ytimg.com/vi/${assetId}/hqdefault.jpg`;
+      break;
+  }
+  return {
+    videoUrl,
+    imgUrl,
+  };
+};
