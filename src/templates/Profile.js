@@ -193,7 +193,7 @@ const ProfileTemplate = ({
                 onClick={() => {
                   window.open(link.url, '_blank');
                 }}
-                image={(
+                image={
                   <img
                     style={{
                       height: '100%',
@@ -201,7 +201,7 @@ const ProfileTemplate = ({
                     src={link.thumbnail_url}
                     alt={link.title}
                   />
-                )}
+                }
                 title={link.title}
                 subTitle={link.media}
               />
@@ -218,7 +218,7 @@ const ProfileTemplate = ({
       <>
         <Alert
           severity="warning"
-          action={(
+          action={
             <GoLinkExternal
               className="clickable"
               onClick={() => {
@@ -233,7 +233,7 @@ const ProfileTemplate = ({
                 );
               }}
             />
-          )}
+          }
         >
           {t('socialPost.discalimer')}
         </Alert>
@@ -448,7 +448,7 @@ const ProfileTemplate = ({
                   <Grid item key={withLanguage(i18n, c, 'name')}>
                     <DefaultTooltip
                       theme={theme}
-                      title={(
+                      title={
                         <TooltipContent theme={theme}>
                           <Typography className="name" variant="h5">
                             {withLanguage(i18n, c, 'name')}
@@ -465,7 +465,7 @@ const ProfileTemplate = ({
                             </div>
                           ))}
                         </TooltipContent>
-                      )}
+                      }
                       enterTouchDelay={10}
                       leaveTouchDelay={5000}
                       interactive
@@ -474,7 +474,6 @@ const ProfileTemplate = ({
                         <PeopleCircle
                           info={c}
                           imgUrl={`${site.siteMetadata.siteUrl}/images/avatars/${c.uuid}.png`}
-                          xsdimension={32}
                           showName={false}
                         />
                       </div>
