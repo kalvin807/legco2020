@@ -44,7 +44,9 @@ Need help? Check below links for simple tutorial about our tech stack!
 
     cp .env-sample .env
 
-    # Modify the content of .env, please ask administrator for the API_KEY
+    # Modify the content of .env
+    # 1. To retrieve the GATSBY_AIRTABLE_API_KEY, please first visit https://airtable.com/shrhIQMh1lr4fHqp4 to gain access
+    # 2. Then visit https://support.airtable.com/hc/en-us/articles/219046777-How-do-I-get-my-API-key- to generate the api key
 
     yarn
 
